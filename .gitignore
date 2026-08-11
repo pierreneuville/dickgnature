@@ -1,3 +1,21 @@
 .DS_Store
 node_modules/
 *.bak
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Env & secrets
+.env
+.env.local
+.env*.local
+
+# Test / build artifacts
+coverage/
+*.tsbuildinfo
+
+# Prisma local SQLite (dev fallback)
+prisma/*.db
+prisma/*.db-journal

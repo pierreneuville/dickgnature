@@ -1,0 +1,28 @@
+// dickgnature — schéma de données.
+//
+// Cible de production : Vercel Postgres (Neon) via Prisma (décision Gate 1).
+// Pour S1, provider = sqlite (fallback dev local explicitement autorisé au Gate 1) afin que
+// scripts/verify.sh tourne sans service externe. Bascule vers postgresql quand l'env Vercel
+// (DATABASE_URL réel) est câblé — voir decisions.md.
+//
+// `tone` est un String et non un enum Prisma : les enums Prisma ne sont pas supportés par
+// SQLite. Le domaine (fun | serious) est garanti par la couche applicative (src/lib/tone.ts
+// + validation zod dans src/lib/contracts.ts).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Contract {
+  id        String   @id @default(cuid())
+  title     String
+  body      String
+  tone      String   @default("fun")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
