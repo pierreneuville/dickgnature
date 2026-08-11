@@ -58,9 +58,9 @@ Espace : `pierre-neuvilles-projects` · projet : `dickgnature`.
    fixe déjà `framework: nextjs` et la région `cdg1` (UE).
 2. **Provisionner** une base Vercel Postgres (Neon) sur le projet ; récupérer `DATABASE_URL`.
 3. **Variables d'environnement Vercel** (Production) :
-   - `DATABASE_URL` — URL Postgres Neon (§3).
+   - `DATABASE_URL` — URL Postgres Neon (§3), provisionnée sur le projet (pas de base pré-existante).
    - `RESEND_API_KEY` — clé Resend (sinon transport hors-ligne).
-   - `RESEND_FROM_EMAIL` — adresse d'un domaine vérifié côté Resend.
+   - `RESEND_FROM_EMAIL` — sans domaine vérifié fourni : `onboarding@resend.dev` (voir §6).
 4. **Build command** : `prisma migrate deploy && prisma generate && next build`
    (le `build` par défaut du `package.json` est `prisma generate && next build` ; ajouter
    `prisma migrate deploy` en préfixe côté Vercel, ou via un script dédié).
@@ -79,3 +79,17 @@ Espace : `pierre-neuvilles-projects` · projet : `dickgnature`.
 Secrets **jamais** committés/loggés : uniquement env Vercel ou `.env` local (gitignoré : `.env*`,
 seul `.env.example` est versionné). L'utilisateur régénère le token Vercel et la clé Resend après
 validation du produit.
+
+## 6. Étape post-lancement — domaine expéditeur Resend
+
+Sans domaine vérifié, le déploiement utilise l'expéditeur de test `onboarding@resend.dev`.
+**Limite connue** : en mode test, Resend ne délivre les emails **qu'à l'adresse du titulaire du
+compte Resend** ; les autres destinataires ne reçoivent rien tant qu'un domaine n'est pas vérifié.
+
+Pour une délivrabilité complète (envoi du PDF signé à tous les participants) :
+1. Vérifier un domaine dans le dashboard Resend (enregistrements DNS SPF/DKIM).
+2. Passer `RESEND_FROM_EMAIL` (env Vercel) sur une adresse de ce domaine.
+3. Redéployer (ou simple mise à jour de la variable puis redeploy).
+
+Tant que ce n'est pas fait, le produit est démontrable de bout en bout, mais l'email final n'atteint
+que le titulaire du compte Resend — à signaler à l'utilisateur.
