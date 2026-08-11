@@ -3,6 +3,8 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { sha256FrozenDocument } from "@/lib/document-proof";
 import { deriveContractStatus } from "@/lib/contract-status";
+import { sendCompletedContractEmails } from "@/lib/completion-email";
+import { type EmailTransport } from "@/lib/email-transport";
 import {
   isModeAllowedForTone,
   signatureImageSchema,
@@ -236,6 +238,10 @@ export type SignAsParticipantInput = {
   consent: boolean;
 };
 
+export type SignAsParticipantOptions = {
+  emailTransport?: EmailTransport;
+};
+
 // Signe au nom d'un participant via son token. Vérifie (a) le lien existe, (b) n'est pas expiré,
 // (c) n'a pas déjà été utilisé (usage unique), (d) le mode est autorisé pour le ton — la neutralité
 // « serious » est garantie ici, côté serveur, pas seulement dans l'UI. Puis, atomiquement : crée la
@@ -243,6 +249,7 @@ export type SignAsParticipantInput = {
 export async function signAsParticipant(
   token: string,
   input: SignAsParticipantInput,
+  options: SignAsParticipantOptions = {},
 ): Promise<Participant> {
   const resolved = await getParticipantByToken(token);
   if (!resolved) {
@@ -272,7 +279,7 @@ export async function signAsParticipant(
   const image = signatureImageSchema.parse(input.image);
   const signedAt = new Date();
 
-  const updated = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     await tx.signature.create({
       data: {
         contractId: contract.id,
@@ -373,10 +380,16 @@ export async function signAsParticipant(
       where: { id: contract.id },
       data: completion,
     });
-    return row;
+    return { row, transitionedToCompleted: nextStatus === "completed" };
   });
 
-  return toDomain(updated);
+  // L'envoi se fait après le commit : le PDF relit ainsi une preuve complète et figée. Ce hook
+  // n'est atteint que par la dernière signature, donc une seule campagne part par contrat.
+  if (result.transitionedToCompleted) {
+    await sendCompletedContractEmails(contract.id, options.emailTransport);
+  }
+
+  return toDomain(result.row);
 }
 
 function isUniqueViolation(error: unknown): boolean {
