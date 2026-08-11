@@ -1,41 +1,20 @@
-"use client";
-
-import { useActionState } from "react";
-import { createContractAction, type CreateContractState } from "./actions";
-import { DEFAULT_TONE } from "@/lib/tone";
-
-const initialState: CreateContractState = {};
+import Link from "next/link";
+import { ContractForm } from "./contract-form";
 
 export default function NewContractPage() {
-  const [state, formAction, pending] = useActionState(
-    createContractAction,
-    initialState,
-  );
-
   return (
-    <>
-      <h1>Nouveau contrat</h1>
-      <p className="tagline">Rédige ton accord, choisis le ton, et fais-le signer.</p>
+    <div className="new-contract-page">
+      <header className="new-contract-page__hero">
+        <Link className="new-contract-page__back" href="/">← Retour à l’accueil</Link>
+        <span className="kicker">Un accord en quelques minutes</span>
+        <h1>Nouveau contrat</h1>
+        <p className="tagline">
+          Pars d’un modèle clair, remplace les quelques variables, puis ajuste le
+          texte jusqu’à ce qu’il vous ressemble.
+        </p>
+      </header>
 
-      <form action={formAction}>
-        <label htmlFor="title">Titre</label>
-        <input id="title" name="title" type="text" required maxLength={200} />
-
-        <label htmlFor="body">Contrat</label>
-        <textarea id="body" name="body" required maxLength={20000} />
-
-        <label htmlFor="tone">Ton</label>
-        <select id="tone" name="tone" defaultValue={DEFAULT_TONE}>
-          <option value="fun">Fun (parodique)</option>
-          <option value="serious">Serious (neutre)</option>
-        </select>
-
-        {state.error ? <p className="error">{state.error}</p> : null}
-
-        <button type="submit" disabled={pending}>
-          {pending ? "Création…" : "Créer le contrat"}
-        </button>
-      </form>
-    </>
+      <ContractForm />
+    </div>
   );
 }
