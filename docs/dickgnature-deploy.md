@@ -93,3 +93,24 @@ Pour une délivrabilité complète (envoi du PDF signé à tous les participants
 
 Tant que ce n'est pas fait, le produit est démontrable de bout en bout, mais l'email final n'atteint
 que le titulaire du compte Resend — à signaler à l'utilisateur.
+
+## 7. État de la mise en ligne (12/08/2026)
+
+Déployé en production : **https://dickgnature.vercel.app** (projet Vercel existant `dickgnature`,
+scope `pierre-neuvilles-projects`, région `cdg1`, auto-déploiement via le lien GitHub sur `main`).
+
+Base de données : **projet Neon direct** nommé `dickgnature` (provisionné hors Vercel), **pas** la
+Vercel Postgres managée — équivalent technique. Deux env vars sont câblées côté Vercel :
+
+- `DATABASE_URL` — chaîne **pooled** (host `…-pooler…`), utilisée par le runtime.
+- `DIRECT_URL` — chaîne **non-pooled**, utilisée par `prisma migrate deploy` (DDL) ; référencée par
+  `datasource db { directUrl = env("DIRECT_URL") }` dans `prisma/schema.prisma`.
+
+L'utilisateur pourra rattacher/migrer cette base vers une Vercel Postgres managée plus tard s'il le
+souhaite : il suffit de re-pointer `DATABASE_URL`/`DIRECT_URL` et de relancer `prisma migrate deploy`.
+
+Le token Vercel fourni est **scoped-projet** : la CLI Vercel (`vercel link`, `whoami`) ne fonctionne
+pas (résolution utilisateur → 404). La configuration projet et les env vars se pilotent par l'API REST
+(`/v9/projects/…`, `/v10/projects/…/env`) ; le déploiement se déclenche par `git push` sur `main`.
+
+Point cosmétique connu : `GET /favicon.ico` → 404 (aucun favicon fourni) — sans impact fonctionnel.
