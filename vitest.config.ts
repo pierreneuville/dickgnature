@@ -17,6 +17,9 @@ export default defineConfig({
     env: {
       DATABASE_URL: "file:./test.db",
     },
+    // Les tests d'intégration partagent une même base SQLite (test.db) : on désactive le
+    // parallélisme entre fichiers pour éviter que leurs resets (deleteMany) ne se percutent.
+    fileParallelism: false,
     coverage: {
       provider: "v8",
       include: ["src/**/*.{ts,tsx}"],
