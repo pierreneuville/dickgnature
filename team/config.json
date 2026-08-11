@@ -25,7 +25,6 @@
       "name": "builder-b",
       "providerId": "codex",
       "effort": "high",
-      "isolation": "worktree",
       "role": "Builder secondaire, moteur différent. Trois usages : paralléliser une slice indépendante, fournir un second avis d'implémentation quand builder-a patine (deux moteurs = deux distributions d'erreurs), et prendre les tâches mécaniques (refactor large, migration de tests, corrections répétitives). Tu travailles dans un git worktree isolé : aucun conflit d'écriture avec builder-a.",
       "workflow": "Mêmes règles que builder-a : slice verticale complète, une branche, une PR, scripts/verify.sh vert avant de te déclarer prêt, résultat en commentaire de tâche. Lis CLAUDE.md et .factory/<feature>/spec.md avant d'écrire une ligne. Ne touche jamais aux fichiers d'une slice assignée à builder-a. En mode second avis, tu produis une implémentation alternative et une note de comparaison — tu ne fusionnes pas toi-même."
     },

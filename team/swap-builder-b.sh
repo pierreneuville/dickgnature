@@ -12,12 +12,10 @@ TEAM="factory"
 DIR="$HOME/.claude/teams/$TEAM"
 TARGET="${1:-status}"
 
-# Avant le premier lancement le roster vit dans members.meta.json ;
-# l'app écrit config.json ensuite. On édite celui qui existe.
-if   [ -f "$DIR/config.json" ];       then CFG="$DIR/config.json"
-elif [ -f "$DIR/members.meta.json" ]; then CFG="$DIR/members.meta.json"
-else echo "✗ Aucun roster dans $DIR — crée d'abord l'équipe (team/create-team.sh)."; exit 1
-fi
+# members.meta.json fait autorité pour le roster. L'app réécrit config.json au
+# lancement en y omettant providerId/model/isolation : ne jamais l'éditer ici.
+CFG="$DIR/members.meta.json"
+[ -f "$CFG" ] || { echo "✗ Aucun roster dans $DIR — crée d'abord l'équipe (team/create-team.sh)."; exit 1; }
 echo "→ fichier : $CFG"
 
 python3 - "$CFG" "$TARGET" <<'PY'
