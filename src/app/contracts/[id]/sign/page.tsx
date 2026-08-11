@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getContract } from "@/lib/contracts";
 import { themeFor } from "@/lib/tone";
+import { submitSignatureAction } from "./actions";
 import { SignForm } from "./sign-form";
 
 export const dynamic = "force-dynamic";
@@ -30,7 +31,10 @@ export default async function SignContractPage({
       <h1>Signer : {contract.title}</h1>
       <p className="tagline">{theme.tagline}</p>
 
-      <SignForm contractId={contract.id} tone={contract.tone} />
+      <SignForm
+        tone={contract.tone}
+        action={submitSignatureAction.bind(null, contract.id)}
+      />
 
       <p className="back-link">
         <Link href={`/contracts/${contract.id}`}>← Revenir au contrat</Link>

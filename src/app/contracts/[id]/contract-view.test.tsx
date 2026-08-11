@@ -9,6 +9,7 @@ function contract(overrides: Partial<Contract> = {}): Contract {
     title: "Reconnaissance de dette",
     body: "Alex doit 20 € à Sam.",
     tone: "fun",
+    status: "draft",
     createdAt: new Date(),
     updatedAt: new Date(),
     ...overrides,

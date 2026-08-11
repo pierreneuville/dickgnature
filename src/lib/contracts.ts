@@ -1,5 +1,9 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import {
+  type ContractStatus,
+  normalizeContractStatus,
+} from "@/lib/contract-status";
 import { DEFAULT_TONE, TONES, type Tone } from "@/lib/tone";
 
 // Frontière de validation (entrée utilisateur). Le ton par défaut est "fun" (décision Gate 1).
@@ -16,6 +20,7 @@ export type Contract = {
   title: string;
   body: string;
   tone: Tone;
+  status: ContractStatus;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -31,10 +36,15 @@ function toDomain(row: {
   title: string;
   body: string;
   tone: string;
+  status: string;
   createdAt: Date;
   updatedAt: Date;
 }): Contract {
-  return { ...row, tone: normalizeTone(row.tone) };
+  return {
+    ...row,
+    tone: normalizeTone(row.tone),
+    status: normalizeContractStatus(row.status),
+  };
 }
 
 export async function createContract(input: CreateContractInput): Promise<Contract> {

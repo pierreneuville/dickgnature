@@ -238,3 +238,123 @@ button.ghost {
 .back-link a {
   color: var(--muted);
 }
+
+/* ---- Participants (suivi créateur, S3) ---- */
+.participants-section {
+  margin-top: 2rem;
+}
+
+.contract-status {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.participants-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.participants-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.participant-name {
+  font-weight: 600;
+}
+
+.participant-email {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.participant-state {
+  margin-left: auto;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.participant-state.is-signed {
+  color: #15803d;
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.participant-state.is-expired {
+  color: #b91c1c;
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.participant-link {
+  font-size: 0.8rem;
+  color: var(--accent, #e11d8f);
+}
+
+/* ---- Formulaire d'invitation ---- */
+.participants-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.participant-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.participant-row input {
+  flex: 1 1 12rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.participants-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ---- Page de signature publique (tokenisée) ---- */
+.signing-panel {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.signer-identity {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.signing-done {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.signing-expired {
+  color: #b91c1c;
+  font-weight: 600;
+}
