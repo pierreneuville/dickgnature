@@ -60,6 +60,16 @@ export default async function ContractPage({
         <Link className="button" href={`/contracts/${contract.id}/sign`}>
           Signer le contrat
         </Link>
+        {contract.status === "completed" ? (
+          <Link className="button secondary-button" href={`/contracts/${contract.id}/pdf`}>
+            Télécharger le PDF signé
+          </Link>
+        ) : null}
+        <p className="proof-link">
+          <Link href={`/contracts/${contract.id}/proof`}>
+            Pourquoi ce PDF est probant
+          </Link>
+        </p>
       </section>
     </>
   );

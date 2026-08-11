@@ -3,6 +3,7 @@ import { getContract } from "@/lib/contracts";
 import {
   getParticipantByToken,
   participantLinkState,
+  recordParticipantOpened,
 } from "@/lib/participants";
 import { ContractView } from "@/app/contracts/[id]/contract-view";
 import { SignForm } from "@/app/contracts/[id]/sign/sign-form";
@@ -22,6 +23,8 @@ export default async function TokenSignPage({
   if (!resolved) {
     notFound();
   }
+
+  await recordParticipantOpened(token);
 
   const { participant } = resolved;
   // Contrat complet pour ContractView : rend le document DANS SON TON (jamais d'humour imposé au

@@ -20,6 +20,9 @@ export async function submitSignatureAction(
   const rawMode = formData.get("mode");
   const mode = isSignatureMode(rawMode) ? rawMode : "handwritten";
   const image = String(formData.get("image") ?? "");
+  if (formData.get("consent") !== "on") {
+    return { error: "Tu dois consentir explicitement à signer ce document." };
+  }
 
   try {
     await createSignature({ contractId, mode, image });

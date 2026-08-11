@@ -35,7 +35,7 @@ describe("submitSignatureAction", () => {
       submitSignatureAction(
         contract.id,
         {},
-        formDataOf({ mode: "handwritten", image: PNG }),
+        formDataOf({ mode: "handwritten", image: PNG, consent: "on" }),
       ),
     ).rejects.toMatchObject({
       digest: expect.stringContaining("NEXT_REDIRECT"),
@@ -54,7 +54,7 @@ describe("submitSignatureAction", () => {
     const result = await submitSignatureAction(
       contract.id,
       {},
-      formDataOf({ mode: "pattern", image: PNG }),
+      formDataOf({ mode: "pattern", image: PNG, consent: "on" }),
     );
 
     expect(result.error).toBeTruthy();
@@ -71,7 +71,7 @@ describe("submitSignatureAction", () => {
     const result = await submitSignatureAction(
       contract.id,
       {},
-      formDataOf({ mode: "handwritten", image: "nope" }),
+      formDataOf({ mode: "handwritten", image: "nope", consent: "on" }),
     );
 
     expect(result.error).toBeTruthy();

@@ -18,9 +18,10 @@ export async function signViaTokenAction(
   const rawMode = formData.get("mode");
   const mode = isSignatureMode(rawMode) ? rawMode : "handwritten";
   const image = String(formData.get("image") ?? "");
+  const consent = formData.get("consent") === "on";
 
   try {
-    await signAsParticipant(token, { mode, image });
+    await signAsParticipant(token, { mode, image, consent });
   } catch (error) {
     if (error instanceof ParticipantError || error instanceof SignatureError) {
       return { error: error.message };

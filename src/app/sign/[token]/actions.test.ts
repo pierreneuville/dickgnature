@@ -40,7 +40,7 @@ describe("signViaTokenAction", () => {
       signViaTokenAction(
         kevin.token,
         {},
-        formDataOf({ mode: "handwritten", image: PNG }),
+        formDataOf({ mode: "handwritten", image: PNG, consent: "on" }),
       ),
     ).rejects.toMatchObject({
       digest: expect.stringContaining("NEXT_REDIRECT"),
@@ -63,7 +63,7 @@ describe("signViaTokenAction", () => {
     const result = await signViaTokenAction(
       sam.token,
       {},
-      formDataOf({ mode: "pattern", image: PNG }),
+      formDataOf({ mode: "pattern", image: PNG, consent: "on" }),
     );
 
     expect(result.error).toBeTruthy();
@@ -74,7 +74,7 @@ describe("signViaTokenAction", () => {
     const result = await signViaTokenAction(
       "ghost-token",
       {},
-      formDataOf({ mode: "handwritten", image: PNG }),
+      formDataOf({ mode: "handwritten", image: PNG, consent: "on" }),
     );
     expect(result.error).toBeTruthy();
   });

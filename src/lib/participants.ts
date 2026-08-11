@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { sha256FrozenDocument } from "@/lib/document-proof";
 import { deriveContractStatus } from "@/lib/contract-status";
 import {
   isModeAllowedForTone,
@@ -42,6 +43,8 @@ export type Participant = {
   email: string;
   token: string;
   expiresAt: Date;
+  openedAt: Date | null;
+  consentedAt: Date | null;
   signedAt: Date | null;
   createdAt: Date;
 };
@@ -55,6 +58,8 @@ function toDomain(row: {
   email: string;
   token: string;
   expiresAt: Date;
+  openedAt: Date | null;
+  consentedAt: Date | null;
   signedAt: Date | null;
   createdAt: Date;
 }): Participant {
@@ -94,6 +99,11 @@ export async function addParticipants(
   if (!contract) {
     throw new ParticipantError("Contrat introuvable.");
   }
+  if (contract.status === "partially_signed" || contract.status === "completed") {
+    throw new ParticipantError(
+      "Les participants sont figés dès la première signature.",
+    );
+  }
 
   const parsed = inputs.map((input) => participantInputSchema.parse(input));
   if (parsed.length === 0) {
@@ -113,6 +123,15 @@ export async function addParticipants(
             email: input.email,
             token: generateSignatureToken(),
             expiresAt,
+          },
+        });
+        await tx.auditEvent.create({
+          data: {
+            contractId,
+            participantId: row.id,
+            type: "INVITATION_SENT",
+            email: row.email,
+            occurredAt: row.createdAt,
           },
         });
         rows.push(toDomain(row));
@@ -179,9 +198,42 @@ export async function getParticipantByToken(
   };
 }
 
+// La première ouverture du lien est horodatée une seule fois et journalisée. Les rechargements ne
+// réécrivent pas la preuve. La fonction renvoie false pour un token inconnu.
+export async function recordParticipantOpened(
+  token: string,
+  now: Date = new Date(),
+): Promise<boolean> {
+  return prisma.$transaction(async (tx) => {
+    const participant = await tx.participant.findUnique({ where: { token } });
+    if (!participant) {
+      return false;
+    }
+    if (participant.openedAt !== null) {
+      return true;
+    }
+
+    await tx.participant.update({
+      where: { id: participant.id },
+      data: { openedAt: now },
+    });
+    await tx.auditEvent.create({
+      data: {
+        contractId: participant.contractId,
+        participantId: participant.id,
+        type: "DOCUMENT_OPENED",
+        email: participant.email,
+        occurredAt: now,
+      },
+    });
+    return true;
+  });
+}
+
 export type SignAsParticipantInput = {
   mode: SignatureMode;
   image: string;
+  consent: boolean;
 };
 
 // Signe au nom d'un participant via son token. Vérifie (a) le lien existe, (b) n'est pas expiré,
@@ -205,6 +257,11 @@ export async function signAsParticipant(
   if (state === "signed") {
     throw new ParticipantError("Ce lien a déjà été signé.");
   }
+  if (input.consent !== true) {
+    throw new ParticipantError(
+      "Tu dois consentir explicitement à signer ce document.",
+    );
+  }
 
   if (!isModeAllowedForTone(contract.tone, input.mode)) {
     throw new SignatureError(
@@ -222,18 +279,99 @@ export async function signAsParticipant(
         participantId: participant.id,
         mode: input.mode,
         image,
+        signedAt,
       },
     });
     const row = await tx.participant.update({
       where: { id: participant.id },
-      data: { signedAt },
+      data: {
+        openedAt: participant.openedAt ?? signedAt,
+        consentedAt: signedAt,
+        signedAt,
+      },
     });
+    if (participant.openedAt === null) {
+      await tx.auditEvent.create({
+        data: {
+          contractId: contract.id,
+          participantId: participant.id,
+          type: "DOCUMENT_OPENED",
+          email: participant.email,
+          occurredAt: signedAt,
+        },
+      });
+    }
+    await tx.auditEvent.createMany({
+      data: [
+        {
+          contractId: contract.id,
+          participantId: participant.id,
+          type: "CONSENT_RECORDED",
+          email: participant.email,
+          occurredAt: signedAt,
+        },
+        {
+          contractId: contract.id,
+          participantId: participant.id,
+          type: "DOCUMENT_SIGNED",
+          email: participant.email,
+          occurredAt: signedAt,
+        },
+      ],
+    });
+
     const all = await tx.participant.findMany({
       where: { contractId: contract.id },
+      include: { signatures: { orderBy: { signedAt: "desc" }, take: 1 } },
     });
+    const nextStatus = deriveContractStatus(all);
+    let completion:
+      | { status: "completed"; completedAt: Date; documentHash: string }
+      | { status: typeof nextStatus } = { status: nextStatus };
+
+    if (nextStatus === "completed") {
+      const storedContract = await tx.contract.findUniqueOrThrow({
+        where: { id: contract.id },
+      });
+      const frozenParticipants = all.map((item) => {
+        const signature = item.signatures[0];
+        if (
+          !item.openedAt ||
+          !item.consentedAt ||
+          !item.signedAt ||
+          !signature
+        ) {
+          throw new ParticipantError("Piste de preuve incomplète.");
+        }
+        return {
+          id: item.id,
+          name: item.name,
+          email: item.email,
+          invitedAt: item.createdAt,
+          openedAt: item.openedAt,
+          consentedAt: item.consentedAt,
+          signedAt: item.signedAt,
+          signature: {
+            mode: signature.mode,
+            image: signature.image,
+            signedAt: signature.signedAt,
+          },
+        };
+      });
+      const documentHash = sha256FrozenDocument({
+        id: storedContract.id,
+        title: storedContract.title,
+        body: storedContract.body,
+        tone: storedContract.tone,
+        createdAt: storedContract.createdAt,
+        completedAt: signedAt,
+        participants: frozenParticipants,
+      });
+      completion = { status: "completed", completedAt: signedAt, documentHash };
+    }
     await tx.contract.update({
       where: { id: contract.id },
-      data: { status: deriveContractStatus(all) },
+      data: completion,
     });
     return row;
   });
