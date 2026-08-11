@@ -21,6 +21,8 @@ export type Contract = {
   body: string;
   tone: Tone;
   status: ContractStatus;
+  documentHash: string | null;
+  completedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -37,6 +39,8 @@ function toDomain(row: {
   body: string;
   tone: string;
   status: string;
+  documentHash: string | null;
+  completedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }): Contract {
@@ -49,7 +53,17 @@ function toDomain(row: {
 
 export async function createContract(input: CreateContractInput): Promise<Contract> {
   const data = createContractSchema.parse(input);
-  const row = await prisma.contract.create({ data });
+  const row = await prisma.$transaction(async (tx) => {
+    const created = await tx.contract.create({ data });
+    await tx.auditEvent.create({
+      data: {
+        contractId: created.id,
+        type: "CONTRACT_CREATED",
+        occurredAt: created.createdAt,
+      },
+    });
+    return created;
+  });
   return toDomain(row);
 }
 

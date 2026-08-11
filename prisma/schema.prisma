@@ -28,29 +28,51 @@ model Contract {
   body         String
   tone         String        @default("fun")
   status       String        @default("draft")
+  documentHash String?
+  completedAt  DateTime?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   signatures   Signature[]
   participants Participant[]
+  auditEvents  AuditEvent[]
 }
 
 // Participant à un contrat (S3). Signataire SANS compte : il ouvre son lien tokenisé et signe.
 // `token` est un secret ≥128 bits, non devinable et unique (voir src/lib/participants.ts).
 // `expiresAt` borne la durée de vie du lien (TTL simple) ; `signedAt` marque l'usage unique.
 model Participant {
-  id         String      @id @default(cuid())
-  contractId String
-  contract   Contract    @relation(fields: [contractId], references: [id], onDelete: Cascade)
-  name       String
-  email      String
-  token      String      @unique
-  expiresAt  DateTime
-  signedAt   DateTime?
-  createdAt  DateTime    @default(now())
-  signatures Signature[]
+  id          String       @id @default(cuid())
+  contractId  String
+  contract    Contract     @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  name        String
+  email       String
+  token       String       @unique
+  expiresAt   DateTime
+  openedAt    DateTime?
+  consentedAt DateTime?
+  signedAt    DateTime?
+  createdAt   DateTime     @default(now())
+  signatures  Signature[]
+  auditEvents AuditEvent[]
 
   @@unique([contractId, email])
   @@index([contractId])
+}
+
+// Journal d'audit SES append-only. `email` fige l'identité déclarée au moment de l'événement,
+// même si le participant devait évoluer plus tard. Les types sont validés dans la couche domaine.
+model AuditEvent {
+  id            String       @id @default(cuid())
+  contractId    String
+  contract      Contract     @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  participantId String?
+  participant   Participant? @relation(fields: [participantId], references: [id], onDelete: SetNull)
+  type          String
+  email         String?
+  occurredAt    DateTime     @default(now())
+
+  @@index([contractId, occurredAt])
+  @@index([participantId])
 }
 
 // Signature apposée sur un contrat (S2). `mode` = "handwritten" (tous tons) | "pattern"

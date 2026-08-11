@@ -10,6 +10,8 @@ function contract(overrides: Partial<Contract> = {}): Contract {
     body: "Alex doit 20 € à Sam.",
     tone: "fun",
     status: "draft",
+    documentHash: null,
+    completedAt: null,
     createdAt: new Date(),
     updatedAt: new Date(),
     ...overrides,

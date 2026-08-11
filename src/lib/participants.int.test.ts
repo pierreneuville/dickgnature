@@ -7,8 +7,10 @@ import {
   addParticipants,
   getParticipantByToken,
   ParticipantError,
+  recordParticipantOpened,
   signAsParticipant,
 } from "@/lib/participants";
+import { getContractProof } from "@/lib/signed-document";
 
 const PNG =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
@@ -94,17 +96,53 @@ describe("participants (integration, real DB)", () => {
       { name: "Sam", email: "sam@example.fr" },
     ]);
 
-    await signAsParticipant(kevin.token, { mode: "handwritten", image: PNG });
+    await signAsParticipant(kevin.token, {
+      mode: "handwritten",
+      image: PNG,
+      consent: true,
+    });
     expect((await getContract(contract.id))?.status).toBe("partially_signed");
     expect(await listSignatures(contract.id)).toHaveLength(1);
 
     const signed = await signAsParticipant(sam.token, {
       mode: "pattern",
       image: PNG,
+      consent: true,
     });
     expect(signed.signedAt).not.toBeNull();
     expect((await getContract(contract.id))?.status).toBe("completed");
     expect(await listSignatures(contract.id)).toHaveLength(2);
+    const proof = await getContractProof(contract.id);
+    expect(proof?.documentHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(proof?.completedAt).not.toBeNull();
+    expect(proof?.participants.every((item) => item.consentedAt !== null)).toBe(true);
+  });
+
+  it("requires explicit consent and records the first opening only once", async () => {
+    const contract = await funContract();
+    const [kevin] = await addParticipants(contract.id, [
+      { name: "Kevin", email: "kevin@example.fr" },
+    ]);
+    const openedAt = new Date("2026-08-11T12:00:00Z");
+
+    await expect(recordParticipantOpened(kevin.token, openedAt)).resolves.toBe(true);
+    await expect(
+      recordParticipantOpened(kevin.token, new Date("2026-08-11T12:01:00Z")),
+    ).resolves.toBe(true);
+    await expect(
+      signAsParticipant(kevin.token, {
+        mode: "handwritten",
+        image: PNG,
+        consent: false,
+      }),
+    ).rejects.toBeInstanceOf(ParticipantError);
+
+    const proof = await getContractProof(contract.id);
+    expect(proof?.participants[0].openedAt).toEqual(openedAt);
+    expect(
+      proof?.auditEvents.filter((event) => event.type === "DOCUMENT_OPENED"),
+    ).toHaveLength(1);
+    expect(await listSignatures(contract.id)).toHaveLength(0);
   });
 
   it("enforces serious neutrality server-side: pattern is rejected via token, nothing persisted", async () => {
@@ -118,7 +156,11 @@ describe("participants (integration, real DB)", () => {
     ]);
 
     await expect(
-      signAsParticipant(participant.token, { mode: "pattern", image: PNG }),
+      signAsParticipant(participant.token, {
+        mode: "pattern",
+        image: PNG,
+        consent: true,
+      }),
     ).rejects.toBeInstanceOf(SignatureError);
     expect(await listSignatures(serious.id)).toHaveLength(0);
     expect((await getContract(serious.id))?.status).toBe("sent");
@@ -130,9 +172,17 @@ describe("participants (integration, real DB)", () => {
       { name: "Kevin", email: "kevin@example.fr" },
     ]);
 
-    await signAsParticipant(kevin.token, { mode: "handwritten", image: PNG });
+    await signAsParticipant(kevin.token, {
+      mode: "handwritten",
+      image: PNG,
+      consent: true,
+    });
     await expect(
-      signAsParticipant(kevin.token, { mode: "handwritten", image: PNG }),
+      signAsParticipant(kevin.token, {
+        mode: "handwritten",
+        image: PNG,
+        consent: true,
+      }),
     ).rejects.toBeInstanceOf(ParticipantError);
     expect(await listSignatures(contract.id)).toHaveLength(1);
   });
@@ -148,10 +198,18 @@ describe("participants (integration, real DB)", () => {
     });
 
     await expect(
-      signAsParticipant(kevin.token, { mode: "handwritten", image: PNG }),
+      signAsParticipant(kevin.token, {
+        mode: "handwritten",
+        image: PNG,
+        consent: true,
+      }),
     ).rejects.toBeInstanceOf(ParticipantError);
     await expect(
-      signAsParticipant("ghost-token", { mode: "handwritten", image: PNG }),
+      signAsParticipant("ghost-token", {
+        mode: "handwritten",
+        image: PNG,
+        consent: true,
+      }),
     ).rejects.toBeInstanceOf(ParticipantError);
   });
 });

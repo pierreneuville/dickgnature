@@ -26,6 +26,7 @@ export function SignForm({
 }) {
   const [mode, setMode] = useState<SignatureMode>("handwritten");
   const [image, setImage] = useState<string | null>(null);
+  const [consent, setConsent] = useState(false);
 
   const [state, formAction, pending] = useActionState(action, initialState);
 
@@ -46,9 +47,23 @@ export function SignForm({
       <input type="hidden" name="mode" value={mode} />
       <input type="hidden" name="image" value={image ?? ""} />
 
+      <label className="consent-field">
+        <input
+          type="checkbox"
+          name="consent"
+          checked={consent}
+          onChange={(event) => setConsent(event.target.checked)}
+          required
+        />
+        <span>
+          Je consens explicitement à signer ce document et à ce que cet accord
+          soit horodaté dans la piste d&apos;audit.
+        </span>
+      </label>
+
       {state.error ? <p className="error">{state.error}</p> : null}
 
-      <button type="submit" disabled={pending || image === null}>
+      <button type="submit" disabled={pending || image === null || !consent}>
         {pending ? "Enregistrement…" : submitLabel}
       </button>
     </form>
