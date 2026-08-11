@@ -101,3 +101,140 @@ button,
   font-size: 0.9rem;
   margin-top: 0.5rem;
 }
+
+/* ---- Signatures (S2) ---- */
+.signatures {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.signatures h2 {
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+}
+
+.signatures-empty {
+  color: var(--muted);
+}
+
+.signatures-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.signature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.signature-image {
+  width: 220px;
+  height: 110px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.signature-mode {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---- Sélecteur de mode ---- */
+.mode-picker {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.mode-tab {
+  flex: 1 1 180px;
+  margin: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.7rem 0.9rem;
+  background: #fff;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.mode-tab.is-active {
+  border-color: var(--fg);
+  box-shadow: inset 0 0 0 1px var(--fg);
+}
+
+.mode-tab-label {
+  font-weight: 700;
+}
+
+.mode-tab-hint {
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---- Canvas de signature ---- */
+.canvas-frame {
+  position: relative;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  background: #fff;
+  touch-action: none;
+}
+
+.canvas-surface {
+  display: block;
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+}
+
+.stencil {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.canvas-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+button.ghost {
+  margin-top: 0;
+  padding: 0.4rem 0.75rem;
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.sign-form button[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.back-link {
+  margin-top: 1.5rem;
+}
+
+.back-link a {
+  color: var(--muted);
+}
