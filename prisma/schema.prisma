@@ -18,14 +18,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// `status` pilote la machine à états S3 : "draft" (aucun participant) → "sent" (participants
+// invités) → "partially_signed" (au moins un a signé) → "completed" (tous ont signé). Comme
+// `tone`/`mode`, c'est un String (enums Prisma non supportés sur SQLite). La valeur est dérivée
+// des participants dans src/lib/contract-status.ts et persistée à chaque mutation.
 model Contract {
+  id           String        @id @default(cuid())
+  title        String
+  body         String
+  tone         String        @default("fun")
+  status       String        @default("draft")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  signatures   Signature[]
+  participants Participant[]
+}
+
+// Participant à un contrat (S3). Signataire SANS compte : il ouvre son lien tokenisé et signe.
+// `token` est un secret ≥128 bits, non devinable et unique (voir src/lib/participants.ts).
+// `expiresAt` borne la durée de vie du lien (TTL simple) ; `signedAt` marque l'usage unique.
+model Participant {
   id         String      @id @default(cuid())
-  title      String
-  body       String
-  tone       String      @default("fun")
+  contractId String
+  contract   Contract    @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  name       String
+  email      String
+  token      String      @unique
+  expiresAt  DateTime
+  signedAt   DateTime?
   createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
   signatures Signature[]
+
+  @@unique([contractId, email])
+  @@index([contractId])
 }
 
 // Signature apposée sur un contrat (S2). `mode` = "handwritten" (tous tons) | "pattern"
@@ -33,12 +58,16 @@ model Contract {
 // signatures.ts). L'image est un PNG en dataURL. Comme `tone`, `mode` est un String :
 // enums Prisma non supportés sur SQLite (cible prod Postgres, voir decisions.md RISK-001).
 model Signature {
-  id         String   @id @default(cuid())
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
-  mode       String
-  image      String
-  signedAt   DateTime @default(now())
+  id            String       @id @default(cuid())
+  contractId    String
+  contract      Contract     @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  // Lien optionnel vers le participant qui a signé (flux tokenisé S3). Reste null pour une
+  // signature apposée hors flux participant (auto-signature depuis la page contrat, S2).
+  participantId String?
+  participant   Participant? @relation(fields: [participantId], references: [id], onDelete: SetNull)
+  mode          String
+  image         String
+  signedAt      DateTime     @default(now())
 
   @@index([contractId])
 }

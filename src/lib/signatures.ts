@@ -44,6 +44,10 @@ export type Signature = {
   signedAt: Date;
 };
 
+// État partagé des server actions de signature (auto-signature S2 et flux tokenisé S3).
+// Structurellement compatible avec les SignState concrets de chaque action.
+export type SignActionState = { error?: string };
+
 function normalizeMode(raw: string): SignatureMode {
   return isSignatureMode(raw) ? raw : "handwritten";
 }

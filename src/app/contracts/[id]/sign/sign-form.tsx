@@ -2,26 +2,31 @@
 
 import { useActionState, useCallback, useState } from "react";
 import type { Tone } from "@/lib/tone";
-import type { SignatureMode } from "@/lib/signatures";
-import { submitSignatureAction, type SignState } from "./actions";
+import type { SignActionState, SignatureMode } from "@/lib/signatures";
 import { ModePicker } from "./mode-picker";
 import { SignatureCanvas } from "./signature-canvas";
 
-const initialState: SignState = {};
+const initialState: SignActionState = {};
 
 // Orchestration client (état du mode + image capturée). Glue navigateur : exclue du coverage.
-// Les invariants métier (mode autorisé, image valide) sont revérifiés côté serveur.
+// L'action serveur est déjà liée (contractId ou token) et passée en prop — même formulaire pour
+// l'auto-signature (S2) et le flux tokenisé sans compte (S3). Les invariants métier (mode autorisé,
+// image valide) sont revérifiés côté serveur dans les deux cas.
 export function SignForm({
-  contractId,
   tone,
+  action,
+  submitLabel = "Signer le contrat",
 }: {
-  contractId: string;
   tone: Tone;
+  action: (
+    state: SignActionState,
+    formData: FormData,
+  ) => Promise<SignActionState>;
+  submitLabel?: string;
 }) {
   const [mode, setMode] = useState<SignatureMode>("handwritten");
   const [image, setImage] = useState<string | null>(null);
 
-  const action = submitSignatureAction.bind(null, contractId);
   const [state, formAction, pending] = useActionState(action, initialState);
 
   const handleChange = useCallback((dataUrl: string | null) => {
@@ -44,7 +49,7 @@ export function SignForm({
       {state.error ? <p className="error">{state.error}</p> : null}
 
       <button type="submit" disabled={pending || image === null}>
-        {pending ? "Enregistrement…" : "Signer le contrat"}
+        {pending ? "Enregistrement…" : submitLabel}
       </button>
     </form>
   );

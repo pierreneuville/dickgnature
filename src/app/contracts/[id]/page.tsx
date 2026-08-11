@@ -1,8 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getContract } from "@/lib/contracts";
+import {
+  listParticipants,
+  participantLinkState,
+} from "@/lib/participants";
 import { listSignatures } from "@/lib/signatures";
 import { ContractView } from "./contract-view";
+import { ParticipantsForm } from "./participants-form";
+import {
+  ParticipantsList,
+  type ParticipantRow,
+} from "./participants-list";
 import { SignaturesList } from "./signatures-list";
 
 // Lecture en base : rendu dynamique, jamais pré-généré au build.
@@ -20,11 +29,30 @@ export default async function ContractPage({
     notFound();
   }
 
-  const signatures = await listSignatures(contract.id);
+  const [signatures, participants] = await Promise.all([
+    listSignatures(contract.id),
+    listParticipants(contract.id),
+  ]);
+
+  // Vue « suivi créateur » : on calcule l'état de chaque lien côté serveur (pur), la liste reste
+  // présentielle et sans dépendance Prisma.
+  const rows: ParticipantRow[] = participants.map((participant) => ({
+    id: participant.id,
+    name: participant.name,
+    email: participant.email,
+    token: participant.token,
+    linkState: participantLinkState(participant),
+  }));
 
   return (
     <>
       <ContractView contract={contract} />
+
+      <section className="participants-section" aria-label="Participants">
+        <h2>Participants</h2>
+        <ParticipantsList participants={rows} status={contract.status} />
+        <ParticipantsForm contractId={contract.id} />
+      </section>
 
       <section className="signatures" aria-label="Signatures">
         <h2>Signatures</h2>
