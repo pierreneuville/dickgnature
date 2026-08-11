@@ -19,10 +19,26 @@ datasource db {
 }
 
 model Contract {
-  id        String   @id @default(cuid())
-  title     String
-  body      String
-  tone      String   @default("fun")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String      @id @default(cuid())
+  title      String
+  body       String
+  tone       String      @default("fun")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  signatures Signature[]
+}
+
+// Signature apposée sur un contrat (S2). `mode` = "handwritten" (tous tons) | "pattern"
+// (motif parodique, réservé au ton "fun" — garanti par la couche domaine, cf. src/lib/
+// signatures.ts). L'image est un PNG en dataURL. Comme `tone`, `mode` est un String :
+// enums Prisma non supportés sur SQLite (cible prod Postgres, voir decisions.md RISK-001).
+model Signature {
+  id         String   @id @default(cuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  mode       String
+  image      String
+  signedAt   DateTime @default(now())
+
+  @@index([contractId])
 }

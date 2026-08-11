@@ -30,6 +30,11 @@ export default defineConfig({
         "src/**/page.tsx",
         "src/**/globals.css",
         "**/*.d.ts",
+        // Glue navigateur : canvas HTML5 (signature_pad) + orchestration client du formulaire de
+        // signature. Non exécutables en jsdom (pas de contexte 2D). La logique métier vit dans
+        // src/lib/signatures.ts ; le choix des modes par ton est testé via mode-picker.tsx.
+        "src/**/signature-canvas.tsx",
+        "src/**/sign-form.tsx",
       ],
       thresholds: {
         lines: 70,
