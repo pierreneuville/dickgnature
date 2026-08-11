@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "dickgnature",
-  description: "Signer des contrats sérieux entre amis, en moins de 60 secondes.",
+  title: "dickgnature — Le contrat à deux, sans le cirque",
+  description:
+    "Créez et signez un contrat à deux en moins de 60 secondes, sans compte et avec un dossier de preuve lisible.",
 };
 
 export default function RootLayout({
@@ -12,7 +13,8 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
-        <main className="container">{children}</main>
+        <a className="skip-link" href="#main-content">Aller au contenu</a>
+        <main className="container" id="main-content">{children}</main>
       </body>
     </html>
   );
