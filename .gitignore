@@ -7,10 +7,9 @@ node_modules/
 out/
 next-env.d.ts
 
-# Env & secrets
-.env
-.env.local
-.env*.local
+# Env & secrets — on ignore tout .env* et on ne versionne QUE le gabarit.
+.env*
+!.env.example
 
 # Test / build artifacts
 coverage/

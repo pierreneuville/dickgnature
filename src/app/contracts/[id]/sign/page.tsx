@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getContract } from "@/lib/contracts";
 import { themeFor } from "@/lib/tone";
+import { SiteHeader, ToneSurface } from "@/components/ui";
 import { submitSignatureAction } from "./actions";
 import { SignForm } from "./sign-form";
 
@@ -22,7 +23,9 @@ export default async function SignContractPage({
   const theme = themeFor(contract.tone);
 
   return (
-    <>
+    <ToneSurface tone={contract.tone}>
+      <SiteHeader />
+
       <p>
         <span className="brand-badge" style={{ background: theme.accent }}>
           {theme.brand}
@@ -39,6 +42,6 @@ export default async function SignContractPage({
       <p className="back-link">
         <Link href={`/contracts/${contract.id}`}>← Revenir au contrat</Link>
       </p>
-    </>
+    </ToneSurface>
   );
 }

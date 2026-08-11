@@ -6,6 +6,7 @@ import {
   participantLinkState,
 } from "@/lib/participants";
 import { listSignatures } from "@/lib/signatures";
+import { ButtonLink, SiteHeader, ToneSurface } from "@/components/ui";
 import { ContractView } from "./contract-view";
 import { ParticipantsForm } from "./participants-form";
 import {
@@ -45,7 +46,9 @@ export default async function ContractPage({
   }));
 
   return (
-    <>
+    <ToneSurface tone={contract.tone}>
+      <SiteHeader />
+
       <ContractView contract={contract} />
 
       <section className="participants-section" aria-label="Participants">
@@ -57,20 +60,25 @@ export default async function ContractPage({
       <section className="signatures" aria-label="Signatures">
         <h2>Signatures</h2>
         <SignaturesList signatures={signatures} />
-        <Link className="button" href={`/contracts/${contract.id}/sign`}>
-          Signer le contrat
-        </Link>
-        {contract.status === "completed" ? (
-          <Link className="button secondary-button" href={`/contracts/${contract.id}/pdf`}>
-            Télécharger le PDF signé
-          </Link>
-        ) : null}
+        <div className="canvas-actions">
+          <ButtonLink href={`/contracts/${contract.id}/sign`}>
+            Signer le contrat
+          </ButtonLink>
+          {contract.status === "completed" ? (
+            <ButtonLink
+              variant="secondary"
+              href={`/contracts/${contract.id}/pdf`}
+            >
+              Télécharger le PDF signé
+            </ButtonLink>
+          ) : null}
+        </div>
         <p className="proof-link">
           <Link href={`/contracts/${contract.id}/proof`}>
             Pourquoi ce PDF est probant
           </Link>
         </p>
       </section>
-    </>
+    </ToneSurface>
   );
 }

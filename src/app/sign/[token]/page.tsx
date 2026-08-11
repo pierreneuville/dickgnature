@@ -7,6 +7,7 @@ import {
 } from "@/lib/participants";
 import { ContractView } from "@/app/contracts/[id]/contract-view";
 import { SignForm } from "@/app/contracts/[id]/sign/sign-form";
+import { SiteHeader, ToneSurface } from "@/components/ui";
 import { signViaTokenAction } from "./actions";
 
 // Page de signature PUBLIQUE, ouverte via un lien tokenisé — aucun compte requis (axe #1 : le
@@ -37,7 +38,9 @@ export default async function TokenSignPage({
   const state = participantLinkState(participant);
 
   return (
-    <>
+    <ToneSurface tone={contract.tone}>
+      <SiteHeader />
+
       <ContractView contract={contract} />
 
       <section className="signing-panel" aria-label="Signature">
@@ -65,6 +68,6 @@ export default async function TokenSignPage({
           </>
         )}
       </section>
-    </>
+    </ToneSurface>
   );
 }
