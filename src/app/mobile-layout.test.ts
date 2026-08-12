@@ -32,6 +32,17 @@ describe("mobile layout guardrails", () => {
     expect(rule(".participant-link")).toContain("min-height: 2.75rem");
   });
 
+  it("gives participant identity and actions a mobile-first card hierarchy", () => {
+    expect(rule(".participant-item")).toContain(
+      "grid-template-columns: minmax(0, 1fr) auto",
+    );
+    expect(rule(".participant-actions")).toContain("grid-column: 1 / -1");
+    expect(rule(".participant-link")).toContain("width: 100%");
+    expect(rule(".participant-row")).toContain(
+      "grid-template-columns: minmax(0, 1fr)",
+    );
+  });
+
   it("uses the current design tokens on legacy surfaces", () => {
     expect(css).not.toMatch(/var\(--(?:border|muted|fg)\)/);
   });

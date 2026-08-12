@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { ButtonLink } from "@/components/ui";
 import type { ContractStatus } from "@/lib/contract-status";
 import type { LinkState } from "@/lib/participants";
 
@@ -39,26 +39,37 @@ export function ParticipantsList({
         <p className="participants-empty">{t("participants.empty")}</p>
       ) : (
         <ul className="participants-list">
-          {participants.map((participant) => (
-            <li key={participant.id} className="participant-item">
-              <span className="participant-name">{participant.name}</span>
-              <span className="participant-email">{participant.email}</span>
-              <span
-                className={`participant-state is-${participant.linkState}`}
-              >
-                {t(`linkState.${participant.linkState}`)}
-              </span>
-              {participant.linkState === "open" ? (
-                <Link
-                  className="participant-link"
-                  href={`/sign/${participant.token}`}
+          {participants.map((participant) => {
+            const action = rowAction?.(participant);
+
+            return (
+              <li key={participant.id} className="participant-item">
+                <span className="participant-identity">
+                  <strong className="participant-name">{participant.name}</strong>
+                  <span className="participant-email">{participant.email}</span>
+                </span>
+                <span
+                  className={`participant-state is-${participant.linkState}`}
                 >
-                  {t("participants.openLink")}
-                </Link>
-              ) : null}
-              {rowAction ? rowAction(participant) : null}
-            </li>
-          ))}
+                  {t(`linkState.${participant.linkState}`)}
+                </span>
+                {participant.linkState === "open" || action ? (
+                  <div className="participant-actions">
+                    {participant.linkState === "open" ? (
+                      <ButtonLink
+                        className="participant-link"
+                        href={`/sign/${participant.token}`}
+                        size="sm"
+                      >
+                        {t("participants.openLink")}
+                      </ButtonLink>
+                    ) : null}
+                    {action}
+                  </div>
+                ) : null}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

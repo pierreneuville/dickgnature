@@ -66,5 +66,9 @@ describe("ParticipantsList", () => {
     const links = screen.getAllByRole("link", { name: /open signing link/i });
     expect(links).toHaveLength(1);
     expect(links[0]).toHaveAttribute("href", "/sign/tok-1");
+    expect(screen.getByText("Kevin").closest(".participant-identity")).not.toBeNull();
+    expect(links[0].closest(".participant-actions")).not.toBeNull();
+    expect(screen.getByText("Sam").closest("li")?.querySelector(".participant-actions"))
+      .toBeNull();
   });
 });
