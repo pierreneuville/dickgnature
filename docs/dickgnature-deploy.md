@@ -18,35 +18,42 @@ journalisés (`[email:log] …`). C'est le comportement attendu en dev/test/veri
 
 ## 2. Couche déterministe
 
+Le schéma est en `postgresql` : la suite d'intégration et `verify.sh` ont besoin d'une base
+Postgres réelle mais **jetable**. `docker-compose.yml` en fournit une, éphémère (tmpfs), sur le
+port hôte 5433 (pour ne pas heurter un Postgres local en 5432) :
+
 ```bash
-./scripts/verify.sh            # lint · types · tests · build · secrets · audit
-./scripts/ci-wait.sh [PR]      # verdict CI réel de la PR (gh pr checks --watch)
+docker compose up -d --wait     # base « dickgnature_test » saine et vierge
+./scripts/verify.sh             # lint · types · tests · build · secrets · audit · coverage
+docker compose down             # arrêt (données déjà éphémères)
+./scripts/ci-wait.sh [PR]       # verdict CI réel de la PR (gh pr checks --watch)
 ```
 
-`verify.sh` tourne **sans service externe** : le schéma est en `sqlite` (voir §3).
+`verify.sh` résout la base de test de façon déterministe et refuse toute URL non-`test` :
+1. `TEST_DATABASE_URL` explicite (CI, ou base Neon dédiée) — prioritaire ;
+2. `DATABASE_URL` s'il contient « test » ;
+3. sinon la base docker-compose locale (`…@localhost:5433/dickgnature_test`).
 
-## 3. Bascule base : SQLite (dev) → Vercel Postgres / Neon (prod) — RISK-001
+En CI, le workflow `.github/workflows/ci.yml` démarre un service `postgres:16-alpine`, exporte
+`TEST_DATABASE_URL` vers ce service, et lance `./scripts/verify.sh --blocking` sur chaque PR.
 
-Le schéma versionné (`prisma/schema.prisma`) est en `provider = "sqlite"` pour que `verify.sh`
-et la suite de tests tournent sans base externe. Prisma **fige le provider dans le schéma** : il
-n'est pas commutable via une variable d'env. Le passage en production est donc une étape de
-déploiement explicite, à exécuter quand une base Postgres réelle est disponible :
+## 3. Base Postgres partout — RISK-001 (résolu)
+
+Le schéma versionné (`prisma/schema.prisma`) est en `provider = "postgresql"` (`url =
+env("DATABASE_URL")`, `directUrl = env("DIRECT_URL")`). Prisma **fige le provider dans le
+schéma** : il n'est pas commutable via une variable d'env. On ne maintient donc plus de variante
+SQLite ; dev, test/verify et prod partagent le même provider, ce qui supprime l'écart historique
+SQLite→Postgres (les migrations sont écrites une seule fois, en SQL Postgres).
+
+- **Dev/prod** : `DATABASE_URL` (pooled) + `DIRECT_URL` (non-pooled, pour les DDL). Voir §4 et §7.
+- **Test/verify** : base jetable ciblée par `TEST_DATABASE_URL` (§2), locale via docker-compose ou
+  service CI. Les migrations s'appliquent avec `npx prisma migrate deploy` (côté `test/global-setup`).
+
+L'application des migrations en CI/Vercel :
 
 ```bash
-# 1. Basculer le provider dans prisma/schema.prisma :
-#      datasource db { provider = "postgresql"  url = env("DATABASE_URL") }
-# 2. Pointer DATABASE_URL sur la base Vercel Postgres (Neon) :
-#      DATABASE_URL="postgres://<user>:<password>@<host>/<db>?sslmode=require"
-# 3. Régénérer les migrations pour Postgres (les migrations SQLite existantes ne s'appliquent pas) :
-npx prisma migrate reset --skip-seed        # sur la base Postgres cible
-npx prisma migrate dev --name init_postgres # génère le SQL Postgres
-# 4. En CI/Vercel, l'application des migrations se fait avec :
 npx prisma migrate deploy
 ```
-
-> ⚠️ Ne pas committer le schéma basculé en `postgresql` sur la branche d'intégration tant que la
-> CI locale n'a pas de Postgres : cela casserait le `verify` vert basé sur SQLite. La bascule est
-> tenue à part et validée sur l'environnement de déploiement.
 
 ## 4. Déploiement Vercel — projet existant « dickgnature »
 

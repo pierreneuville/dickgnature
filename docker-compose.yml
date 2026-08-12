@@ -1,0 +1,24 @@
+# Base Postgres de test reproductible pour scripts/verify.sh et la suite d'intégration.
+# Éphémère (tmpfs) : chaque `up` repart d'une base vierge — c'est le reset entre runs.
+# Port hôte 5433 pour ne pas entrer en conflit avec un Postgres local par défaut (5432).
+#
+#   docker compose up -d --wait     # démarre la base « test » et attend qu'elle soit saine
+#   ./scripts/verify.sh             # verify cible cette base automatiquement (cf. §2 deploy doc)
+#   docker compose down             # arrêt (les données sont déjà éphémères)
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dickgnature
+      POSTGRES_PASSWORD: dickgnature
+      POSTGRES_DB: dickgnature_test
+    ports:
+      - "5433:5432"
+    # Données en mémoire : rapides et jetables, aucune persistance entre runs.
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dickgnature -d dickgnature_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
