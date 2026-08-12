@@ -5,7 +5,8 @@ import {
   StandardFonts,
   rgb,
 } from "pdf-lib";
-import { auditEventLabel, formatUtc } from "@/lib/audit";
+import { getMessageTranslator, type MessageTranslator } from "@/i18n/messages";
+import { formatUtc, isAuditEventType } from "@/lib/audit";
 import { sha256FrozenDocument } from "@/lib/document-proof";
 import {
   isCompletedProof,
@@ -16,7 +17,6 @@ import {
 const A4: [number, number] = [595.28, 841.89];
 const MARGIN = 52;
 const CONTENT_WIDTH = A4[0] - MARGIN * 2;
-const FUN_DISCLAIMER = "Playful agreement — not a universal legal guarantee";
 
 export class PdfGenerationError extends Error {}
 
@@ -113,8 +113,7 @@ class PdfLayout {
     this.y -= 5;
   }
 
-  badge(): void {
-    const label = "SES — Simple electronic signature";
+  badge(label: string): void {
     const size = 10;
     const width = this.bold.widthOfTextAtSize(pdfSafeText(label), size) + 24;
     this.ensureSpace(34);
@@ -184,6 +183,7 @@ function verifyFrozenHash(proof: ContractProof): void {
 async function drawSignature(
   layout: PdfLayout,
   participant: ProofParticipant,
+  t: MessageTranslator,
 ): Promise<void> {
   if (!participant.signature || !participant.signedAt || !participant.consentedAt) {
     throw new PdfGenerationError("A signature or consent record is missing.");
@@ -191,7 +191,10 @@ async function drawSignature(
   layout.ensureSpace(150);
   layout.text(`${participant.name} — ${participant.email}`, { bold: true, size: 11 });
   layout.text(
-    `Explicit consent: ${formatUtc(participant.consentedAt)} · Signature: ${formatUtc(participant.signedAt)}`,
+    t("consentSignatureLine", {
+      consent: formatUtc(participant.consentedAt),
+      sign: formatUtc(participant.signedAt),
+    }),
     { size: 8.5 },
   );
   const base64 = participant.signature.image.slice(
@@ -223,6 +226,13 @@ export async function generateSignedPdf(proof: ContractProof): Promise<Uint8Arra
     throw new PdfGenerationError("The proof trail is incomplete.");
   }
 
+  // Traducteurs rendus dans la langue du contrat (proof.locale). On réutilise les catalogues déjà
+  // extraits pour le chrome UI : `proof` (page probante) et `auditEvent` (libellés du journal).
+  const t = await getMessageTranslator(proof.locale, "pdf");
+  const tProof = await getMessageTranslator(proof.locale, "proof");
+  const tAudit = await getMessageTranslator(proof.locale, "auditEvent");
+  const disclaimerColor = rgb(0.62, 0.22, 0.08);
+
   const pdf = await PDFDocument.create();
   pdf.setTitle(proof.title);
   pdf.setSubject("Signed agreement with SES audit trail");
@@ -232,56 +242,40 @@ export async function generateSignedPdf(proof: ContractProof): Promise<Uint8Arra
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
   const layout = new PdfLayout(pdf, regular, bold);
 
-  layout.badge();
+  layout.badge(t("sesBadge"));
   layout.heading(proof.title);
-  layout.text(`Document completed on ${formatUtc(proof.completedAt)}.`, { size: 9 });
+  layout.text(t("completedOn", { date: formatUtc(proof.completedAt) }), { size: 9 });
   if (proof.tone === "fun") {
-    layout.text(FUN_DISCLAIMER, { bold: true, color: rgb(0.62, 0.22, 0.08) });
+    layout.text(t("funDisclaimer"), { bold: true, color: disclaimerColor });
   }
-  layout.heading("Agreement text", 15);
+  layout.heading(t("agreementHeading"), 15);
   layout.text(proof.body, { size: 11 });
-  layout.heading("Signatures", 15);
+  layout.heading(t("signaturesHeading"), 15);
   for (const participant of proof.participants) {
-    await drawSignature(layout, participant);
+    await drawSignature(layout, participant, t);
   }
 
   layout.newPage();
-  layout.badge();
-  layout.heading("What makes this PDF useful proof");
-  layout.text(
-    "This file brings together the elements of a simple electronic signature (SES). It documents the agreement without claiming to be a universal equivalent of a handwritten signature.",
-  );
-  layout.text(
-    "Explicit consent — every signer ticked a dedicated box before signing; the UTC time is retained.",
-    { bold: true },
-  );
-  layout.text(
-    "UTC timestamps — creation, invitation, opening, consent, and signature events use an unambiguous format.",
-    { bold: true },
-  );
-  layout.text(
-    "Document fingerprint — the SHA-256 below covers the canonical representation of the frozen agreement, its signers, and their signatures at completion.",
-    { bold: true },
-  );
+  layout.badge(t("sesBadge"));
+  layout.heading(tProof("title"));
+  layout.text(tProof("intro"));
+  layout.text(`${tProof("consentTitle")} — ${tProof("consentBody")}`, { bold: true });
+  layout.text(`${tProof("timestampsTitle")} — ${tProof("timestampsBody")}`, { bold: true });
+  layout.text(`${tProof("fingerprintTitle")} — ${tProof("fingerprintBody")}`, { bold: true });
   layout.text(`SHA-256 : ${proof.documentHash}`, { size: 9 });
-  layout.text(
-    "Event log — the timeline connects each action to the email address provided by that signer.",
-    { bold: true },
-  );
+  layout.text(`${tProof("eventLogTitle")} — ${tProof("eventLogBody")}`, { bold: true });
   for (const event of proof.auditEvents) {
     const identity = event.email ? ` — ${event.email}` : "";
-    layout.text(
-      `${formatUtc(event.occurredAt)} — ${auditEventLabel(event.type)}${identity}`,
-      { size: 8.5 },
-    );
+    const label = isAuditEventType(event.type) ? tAudit(event.type) : tAudit("fallback");
+    layout.text(`${formatUtc(event.occurredAt)} — ${label}${identity}`, { size: 8.5 });
   }
   if (proof.tone === "fun") {
-    layout.text(FUN_DISCLAIMER, { bold: true, color: rgb(0.62, 0.22, 0.08) });
+    layout.text(t("funDisclaimer"), { bold: true, color: disclaimerColor });
   }
 
   const pages = pdf.getPages();
   pages.forEach((page, index) => {
-    page.drawText(`Page ${index + 1} / ${pages.length}`, {
+    page.drawText(t("pageLabel", { current: index + 1, total: pages.length }), {
       x: MARGIN,
       y: 28,
       size: 8,

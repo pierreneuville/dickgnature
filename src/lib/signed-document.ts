@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/db";
+import { normalizeLocale } from "@/i18n/messages";
+import type { Locale } from "@/i18n/routing";
 import { DEFAULT_TONE, isTone, type Tone } from "@/lib/tone";
 
 export type ProofSignature = {
@@ -30,6 +32,7 @@ export type ContractProof = {
   title: string;
   body: string;
   tone: Tone;
+  locale: Locale;
   status: string;
   createdAt: Date;
   completedAt: Date | null;
@@ -62,6 +65,7 @@ export async function getContractProof(
     title: row.title,
     body: row.body,
     tone: isTone(row.tone) ? row.tone : DEFAULT_TONE,
+    locale: normalizeLocale(row.locale),
     status: row.status,
     createdAt: row.createdAt,
     completedAt: row.completedAt,

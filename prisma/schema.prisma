@@ -28,6 +28,11 @@ model Contract {
   title        String
   body         String
   tone         String        @default("fun")
+  // Langue du contrat (en|fr|pt|es), capturée à la création selon la locale active. Détermine
+  // le rendu des emails de complétion et du PDF signé. Défaut "en" pour l'existant. String et non
+  // enum (cohérent avec tone/status ; le domaine est garanti par src/i18n/messages.ts + zod).
+  // La locale N'ENTRE PAS dans l'empreinte SHA-256 figée : c'est un attribut de rendu, pas de contenu.
+  locale       String        @default("en")
   status       String        @default("draft")
   documentHash String?
   completedAt  DateTime?

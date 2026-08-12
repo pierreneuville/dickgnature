@@ -174,3 +174,33 @@ isoler les changements à risque (mapping d'erreurs, migration de schéma) de l'
 
 **Impact si ignoré** : chaînes non traduites visibles en FR/PT/ES sur les corps de templates et
 les erreurs ; emails/PDF restent EN. Aucun invariant métier ni de preuve affecté.
+
+## ADR-006 — Persistance de la locale du contrat + rendu localisé emails/PDF (résout RISK-002 #4)
+
+**Décidé le** : 2026-08-12  **Statut** : accepté  **Origine** : RISK-002 #4, ADR-005 (dette EN)
+
+**Contexte** : les emails de complétion et le PDF signé étaient rendus avec des chaînes EN
+codées en dur, faute d'une langue attachée au contrat. Ces rendus sont déclenchés **après commit**
+dans une server action (complétion), donc **hors contexte de requête** next-intl.
+
+**Décision** :
+- **Migration** : colonne `Contract.locale String @default("en")`
+  (`prisma/migrations/20260812050000_contract_locale`). Le défaut au niveau colonne garantit que
+  toute ligne existante devient `en` sans backfill applicatif.
+- **Capture** : la locale active du segment `[locale]` est lue via `getLocale()` dans l'action de
+  création et persistée. Toute valeur inattendue retombe sur `en` (`normalizeLocale`).
+- **Traduction hors requête** : `src/i18n/messages.ts` expose `getMessageTranslator(locale, ns)`
+  bâti sur `createTranslator` de `next-intl` (et non `next-intl/server`). Réutilisé par pdf.ts et
+  completion-email.ts.
+- **Catalogues** : nouveaux namespaces `emails` (variantes `fun`/`serious`) et `pdf` ajoutés en
+  EN/FR/PT/ES ; le PDF réutilise les namespaces existants `proof` et `auditEvent` (déjà 4 langues).
+  Les valeurs EN sont **byte-identiques** aux anciennes chaînes codées en dur (non-régression).
+- **Empreinte de preuve** : la locale **N'ENTRE PAS** dans le SHA-256 figé
+  (`sha256FrozenDocument`). C'est un attribut de **rendu**, pas de **contenu** : deux copies d'un
+  même accord dans deux langues partagent la même empreinte de contenu figé.
+
+**Conséquences** :
+- (+) RISK-002 #4 résolu : emails + PDF dans la langue du contrat, plus de fallback EN silencieux.
+- (+) Stabilité de preuve préservée (hash inchangé, tests d'empreinte existants verts).
+- (−) Déploiement : `prisma migrate deploy` requis en prod avant le prochain rendu — coordonné
+  avec le lead. Les contrats antérieurs restent `en` (comportement identique à aujourd'hui).

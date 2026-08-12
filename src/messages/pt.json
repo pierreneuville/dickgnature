@@ -462,5 +462,28 @@
     "addSignerFailed": "Não foi possível adicionar esse signatário. Tente novamente.",
     "signFailed": "A assinatura não ficou registada. Tente novamente.",
     "createContractFailed": "Verifique o título e o texto do acordo."
+  },
+  "emails": {
+    "fun": {
+      "sender": "dickgnature",
+      "subject": "Assinado, selado, sem dramas 🎉 — {title}",
+      "text": "Olá {name},\n\nToda a gente assinou «{title}». A tua cópia assinada está em anexo. Guarda-a num sítio mais seguro do que o grupo de conversa.\n\nAté breve,\ndickgnature",
+      "html": "<p>Olá {name},</p><p>Toda a gente assinou <strong>«{title}»</strong>.</p><p>A tua cópia assinada está em anexo. Guarda-a num sítio mais seguro do que o grupo de conversa.</p><p>Até breve,<br/><strong>dickgnature</strong></p>"
+    },
+    "serious": {
+      "sender": "Acordos assinados",
+      "subject": "O seu acordo assinado — {title}",
+      "text": "Olá {name},\n\nTodas as partes assinaram «{title}». A sua cópia do acordo assinado e o respetivo registo de auditoria estão em anexo.\n\nCom os melhores cumprimentos,\nServiço de assinatura",
+      "html": "<p>Olá {name},</p><p>Todas as partes assinaram <strong>«{title}»</strong>.</p><p>A sua cópia do acordo assinado e o respetivo registo de auditoria estão em anexo.</p><p>Com os melhores cumprimentos,<br/>Serviço de assinatura</p>"
+    }
+  },
+  "pdf": {
+    "sesBadge": "SES — Assinatura eletrónica simples",
+    "completedOn": "Documento concluído em {date}.",
+    "funDisclaimer": "Acordo bem-humorado — não é uma garantia jurídica universal",
+    "agreementHeading": "Texto do acordo",
+    "signaturesHeading": "Assinaturas",
+    "consentSignatureLine": "Consentimento explícito: {consent} · Assinatura: {sign}",
+    "pageLabel": "Página {current} / {total}"
   }
 }
