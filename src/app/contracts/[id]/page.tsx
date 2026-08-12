@@ -6,7 +6,9 @@ import {
   participantLinkState,
 } from "@/lib/participants";
 import { listSignatures } from "@/lib/signatures";
+import { findEasterEggName } from "@/lib/easter-egg";
 import { ButtonLink, SiteHeader, ToneSurface } from "@/components/ui";
+import { EasterEggBanner } from "@/components/easter-egg-banner";
 import { ContractView } from "./contract-view";
 import { ParticipantsForm } from "./participants-form";
 import {
@@ -45,9 +47,13 @@ export default async function ContractPage({
     linkState: participantLinkState(participant),
   }));
 
+  const easterEggName = findEasterEggName(participants.map((p) => p.name));
+
   return (
     <ToneSurface tone={contract.tone}>
       <SiteHeader />
+
+      {easterEggName ? <EasterEggBanner name={easterEggName} /> : null}
 
       <ContractView contract={contract} />
 

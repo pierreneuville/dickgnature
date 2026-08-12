@@ -7,7 +7,9 @@ import {
 } from "@/lib/participants";
 import { ContractView } from "@/app/contracts/[id]/contract-view";
 import { SignForm } from "@/app/contracts/[id]/sign/sign-form";
+import { EasterEggBanner } from "@/components/easter-egg-banner";
 import { SiteHeader, ToneSurface } from "@/components/ui";
+import { matchesEasterEggName } from "@/lib/easter-egg";
 import { signViaTokenAction } from "./actions";
 
 // Page de signature PUBLIQUE, ouverte via un lien tokenisé — aucun compte requis (axe #1 : le
@@ -40,6 +42,10 @@ export default async function TokenSignPage({
   return (
     <ToneSurface tone={contract.tone}>
       <SiteHeader />
+
+      {matchesEasterEggName(participant.name) ? (
+        <EasterEggBanner name={participant.name} />
+      ) : null}
 
       <ContractView contract={contract} />
 
