@@ -26,6 +26,7 @@ export function SignForm({
   submitLabel?: string;
 }) {
   const t = useTranslations("sign");
+  const tErrors = useTranslations("errors");
   const [mode, setMode] = useState<SignatureMode>("handwritten");
   const [image, setImage] = useState<string | null>(null);
   const [consent, setConsent] = useState(false);
@@ -60,7 +61,7 @@ export function SignForm({
         <span>{t("consent")}</span>
       </label>
 
-      {state.error ? <p className="error">{state.error}</p> : null}
+      {state.error ? <p className="error">{tErrors(state.error)}</p> : null}
 
       <button type="submit" disabled={pending || image === null || !consent}>
         {pending ? t("savePending") : (submitLabel ?? t("submit"))}

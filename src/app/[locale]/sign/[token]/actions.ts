@@ -1,10 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { ParticipantError, signAsParticipant } from "@/lib/participants";
-import { isSignatureMode, SignatureError } from "@/lib/signatures";
+import { actionErrorCode } from "@/lib/action-error";
+import type { ErrorMessageKey } from "@/lib/error-codes";
+import { signAsParticipant } from "@/lib/participants";
+import { isSignatureMode } from "@/lib/signatures";
 
-export type SignState = { error?: string };
+export type SignState = { error?: ErrorMessageKey };
 
 // token est lié côté serveur via .bind(null, token) avant d'être passé au SignForm client.
 // La règle « pattern → fun uniquement » et l'usage unique/expiration du lien sont appliqués dans
@@ -23,10 +25,7 @@ export async function signViaTokenAction(
   try {
     await signAsParticipant(token, { mode, image, consent });
   } catch (error) {
-    if (error instanceof ParticipantError || error instanceof SignatureError) {
-      return { error: error.message };
-    }
-    return { error: "That signature didn't stick. Give it another go." };
+    return { error: actionErrorCode(error, { fallback: "signFailed" }) };
   }
 
   redirect(`/sign/${token}`);

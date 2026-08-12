@@ -22,6 +22,7 @@ function emptyRow(): Row {
 // (participants-actions → src/lib/participants). Exclue du coverage comme les autres formulaires.
 export function ParticipantsForm({ contractId }: { contractId: string }) {
   const t = useTranslations("participants");
+  const tErrors = useTranslations("errors");
   const [rows, setRows] = useState<Row[]>([emptyRow()]);
   const action = addParticipantsAction.bind(null, contractId);
   const [state, formAction, pending] = useActionState(action, initialState);
@@ -84,7 +85,7 @@ export function ParticipantsForm({ contractId }: { contractId: string }) {
         </button>
       </div>
 
-      {state.error ? <p className="error">{state.error}</p> : null}
+      {state.error ? <p className="error">{tErrors(state.error)}</p> : null}
     </form>
   );
 }

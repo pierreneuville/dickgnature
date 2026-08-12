@@ -446,5 +446,21 @@
         "serious": "{{partyOne}} and {{partyTwo}} agree to keep the following information confidential: {{confidentialInfo}}. It may only be used to {{allowedPurpose}} and may not be shared with a third party without prior written agreement until {{endDate}}."
       }
     }
+  },
+  "errors": {
+    "contractNotFound": "Agreement not found.",
+    "signerListLocked": "The signer list is locked after the first signature.",
+    "noSigners": "Add at least one person to sign.",
+    "duplicateSigner": "Someone with that email is already on this agreement.",
+    "linkInvalid": "That signing link isn't valid.",
+    "linkExpired": "This signing link has expired.",
+    "linkAlreadySigned": "This link has already been signed.",
+    "consentRequired": "Please explicitly agree before signing this document.",
+    "proofIncomplete": "The proof trail is incomplete.",
+    "modeNotAllowed": "That signing style isn't available for this agreement.",
+    "invalidSigner": "That signer doesn't look valid.",
+    "addSignerFailed": "Couldn't add that signer. Give it another go.",
+    "signFailed": "That signature didn't stick. Give it another go.",
+    "createContractFailed": "Give the title and agreement text a quick check."
   }
 }

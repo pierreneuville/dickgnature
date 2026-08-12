@@ -446,5 +446,21 @@
         "serious": "{{partyOne}} et {{partyTwo}} conviennent de garder confidentielle l'information suivante : {{confidentialInfo}}. Elle ne peut être utilisée que pour {{allowedPurpose}} et ne peut être communiquée à un tiers sans accord écrit préalable jusqu'au {{endDate}}."
       }
     }
+  },
+  "errors": {
+    "contractNotFound": "Accord introuvable.",
+    "signerListLocked": "La liste des signataires est verrouillée après la première signature.",
+    "noSigners": "Ajoutez au moins une personne pour signer.",
+    "duplicateSigner": "Quelqu'un avec cet e-mail figure déjà sur cet accord.",
+    "linkInvalid": "Ce lien de signature n'est pas valide.",
+    "linkExpired": "Ce lien de signature a expiré.",
+    "linkAlreadySigned": "Ce lien a déjà été signé.",
+    "consentRequired": "Merci d'accepter explicitement avant de signer ce document.",
+    "proofIncomplete": "La piste de preuve est incomplète.",
+    "modeNotAllowed": "Ce style de signature n'est pas disponible pour cet accord.",
+    "invalidSigner": "Ce signataire ne semble pas valide.",
+    "addSignerFailed": "Impossible d'ajouter ce signataire. Réessayez.",
+    "signFailed": "La signature n'a pas été enregistrée. Réessayez.",
+    "createContractFailed": "Vérifiez le titre et le texte de l'accord."
   }
 }

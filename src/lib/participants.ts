@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { type DomainErrorCode, domainErrorMessage } from "@/lib/error-codes";
 import { sha256FrozenDocument } from "@/lib/document-proof";
 import { deriveContractStatus } from "@/lib/contract-status";
 import { sendCompletedContractEmails } from "@/lib/completion-email";
@@ -51,7 +52,17 @@ export type Participant = {
   createdAt: Date;
 };
 
-export class ParticipantError extends Error {}
+// Porte un code d'erreur de domaine stable (= clé i18n `errors`) : la couche présentation le
+// traduit dans la langue de la requête. Le message anglais reste sur `.message` pour les logs.
+export class ParticipantError extends Error {
+  readonly code: DomainErrorCode;
+
+  constructor(code: DomainErrorCode) {
+    super(domainErrorMessage(code));
+    this.name = "ParticipantError";
+    this.code = code;
+  }
+}
 
 function toDomain(row: {
   id: string;
@@ -99,17 +110,15 @@ export async function addParticipants(
     where: { id: contractId },
   });
   if (!contract) {
-    throw new ParticipantError("Agreement not found.");
+    throw new ParticipantError("contractNotFound");
   }
   if (contract.status === "partially_signed" || contract.status === "completed") {
-    throw new ParticipantError(
-      "The signer list is locked after the first signature.",
-    );
+    throw new ParticipantError("signerListLocked");
   }
 
   const parsed = inputs.map((input) => participantInputSchema.parse(input));
   if (parsed.length === 0) {
-    throw new ParticipantError("Add at least one person to sign.");
+    throw new ParticipantError("noSigners");
   }
 
   const expiresAt = new Date(Date.now() + LINK_TTL_MS);
@@ -148,9 +157,7 @@ export async function addParticipants(
     return created;
   } catch (error) {
     if (isUniqueViolation(error)) {
-      throw new ParticipantError(
-        "Someone with that email is already on this agreement.",
-      );
+      throw new ParticipantError("duplicateSigner");
     }
     throw error;
   }
@@ -253,27 +260,23 @@ export async function signAsParticipant(
 ): Promise<Participant> {
   const resolved = await getParticipantByToken(token);
   if (!resolved) {
-    throw new ParticipantError("That signing link isn't valid.");
+    throw new ParticipantError("linkInvalid");
   }
 
   const { participant, contract } = resolved;
   const state = participantLinkState(participant);
   if (state === "expired") {
-    throw new ParticipantError("This signing link has expired.");
+    throw new ParticipantError("linkExpired");
   }
   if (state === "signed") {
-    throw new ParticipantError("This link has already been signed.");
+    throw new ParticipantError("linkAlreadySigned");
   }
   if (input.consent !== true) {
-    throw new ParticipantError(
-      "Please explicitly agree before signing this document.",
-    );
+    throw new ParticipantError("consentRequired");
   }
 
   if (!isModeAllowedForTone(contract.tone, input.mode)) {
-    throw new SignatureError(
-      `The “${input.mode}” style isn't available for this agreement.`,
-    );
+    throw new SignatureError("modeNotAllowed", { mode: input.mode });
   }
 
   const image = signatureImageSchema.parse(input.image);
@@ -348,7 +351,7 @@ export async function signAsParticipant(
           !item.signedAt ||
           !signature
         ) {
-          throw new ParticipantError("The proof trail is incomplete.");
+          throw new ParticipantError("proofIncomplete");
         }
         return {
           id: item.id,

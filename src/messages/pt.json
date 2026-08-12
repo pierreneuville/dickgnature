@@ -446,5 +446,21 @@
         "serious": "{{partyOne}} e {{partyTwo}} acordam manter confidencial a seguinte informação: {{confidentialInfo}}. Só pode ser utilizada para {{allowedPurpose}} e não pode ser divulgada a terceiros sem acordo escrito prévio até {{endDate}}."
       }
     }
+  },
+  "errors": {
+    "contractNotFound": "Acordo não encontrado.",
+    "signerListLocked": "A lista de signatários fica bloqueada após a primeira assinatura.",
+    "noSigners": "Adicione pelo menos uma pessoa para assinar.",
+    "duplicateSigner": "Alguém com esse e-mail já está neste acordo.",
+    "linkInvalid": "Esta ligação de assinatura não é válida.",
+    "linkExpired": "Esta ligação de assinatura expirou.",
+    "linkAlreadySigned": "Esta ligação já foi assinada.",
+    "consentRequired": "Concorde explicitamente antes de assinar este documento.",
+    "proofIncomplete": "O registo de prova está incompleto.",
+    "modeNotAllowed": "Este estilo de assinatura não está disponível para este acordo.",
+    "invalidSigner": "Esse signatário não parece válido.",
+    "addSignerFailed": "Não foi possível adicionar esse signatário. Tente novamente.",
+    "signFailed": "A assinatura não ficou registada. Tente novamente.",
+    "createContractFailed": "Verifique o título e o texto do acordo."
   }
 }

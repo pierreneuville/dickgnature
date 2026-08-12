@@ -1,10 +1,13 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { z } from "zod";
-import { addParticipants, ParticipantError } from "@/lib/participants";
+import { actionErrorCode } from "@/lib/action-error";
+import type { ErrorMessageKey } from "@/lib/error-codes";
+import { addParticipants } from "@/lib/participants";
 
-export type ParticipantsState = { error?: string };
+// L'action renvoie un **code** d'erreur stable (= clé i18n `errors`) ; le formulaire client le
+// localise via useTranslations. Le domaine reste hors contexte de requête.
+export type ParticipantsState = { error?: ErrorMessageKey };
 
 // contractId est lié côté serveur via .bind(null, id). Le formulaire envoie des champs répétés
 // name[]/email[] (une paire par ligne). On zippe, on ignore les lignes entièrement vides, puis on
@@ -28,13 +31,12 @@ export async function addParticipantsAction(
   try {
     await addParticipants(contractId, inputs);
   } catch (error) {
-    if (error instanceof ParticipantError) {
-      return { error: error.message };
-    }
-    if (error instanceof z.ZodError) {
-      return { error: error.issues[0]?.message ?? "That signer doesn't look valid." };
-    }
-    return { error: "Couldn't add that signer. Give it another go." };
+    return {
+      error: actionErrorCode(error, {
+        fallback: "addSignerFailed",
+        onInvalidInput: "invalidSigner",
+      }),
+    };
   }
 
   redirect(`/contracts/${contractId}`);
