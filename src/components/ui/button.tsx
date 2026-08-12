@@ -1,5 +1,6 @@
-import Link, { type LinkProps } from "next/link";
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
+import type { ComponentProps } from "react";
+import type { ButtonHTMLAttributes } from "react";
+import { Link } from "@/i18n/navigation";
 
 export type ButtonVariant = "primary" | "secondary" | "quiet";
 export type ButtonSize = "sm" | "md" | "lg";
@@ -35,11 +36,10 @@ export function Button({
   );
 }
 
-type ButtonLinkProps = LinkProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
-    variant?: ButtonVariant;
-    size?: ButtonSize;
-  };
+type ButtonLinkProps = ComponentProps<typeof Link> & {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+};
 
 export function ButtonLink({
   variant = "primary",

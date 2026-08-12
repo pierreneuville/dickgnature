@@ -33,16 +33,3 @@ export function findEasterEggName(
   }
   return null;
 }
-
-// Chaînes du clin d'œil — namespace « easterEgg », prêtes pour l'i18n (placeholder {name}).
-export const easterEggCopy = {
-  heading: "Hey {name}, you found the easter egg! 🎉",
-  body: "Consider this our little wink just for you. Carry on — your signature still counts, promise.",
-  dismiss: "Got it, thanks",
-  regionLabel: "A cheeky little surprise",
-} as const;
-
-// Remplace {name} par la valeur fournie dans un gabarit de chaîne.
-export function personalize(template: string, name: string): string {
-  return template.replace(/\{name\}/g, name);
-}

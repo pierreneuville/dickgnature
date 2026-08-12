@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "title": "dickgnature — Duas pessoas, um acordo, zero complicação",
+    "description": "Crie e assine um acordo entre duas pessoas em menos de 60 segundos, sem conta para quem assina e com uma prova clara."
+  },
+  "common": {
+    "skipToContent": "Ir para o conteúdo",
+    "language": "Idioma",
+    "header": {
+      "homeAria": "dickgnature, início",
+      "navAria": "Navegação principal",
+      "howItWorks": "Como funciona",
+      "theProof": "A prova",
+      "makeAgreement": "Criar um acordo"
+    },
+    "footer": {
+      "tagline": "Acordos simples, prova legível e absolutamente nenhum terno exigido.",
+      "fineprint": "Paródia honesta · Assinatura eletrónica simples (SES) · Alojamento na UE"
+    }
+  },
+  "landing": {
+    "hero": {
+      "badge": "Duas pessoas. Um acordo. Zero circo.",
+      "titleLine1": "Torne-o quase oficial.",
+      "titleLine2": "Mantenha-o deliciosamente humano.",
+      "lede": "Transforme «dissemos que íamos fazer» num acordo assinado em menos de 60 segundos. Sem conta para quem assina, sem labirinto jurídico e com uma prova de verdade.",
+      "ctaPrimary": "Tornar quase oficial",
+      "showHow": "Mostra-me como",
+      "benefitsAria": "Vantagens principais",
+      "benefitNoAccount": "Sem conta para assinar",
+      "benefitPhone": "Pensado para o telemóvel",
+      "benefitEu": "Alojado na UE",
+      "visualAria": "Pré-visualização de um acordo concluído",
+      "orbitOne": "muito quase-oficial",
+      "orbitTwo": "zero papelada"
+    },
+    "preview": {
+      "eyebrow": "Acordo n.º 0042",
+      "status": "Feito & assinado",
+      "title": "O Pacto do Último Croissant",
+      "body": "Camille compromete-se solenemente a deixar o último croissant para Noa todos os domingos, salvo ressaca verdadeiramente histórica.",
+      "signedAt": "Assinado às {time}",
+      "footer": "PDF + prova entregues"
+    },
+    "value": {
+      "aria": "A nossa promessa",
+      "speedNum": "< 60 s",
+      "speedLabel": "para pôr o acordo a andar",
+      "accountsNum": "0",
+      "accountsLabel": "contas para assinar",
+      "priceNum": "1 preço",
+      "priceLabel": "por acordo concluído"
+    },
+    "steps": {
+      "kicker": "Tão fácil como um aperto de mão",
+      "title": "De «espera, o que combinámos?» a assinado e resolvido.",
+      "intro": "Três pequenos passos. Sem odisseia de registo. Sem malabarismo cerimonioso com PDFs.",
+      "callTitle": "Dê-lhe um nome",
+      "callBody": "Adicione um título, algumas linhas e dois e-mails. A burocracia pode ficar de fora desta.",
+      "signTitle": "Assine-o",
+      "signBody": "Cada pessoa abre um link privado no telemóvel — sem conta, sem desvios.",
+      "keepTitle": "Guarde os comprovativos",
+      "keepBody": "O PDF assinado e a sua trilha de auditoria chegam às duas pessoas."
+    },
+    "proofSection": {
+      "kicker": "Sério onde importa",
+      "title": "O nome é a piada. A prova não é.",
+      "body": "Por trás da interface divertida, cada acordo concluído regista quem aceitou o quê, e quando, num ficheiro de prova claro."
+    },
+    "modeSection": {
+      "kicker": "Dois estilos, a mesma prova sólida",
+      "title": "Divertido quando encaixa. Sério quando conta.",
+      "funBadge": "Modo divertido",
+      "funTitle": "Para apostas, desafios e pequenos pactos lendários.",
+      "funBody": "Divertido por design, com um aviso honesto e zero falsa pose jurídica.",
+      "seriousBadge": "Modo sério",
+      "seriousTitle": "Para acordos que mantêm a gravata.",
+      "seriousBody": "Uma experiência neutra e credível, do primeiro rascunho ao PDF final."
+    },
+    "finalCta": {
+      "kicker": "A sua palavra merece mais do que uma mensagem de voz perdida",
+      "titleLine1": "Diga. Assine.",
+      "titleLine2": "Siga com a vida.",
+      "button": "Fechar o acordo",
+      "note": "Não é preciso conta para começar."
+    }
+  },
+  "trust": {
+    "title": "Uma prova que consegue mesmo entender.",
+    "intro": "Uma assinatura eletrónica simples para acordos do dia a dia. Dizemos-lhe o que prova — e o que não prova.",
+    "consentTitle": "Consentimento",
+    "consentBody": "A ação de assinatura e o acordo ficam registados.",
+    "timestampsTitle": "Carimbos de data/hora",
+    "timestampsBody": "Cada evento guarda a sua data e hora.",
+    "fingerprintTitle": "Impressão digital",
+    "fingerprintBody": "O documento fica ligado a uma impressão SHA-256.",
+    "auditTitle": "Trilha de auditoria",
+    "auditBody": "A cronologia completa permanece legível no ficheiro de prova."
+  },
+  "contractNew": {
+    "back": "← Voltar ao início",
+    "kicker": "O seu acordo, sem o suplício",
+    "title": "Criar um acordo",
+    "tagline": "Escolha um modelo em português claro, preencha os espaços e depois ajuste cada palavra até soar a si."
+  },
+  "contractForm": {
+    "easyMode": "Modo fácil",
+    "pickStart": "Escolha o seu ponto de partida",
+    "templatesBlurb": "Sete modelos em português claro. Nada está gravado em pedra ainda.",
+    "typeLabel": "Tipo de acordo",
+    "typeHint": "Ou comece gloriosamente do zero com uma página em branco.",
+    "customOption": "Acordo personalizado",
+    "suggestedVibe": "Tom sugerido: {vibe}",
+    "vibeFun": "Divertido",
+    "vibeSerious": "Sério",
+    "fillBlanks": "Preencha os espaços",
+    "fillBlanksBlurb": "As suas respostas entram diretamente no acordo abaixo.",
+    "fullyEditable": "Totalmente editável",
+    "makeItYours": "Faça soar a si",
+    "counter": "{count, number} / 20 000",
+    "titleLabel": "Título",
+    "agreementLabel": "Acordo",
+    "agreementHint": "Este modelo é apenas um trampolim. Reescreva o que quiser.",
+    "toneLabel": "Tom",
+    "toneHint": "O sério mantém-se neutro. O divertido pode afrouxar a gravata.",
+    "toneFun": "Divertido (descontraído)",
+    "toneSerious": "Sério (neutro)",
+    "submitPending": "A tornar isto quase oficial…",
+    "submit": "Criar o acordo",
+    "submitNote": "Vai ter mais uma vista de olhos antes de partilhar. Sem armadilhas."
+  },
+  "contract": {
+    "peopleSigningAria": "Pessoas que assinam",
+    "whosIn": "Quem participa?",
+    "signaturesAria": "Assinaturas",
+    "signaturesHeading": "Assinaturas",
+    "addSignature": "Adicionar a minha assinatura",
+    "downloadPdf": "Descarregar o PDF assinado",
+    "proofLink": "Ver o que torna esta prova útil"
+  },
+  "participants": {
+    "statusLabel": "Estado",
+    "empty": "Está calmo por aqui. Adicione abaixo as pessoas que precisam de assinar.",
+    "openLink": "Abrir o link de assinatura",
+    "namePlaceholder": "Nome",
+    "nameAria": "Nome do signatário",
+    "emailPlaceholder": "nome@exemplo.com",
+    "emailAria": "E-mail do signatário",
+    "removeAria": "Remover este signatário",
+    "addAnother": "+ Adicionar outra pessoa",
+    "invitePending": "A enviar o bat-sinal…",
+    "invite": "Convidá-los a assinar"
+  },
+  "linkState": {
+    "open": "A aguardar",
+    "signed": "Assinado",
+    "expired": "Expirado"
+  },
+  "contractStatus": {
+    "draft": "Rascunho",
+    "sent": "Enviado",
+    "partially_signed": "Parcialmente assinado",
+    "completed": "Concluído"
+  },
+  "signatureMode": {
+    "styleAria": "Estilo de assinatura",
+    "pickerHandwrittenLabel": "Desenhe-a você mesmo",
+    "pickerHandwrittenHint": "Trace a sua assinatura real com o dedo ou o rato.",
+    "pickerPatternLabel": "Use o carimbo atrevido",
+    "pickerPatternHint": "Siga o guia ou pouse o carimbo num toque.",
+    "handwritten": "Assinatura manuscrita",
+    "pattern": "Rabisco de assinatura",
+    "addedAlt": "{mode} adicionada"
+  },
+  "sign": {
+    "heading": "Assinar: {title}",
+    "back": "← Voltar ao acordo",
+    "consent": "Concordo explicitamente em assinar este documento e em ter este acordo carimbado com data/hora na sua trilha de auditoria.",
+    "savePending": "A guardar a sua obra-prima…",
+    "submit": "Assinar este acordo",
+    "signingAria": "Assinatura",
+    "signingAs": "A assinar como:",
+    "done": "Boa, {name} — a sua assinatura está bem guardada.",
+    "expired": "Este link de assinatura expirou. Peça ao criador do acordo para lhe enviar um novo.",
+    "markHeading": "A sua marca vai aqui",
+    "tokenSubmit": "Assinar e selar"
+  },
+  "signaturesList": {
+    "empty": "Ainda sem assinaturas. A caneta aguarda."
+  },
+  "proof": {
+    "sesBadge": "SES · Assinatura eletrónica simples",
+    "title": "O que torna este PDF uma prova útil",
+    "intro": "Esta trilha documenta um acordo eletrónico simples sem afirmar que a assinatura substitui universalmente uma assinatura manuscrita.",
+    "consentTitle": "Consentimento explícito",
+    "consentBody": "Cada signatário assinala primeiro uma caixa dedicada. Esse consentimento é carimbado com data/hora e ligado ao e-mail fornecido.",
+    "timestampsTitle": "Carimbos UTC",
+    "timestampsBody": "Os eventos de criação, convite, abertura, consentimento e assinatura usam um formato UTC sem ambiguidade.",
+    "fingerprintTitle": "Impressão digital do documento",
+    "fingerprintBody": "O SHA-256 cobre o conteúdo canónico congelado na conclusão: o acordo, os seus signatários e as suas assinaturas.",
+    "eventLogTitle": "Registo de eventos",
+    "eventLogBody": "A cronologia liga cada ação ao e-mail fornecido por esse participante.",
+    "documentProofHeading": "Prova do documento",
+    "pending": "A impressão final será congelada assim que todos tiverem assinado.",
+    "eventLogHeading": "Registo de eventos",
+    "back": "← Voltar ao acordo"
+  },
+  "auditEvent": {
+    "CONTRACT_CREATED": "Acordo criado",
+    "INVITATION_SENT": "Convite para assinar enviado",
+    "DOCUMENT_OPENED": "Documento aberto",
+    "CONSENT_RECORDED": "Consentimento explícito registado",
+    "DOCUMENT_SIGNED": "Assinatura registada",
+    "fallback": "Evento de auditoria"
+  },
+  "contractView": {
+    "disclaimer": "Acordo divertido — não é uma garantia jurídica universal. Regista um entendimento entre pessoas, sem pretender fazer lei perante um tribunal."
+  },
+  "tone": {
+    "funLabel": "Divertido",
+    "funTagline": "O acordo mais quase-sério da sua vida.",
+    "seriousLabel": "Sério",
+    "seriousTagline": "Acordo entre duas partes."
+  },
+  "easterEgg": {
+    "heading": "Olá {name}, encontrou o easter egg! 🎉",
+    "body": "Veja isto como a nossa piscadela de olho só para si. Continue — a sua assinatura conta na mesma, prometido.",
+    "dismiss": "Percebido, obrigado",
+    "regionLabel": "Uma pequena surpresa atrevida"
+  }
+}

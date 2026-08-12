@@ -121,3 +121,56 @@ manuscrite universelle qu'il ne fournit pas.
   du conteneur PDF.
 - (−) Cette preuve reste une SES déclarative sans vérification d'identité forte ; une montée de
   niveau exigerait un fournisseur de confiance et un parcours distinct.
+
+## ADR-005 — Internationalisation : next-intl, EN défaut sans préfixe, FR/PT/ES préfixés
+
+**Date** : 2026-08-12  **Statut** : accepté (builder-a, slice #3dbf6792)
+
+**Contexte** : produit déjà en ligne (https://dickgnature.vercel.app) avec des URL publiques
+tokenisées `/sign/[token]` déjà distribuables. Il faut passer à 4 langues (EN défaut, FR, PT, ES)
+sans casser les liens existants ni la preuve, et préparer le SEO (hreflang) à suivre (#b43bfe66).
+
+**Décision** :
+- Lib : **next-intl 4** (compatible Next 16 App Router + React 19, peer deps vérifiées).
+- Routing : `localePrefix: "as-needed"`. **EN (défaut) reste à la racine** (`/`, `/sign/[token]`,
+  `/contracts/...`) → aucun lien déjà distribué ne casse. FR/PT/ES sont préfixés (`/fr`, `/pt`,
+  `/es`). Le middleware next-intl gère la détection (cookie + `Accept-Language`) et la négociation.
+- Arborescence : les routes rendues passent sous `src/app/[locale]/...`. Les routes non
+  présentielles restent hors locale si pertinent (ex. `/contracts/[id]/pdf` = binaire).
+- Catalogues : `src/messages/{en,fr,pt,es}.json`, namespaces par surface (common, landing,
+  contractNew, contract, sign, proof, emails, pdf, templates, easterEgg, status).
+- Le **ton du contrat (fun/serious) reste orthogonal à la langue** : chaque variante de ton a sa
+  clé traduite dans chaque langue ; `serious` reste sobre dans toutes les langues.
+- Emails / PDF : rendus dans la langue du contexte du contrat quand disponible, sinon fallback EN
+  documenté. La locale du contrat n'est pas encore persistée → v1 : EN pour emails/PDF, TODO
+  persistance de la locale au contrat (noté dans findings).
+- Sélecteur de langue : composant du design system, accessible (labels), mobile-first, dans le
+  header ; conserve le chemin courant en changeant le préfixe.
+
+**Conséquences** :
+- (+) Rétrocompatibilité totale des URLs EN déjà en ligne ; SEO hreflang direct ensuite.
+- (+) Extraction centralisée = source unique pour les traductions et l'audit de complétude.
+- (−) Restructuration de l'arborescence `app/` sous `[locale]` (diff large, mécanique).
+- (−) Emails/PDF non encore multilingues faute de locale persistée (dette explicite, EN par défaut).
+
+### RISK-002 — i18n : périmètre découpé, 3 sous-slices différées
+
+**Ouvert le** : 2026-08-12  **Statut** : différé (validé lead)  **Origine** : ADR-005
+
+**Description** : la PR #3dbf6792 livre l'infra next-intl + **tout le chrome UI** des surfaces
+rendues (landing, création, contrat, signature, preuve, easter-egg, sélecteur de langue) en 4
+langues. Restent trois périmètres de chaînes NON extraits, chacun avec un déclencheur propre :
+- **#2 corps de templates** — `src/lib/contract-templates.ts` (titres/descriptions/labels/
+  placeholders de variables + corps `fun`/`serious`). Volume élevé, purement contenu ; à traduire
+  en slice dédiée sans risque technique.
+- **#3 erreurs domaine** — messages levés par `src/lib/participants.ts`, `signatures.ts` et les
+  server actions (`state.error`). Requiert un **mapping code d'erreur → clé i18n** (les libs ne
+  sont pas en contexte de requête next-intl) avant extraction. Aujourd'hui : chaîne EN brute.
+- **#4 emails / PDF** — dépend de la persistance d'une locale au contrat (cf. ADR-005, dette).
+  Rejoint #b43bfe66 (SEO/hreflang). Aujourd'hui : EN documenté.
+
+**Pourquoi différé** : garder la PR reviewable (le diff `[locale]` est déjà large et mécanique) et
+isoler les changements à risque (mapping d'erreurs, migration de schéma) de l'extraction pure.
+
+**Impact si ignoré** : chaînes non traduites visibles en FR/PT/ES sur les corps de templates et
+les erreurs ; emails/PDF restent EN. Aucun invariant métier ni de preuve affecté.

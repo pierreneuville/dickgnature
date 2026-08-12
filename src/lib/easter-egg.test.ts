@@ -1,11 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
   EASTER_EGG_NAMES,
-  easterEggCopy,
   findEasterEggName,
   matchesEasterEggName,
   normalizeName,
-  personalize,
 } from "./easter-egg";
 
 describe("normalizeName", () => {
@@ -56,28 +54,9 @@ describe("findEasterEggName", () => {
   });
 });
 
-describe("personalize", () => {
-  it("replaces every {name} placeholder", () => {
-    expect(personalize("Hey {name}, hi {name}", "SSSB")).toBe(
-      "Hey SSSB, hi SSSB",
-    );
-  });
-
-  it("returns the template unchanged when there is no placeholder", () => {
-    expect(personalize("No placeholder here", "SSSB")).toBe(
-      "No placeholder here",
-    );
-  });
-});
-
-describe("EASTER_EGG_NAMES / easterEggCopy", () => {
+describe("EASTER_EGG_NAMES", () => {
   it("centralises the trigger list", () => {
     expect(EASTER_EGG_NAMES).toContain("SSSB");
     expect(EASTER_EGG_NAMES).toContain("Pierre 184");
-  });
-
-  it("exposes a {name} placeholder in the heading for i18n", () => {
-    expect(easterEggCopy.heading).toContain("{name}");
-    expect(easterEggCopy.regionLabel.length).toBeGreaterThan(0);
   });
 });

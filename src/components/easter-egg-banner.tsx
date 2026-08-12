@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { burstConfetti } from "@/lib/confetti";
-import { easterEggCopy, personalize } from "@/lib/easter-egg";
 
 // Respecte la préférence système : si l'utilisateur réduit les animations (ou si matchMedia est
 // indisponible), on n'anime pas — le message reste affiché.
@@ -16,6 +16,7 @@ function prefersReducedMotion(): boolean {
 // Bandeau du clin d'œil : chaleureux, dismissible, ne bloque jamais la signature. Le nom sert à
 // personnaliser le message ; les confettis ne partent qu'en l'absence de prefers-reduced-motion.
 export function EasterEggBanner({ name }: { name: string }) {
+  const t = useTranslations("easterEgg");
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
@@ -33,20 +34,18 @@ export function EasterEggBanner({ name }: { name: string }) {
       className="easter-egg"
       role="status"
       aria-live="polite"
-      aria-label={easterEggCopy.regionLabel}
+      aria-label={t("regionLabel")}
     >
       <div className="easter-egg-body">
-        <p className="easter-egg-heading">
-          {personalize(easterEggCopy.heading, name)}
-        </p>
-        <p className="easter-egg-text">{easterEggCopy.body}</p>
+        <p className="easter-egg-heading">{t("heading", { name })}</p>
+        <p className="easter-egg-text">{t("body")}</p>
       </div>
       <button
         type="button"
         className="easter-egg-dismiss"
         onClick={() => setDismissed(true)}
       >
-        {easterEggCopy.dismiss}
+        {t("dismiss")}
       </button>
     </div>
   );
