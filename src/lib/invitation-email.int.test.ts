@@ -16,9 +16,16 @@ const PNG =
 describe("invitation-email (integration, real DB)", () => {
   beforeEach(async () => {
     await prisma.signature.deleteMany();
+    await prisma.auditEvent.deleteMany();
     await prisma.participant.deleteMany();
     await prisma.contract.deleteMany();
   });
+
+  const invitationsSent = (contractId: string) =>
+    prisma.auditEvent.findMany({
+      where: { contractId, type: "INVITATION_SENT" },
+      orderBy: { occurredAt: "asc" },
+    });
 
   afterAll(async () => {
     await prisma.$disconnect();
@@ -48,6 +55,18 @@ describe("invitation-email (integration, real DB)", () => {
     expect(toKevin?.text).toContain(`/fr/sign/${kevinToken}`);
     expect(toKevin?.subject).toMatch(/signer/i);
     expect(toKevin?.attachments).toHaveLength(0);
+
+    // Piste probante : un `INVITATION_SENT` par envoi réussi, rattaché au bon participant, jamais
+    // à la création (createContract/addParticipants n'en écrivent aucun).
+    const events = await invitationsSent(contract.id);
+    expect(events).toHaveLength(2);
+    expect(new Set(events.map((e) => e.participantId))).toEqual(
+      new Set(created.map((p) => p.id)),
+    );
+    expect(events.map((e) => e.email).sort()).toEqual([
+      "kevin@example.fr",
+      "sam@example.fr",
+    ]);
   });
 
   it("collects failed recipients without blocking the rest, and logs each failure", async () => {
@@ -74,6 +93,9 @@ describe("invitation-email (integration, real DB)", () => {
     expect(consoleError).toHaveBeenCalledOnce();
     expect(consoleError.mock.calls[0]?.[0]).toContain(contract.id);
     consoleError.mockRestore();
+
+    // Un envoi rejeté ne doit JAMAIS produire d'événement « invitation envoyée ».
+    expect(await invitationsSent(contract.id)).toHaveLength(0);
   });
 
   it("resends only for a participant of the contract whose link is still open", async () => {
@@ -96,14 +118,17 @@ describe("invitation-email (integration, real DB)", () => {
     });
     expect(capture.messages).toHaveLength(0);
 
-    // Lien ouvert → renvoi effectif.
+    // Lien ouvert → renvoi effectif, qui ajoute un nouvel événement d'audit à l'instant du renvoi.
     expect(await resendInvitation(contract.id, kevin.id, capture)).toEqual({
       status: "sent",
     });
     expect(capture.messages).toHaveLength(1);
     expect(capture.messages[0]?.to).toBe("kevin@example.fr");
+    const afterResend = await invitationsSent(contract.id);
+    expect(afterResend).toHaveLength(1);
+    expect(afterResend[0]?.participantId).toBe(kevin.id);
 
-    // Après signature, le lien n'est plus ouvert → refus explicite, aucun email supplémentaire.
+    // Après signature, le lien n'est plus ouvert → refus explicite, aucun email ni événement en plus.
     await signAsParticipant(kevin.token, {
       mode: "handwritten",
       image: PNG,
@@ -113,5 +138,6 @@ describe("invitation-email (integration, real DB)", () => {
       status: "notOpen",
     });
     expect(capture.messages).toHaveLength(1);
+    expect(await invitationsSent(contract.id)).toHaveLength(1);
   });
 });

@@ -11,14 +11,27 @@ import { LINK_TTL_MS, participantLinkState } from "@/lib/participants";
 
 const DEFAULT_FROM_ADDRESS = "onboarding@resend.dev";
 
-// TTL du lien exprimé en jours entiers, pour l'annoncer dans l'email (le participant sait combien
-// de temps il lui reste). Dérivé de la source unique LINK_TTL_MS afin de rester cohérent si elle bouge.
-export const LINK_TTL_DAYS = Math.round(LINK_TTL_MS / (1000 * 60 * 60 * 24));
+const DAY_MS = 1000 * 60 * 60 * 24;
+
+// TTL nominal du lien exprimé en jours entiers (durée d'un lien tout juste émis). Dérivé de la
+// source unique LINK_TTL_MS afin de rester cohérent si elle bouge.
+export const LINK_TTL_DAYS = Math.round(LINK_TTL_MS / DAY_MS);
+
+// Jours entiers restants avant expiration, arrondis au jour supérieur, plancher à 0. Un lien tout
+// juste émis (≈ 30 j) annonce donc 30 ; un renvoi au 29e jour annonce 1 — l'email dit la vérité au
+// lieu de répéter le TTL nominal.
+export function remainingDays(expiresAt: Date, now: Date = new Date()): number {
+  return Math.max(0, Math.ceil((expiresAt.getTime() - now.getTime()) / DAY_MS));
+}
 
 export type InvitationRecipient = {
+  // participantId : nécessaire pour journaliser un `INVITATION_SENT` rattaché au bon participant.
+  id: string;
   name: string;
   email: string;
   token: string;
+  // Expiration persistée du lien : annoncée fidèlement dans l'email, y compris lors d'un renvoi.
+  expiresAt: Date;
 };
 
 // Résultat d'un envoi de campagne d'invitations : combien sont partis, et les adresses en échec.
@@ -53,13 +66,13 @@ export function buildInvitationEmail(
     tone: string;
     locale: Locale;
     recipient: InvitationRecipient;
-    expiresDays?: number;
+    now?: Date;
   },
   t: MessageTranslator,
   fromAddress = process.env.RESEND_FROM_EMAIL?.trim() || DEFAULT_FROM_ADDRESS,
 ): EmailMessage {
   const variant = params.tone === "fun" ? "fun" : "serious";
-  const days = params.expiresDays ?? LINK_TTL_DAYS;
+  const days = remainingDays(params.recipient.expiresAt, params.now);
   const link = signingUrl(params.locale, params.recipient.token);
 
   return {
@@ -102,11 +115,14 @@ export async function sendInvitationEmails(
   const locale = normalizeLocale(contract.locale);
   const t = await getMessageTranslator(locale, "invitationEmails");
 
+  // Horodatage unique de la campagne : sert à la fois au libellé « expire dans N jours » et à
+  // l'événement d'audit, pour que preuve et email racontent le même instant.
+  const now = new Date();
   const outcomes = await Promise.allSettled(
     recipients.map((recipient) =>
       transport.send(
         buildInvitationEmail(
-          { title: contract.title, tone: contract.tone, locale, recipient },
+          { title: contract.title, tone: contract.tone, locale, recipient, now },
           t,
         ),
       ),
@@ -114,16 +130,37 @@ export async function sendInvitationEmails(
   );
 
   const failed: string[] = [];
+  const sentEvents: {
+    contractId: string;
+    participantId: string;
+    type: string;
+    email: string;
+    occurredAt: Date;
+  }[] = [];
   outcomes.forEach((outcome, index) => {
+    const recipient = recipients[index];
     if (outcome.status === "rejected") {
-      const recipient = recipients[index];
       failed.push(recipient.email);
       console.error(
         `[invitation-email] envoi échoué pour ${recipient.email} (contrat ${contractId}) : ` +
           `${outcome.reason instanceof Error ? outcome.reason.message : String(outcome.reason)}`,
       );
+      return;
     }
+    // Journal probant : seul un envoi RÉELLEMENT réussi produit `INVITATION_SENT`, à l'instant de
+    // l'envoi (pas de la création). Un renvoi réussi ajoute donc légitimement un nouvel événement.
+    sentEvents.push({
+      contractId,
+      participantId: recipient.id,
+      type: "INVITATION_SENT",
+      email: recipient.email,
+      occurredAt: now,
+    });
   });
+
+  if (sentEvents.length > 0) {
+    await prisma.auditEvent.createMany({ data: sentEvents });
+  }
 
   return { sent: recipients.length - failed.length, failed };
 }
@@ -155,9 +192,11 @@ export async function resendInvitation(
     contractId,
     [
       {
+        id: participant.id,
         name: participant.name,
         email: participant.email,
         token: participant.token,
+        expiresAt: participant.expiresAt,
       },
     ],
     transport,

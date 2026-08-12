@@ -136,15 +136,10 @@ export async function addParticipants(
             expiresAt,
           },
         });
-        await tx.auditEvent.create({
-          data: {
-            contractId,
-            participantId: row.id,
-            type: "INVITATION_SENT",
-            email: row.email,
-            occurredAt: row.createdAt,
-          },
-        });
+        // On NE journalise PAS `INVITATION_SENT` ici : la création du participant n'est pas un
+        // envoi. L'événement est écrit par sendInvitationEmails, uniquement pour un transport
+        // réellement réussi et à l'horodatage réel (création vs envoi ne doivent pas se confondre
+        // dans la piste probante). La création reste tracée via `createdAt` (= « invité le »).
         rows.push(toDomain(row));
       }
       const all = await tx.participant.findMany({ where: { contractId } });

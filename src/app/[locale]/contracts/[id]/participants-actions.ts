@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { actionErrorCode } from "@/lib/action-error";
 import type { ErrorMessageKey } from "@/lib/error-codes";
+import type { EmailTransport } from "@/lib/email-transport";
 import { addParticipants } from "@/lib/participants";
 import { resendInvitation, sendInvitationEmails } from "@/lib/invitation-email";
 
@@ -22,6 +23,9 @@ export async function addParticipantsAction(
   contractId: string,
   _prevState: ParticipantsState,
   formData: FormData,
+  // Injection de transport réservée aux tests (comme SignAsParticipantOptions.emailTransport) :
+  // en production, sendInvitationEmails choisit le transport Resend/Log par défaut.
+  transport?: EmailTransport,
 ): Promise<ParticipantsState> {
   const names = formData.getAll("name").map(String);
   const emails = formData.getAll("email").map(String);
@@ -49,7 +53,7 @@ export async function addParticipantsAction(
   // traitée comme un échec d'envoi (notice) plutôt que de perdre la création.
   let anyEmailFailed = false;
   try {
-    const result = await sendInvitationEmails(contractId, created);
+    const result = await sendInvitationEmails(contractId, created, transport);
     anyEmailFailed = result.failed.length > 0;
   } catch {
     anyEmailFailed = true;
@@ -64,10 +68,14 @@ export async function addParticipantsAction(
 export async function resendInvitationAction(
   contractId: string,
   participantId: string,
+  // Le <form> transmet son FormData en 3e argument positionnel après le bind (contractId,
+  // participantId) ; le renvoi n'en a pas besoin. `transport` reste en dernier, injecté par les tests.
+  _formData?: FormData,
+  transport?: EmailTransport,
 ): Promise<void> {
   let notice = "invite-resent";
   try {
-    const result = await resendInvitation(contractId, participantId);
+    const result = await resendInvitation(contractId, participantId, transport);
     if (result.status !== "sent") {
       notice = "invite-resend-failed";
     }
