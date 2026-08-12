@@ -3,6 +3,7 @@
 import { type ChangeEvent, useActionState, useState } from "react";
 import { useMessages, useTranslations } from "next-intl";
 import { Badge, Button, Card, InputField, SelectField, TextareaField } from "@/components/ui";
+import { EasterEggBanner } from "@/components/easter-egg-banner";
 import {
   buildContractTemplate,
   CONTRACT_TEMPLATE_SHAPES,
@@ -10,6 +11,7 @@ import {
   type ContractTemplate,
   type ContractTemplateMessages,
 } from "@/lib/contract-templates";
+import { findEasterEggName } from "@/lib/easter-egg";
 import { DEFAULT_TONE, type Tone } from "@/lib/tone";
 import { createContractAction, type CreateContractState } from "./actions";
 
@@ -77,8 +79,17 @@ export function ContractForm() {
     applyTemplate(template, tone, nextVariables);
   }
 
+  // Clin d'œil « à la saisie » : le formulaire de création n'a pas de champ « nom » unique — les
+  // noms se saisissent dans les variables de template (les parties) ou, en mode libre, dans le
+  // titre. On détecte donc un nom réservé sur l'ensemble de ces valeurs, en direct. Le bandeau se
+  // (re)monte dès qu'une valeur matche, ce qui relance les confettis — cohérent avec la détection
+  // au fil de la frappe. La correspondance est une égalité normalisée (casse + espaces), donc le
+  // corps du contrat ne peut pas déclencher de faux positif.
+  const easterEggName = findEasterEggName([title, ...Object.values(variables)]);
+
   return (
     <form action={formAction} className="contract-editor">
+      {easterEggName ? <EasterEggBanner name={easterEggName} /> : null}
       <Card as="section" className="template-picker" aria-labelledby="template-title">
         <div className="template-picker__heading">
           <div>
