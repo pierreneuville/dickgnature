@@ -1,4 +1,6 @@
-import { useTranslations } from "next-intl";
+import type { Metadata } from "next";
+import { hasLocale, useLocale, useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import {
   Badge,
   ButtonLink,
@@ -7,9 +9,66 @@ import {
   SiteHeader,
   TrustBlock,
 } from "@/components/ui";
+import { StructuredData } from "@/components/structured-data";
+import { routing, type Locale } from "@/i18n/routing";
+import {
+  localizedAlternates,
+  localizedPath,
+  ogImagePath,
+  openGraphLocale,
+  siteName,
+  siteUrl,
+} from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const safeLocale = hasLocale(routing.locales, locale)
+    ? locale
+    : routing.defaultLocale;
+  const t = await getTranslations({ locale: safeLocale, namespace: "meta" });
+  const canonical = localizedPath(safeLocale);
+
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localizedAlternates(safeLocale),
+    robots: { index: true, follow: true },
+    openGraph: {
+      type: "website",
+      siteName,
+      title: t("title"),
+      description: t("description"),
+      url: canonical,
+      locale: openGraphLocale(safeLocale),
+      alternateLocale: routing.locales
+        .filter((candidate) => candidate !== safeLocale)
+        .map(openGraphLocale),
+      images: [
+        {
+          url: ogImagePath,
+          width: 1200,
+          height: 630,
+          alt: t("ogImageAlt"),
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+      images: [{ url: ogImagePath, alt: t("ogImageAlt") }],
+    },
+  };
+}
 
 export default function HomePage() {
   const t = useTranslations("landing");
+  const meta = useTranslations("meta");
+  const locale = useLocale() as Locale;
   const steps = [
     ["01", t("steps.callTitle"), t("steps.callBody")],
     ["02", t("steps.signTitle"), t("steps.signBody")],
@@ -18,6 +77,39 @@ export default function HomePage() {
 
   return (
     <div className="landing-page" data-tone="fun">
+      <StructuredData
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": `${siteUrl}#organization`,
+              name: siteName,
+              url: siteUrl.toString(),
+              logo: new URL("/icon-512.png", siteUrl).toString(),
+            },
+            {
+              "@type": "WebSite",
+              "@id": `${siteUrl}#website`,
+              name: siteName,
+              url: new URL(localizedPath(locale), siteUrl).toString(),
+              description: meta("description"),
+              inLanguage: locale,
+              publisher: { "@id": `${siteUrl}#organization` },
+            },
+            {
+              "@type": "SoftwareApplication",
+              name: siteName,
+              applicationCategory: "BusinessApplication",
+              operatingSystem: "Web",
+              url: new URL(localizedPath(locale), siteUrl).toString(),
+              description: meta("description"),
+              inLanguage: locale,
+              provider: { "@id": `${siteUrl}#organization` },
+            },
+          ],
+        }}
+      />
       <SiteHeader />
 
       <section className="hero" aria-labelledby="hero-title">

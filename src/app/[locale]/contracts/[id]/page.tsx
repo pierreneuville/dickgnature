@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -8,6 +9,7 @@ import {
 } from "@/lib/participants";
 import { listSignatures } from "@/lib/signatures";
 import { findEasterEggName } from "@/lib/easter-egg";
+import { localizedPrivateMetadata } from "@/lib/seo-metadata";
 import { ButtonLink, SiteHeader, ToneSurface } from "@/components/ui";
 import { EasterEggBanner } from "@/components/easter-egg-banner";
 import { ContractView } from "./contract-view";
@@ -20,6 +22,15 @@ import { SignaturesList } from "./signatures-list";
 
 // Lecture en base : rendu dynamique, jamais pré-généré au build.
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedPrivateMetadata(locale, "contractTitle");
+}
 
 export default async function ContractPage({
   params,
