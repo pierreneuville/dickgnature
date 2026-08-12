@@ -1,13 +1,24 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getContract } from "@/lib/contracts";
 import { themeFor } from "@/lib/tone";
+import { localizedPrivateMetadata } from "@/lib/seo-metadata";
 import { SiteHeader, ToneSurface } from "@/components/ui";
 import { submitSignatureAction } from "./actions";
 import { SignForm } from "./sign-form";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedPrivateMetadata(locale, "contractSignTitle");
+}
 
 export default async function SignContractPage({
   params,

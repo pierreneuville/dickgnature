@@ -1,11 +1,22 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getContractProof } from "@/lib/signed-document";
+import { localizedPrivateMetadata } from "@/lib/seo-metadata";
 import { SiteHeader, ToneSurface } from "@/components/ui";
 import { ProofView } from "./proof-view";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return localizedPrivateMetadata(locale, "proofTitle");
+}
 
 export default async function ContractProofPage({
   params,

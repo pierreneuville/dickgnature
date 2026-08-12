@@ -14,6 +14,9 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     globalSetup: ["./test/global-setup.ts"],
+    // The disposable PostgreSQL database can be remote (for example, an isolated Neon
+    // project in CI/verify), so integration tests need room for network round trips.
+    testTimeout: 30_000,
     // next-intl est distribué en ESM et importe "next/navigation" en spécifieur nu ; on l'inline
     // pour que Vite le transforme et résolve les sous-chemins du paquet "next" comme en prod.
     server: {

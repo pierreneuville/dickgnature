@@ -113,4 +113,6 @@ Le token Vercel fourni est **scoped-projet** : la CLI Vercel (`vercel link`, `wh
 pas (résolution utilisateur → 404). La configuration projet et les env vars se pilotent par l'API REST
 (`/v9/projects/…`, `/v10/projects/…/env`) ; le déploiement se déclenche par `git push` sur `main`.
 
-Point cosmétique connu : `GET /favicon.ico` → 404 (aucun favicon fourni) — sans impact fonctionnel.
+Le favicon, les icônes d’application et les routes SEO sont versionnés. Définir
+`NEXT_PUBLIC_SITE_URL=https://dickgnature.vercel.app` en production ; voir `docs/seo.md` pour les
+contrôles et soumissions post-déploiement.
