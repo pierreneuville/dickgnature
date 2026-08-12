@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { hasLocale, useLocale, useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
 import {
   Badge,
   ButtonLink,
@@ -16,6 +15,7 @@ import {
   localizedPath,
   ogImagePath,
   openGraphLocale,
+  seoCopy,
   siteName,
   siteUrl,
 } from "@/lib/seo";
@@ -29,19 +29,19 @@ export async function generateMetadata({
   const safeLocale = hasLocale(routing.locales, locale)
     ? locale
     : routing.defaultLocale;
-  const t = await getTranslations({ locale: safeLocale, namespace: "meta" });
+  const copy = seoCopy[safeLocale];
   const canonical = localizedPath(safeLocale);
 
   return {
-    title: t("title"),
-    description: t("description"),
+    title: copy.title,
+    description: copy.description,
     alternates: localizedAlternates(safeLocale),
     robots: { index: true, follow: true },
     openGraph: {
       type: "website",
       siteName,
-      title: t("title"),
-      description: t("description"),
+      title: copy.title,
+      description: copy.description,
       url: canonical,
       locale: openGraphLocale(safeLocale),
       alternateLocale: routing.locales
@@ -52,23 +52,23 @@ export async function generateMetadata({
           url: ogImagePath,
           width: 1200,
           height: 630,
-          alt: t("ogImageAlt"),
+          alt: copy.ogImageAlt,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: t("title"),
-      description: t("description"),
-      images: [{ url: ogImagePath, alt: t("ogImageAlt") }],
+      title: copy.title,
+      description: copy.description,
+      images: [{ url: ogImagePath, alt: copy.ogImageAlt }],
     },
   };
 }
 
 export default function HomePage() {
   const t = useTranslations("landing");
-  const meta = useTranslations("meta");
   const locale = useLocale() as Locale;
+  const meta = seoCopy[locale];
   const steps = [
     ["01", t("steps.callTitle"), t("steps.callBody")],
     ["02", t("steps.signTitle"), t("steps.signBody")],
@@ -93,7 +93,7 @@ export default function HomePage() {
               "@id": `${siteUrl}#website`,
               name: siteName,
               url: new URL(localizedPath(locale), siteUrl).toString(),
-              description: meta("description"),
+              description: meta.description,
               inLanguage: locale,
               publisher: { "@id": `${siteUrl}#organization` },
             },
@@ -103,7 +103,7 @@ export default function HomePage() {
               applicationCategory: "BusinessApplication",
               operatingSystem: "Web",
               url: new URL(localizedPath(locale), siteUrl).toString(),
-              description: meta("description"),
+              description: meta.description,
               inLanguage: locale,
               provider: { "@id": `${siteUrl}#organization` },
             },

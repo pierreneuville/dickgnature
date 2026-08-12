@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { hasLocale, useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import {
@@ -8,6 +7,7 @@ import {
   localizedPath,
   ogImagePath,
   openGraphLocale,
+  seoCopy,
   siteName,
 } from "@/lib/seo";
 import { ContractForm } from "./contract-form";
@@ -21,19 +21,19 @@ export async function generateMetadata({
   const safeLocale = hasLocale(routing.locales, locale)
     ? locale
     : routing.defaultLocale;
-  const t = await getTranslations({ locale: safeLocale, namespace: "meta" });
+  const copy = seoCopy[safeLocale];
   const pathname = "/contracts/new";
 
   return {
-    title: t("newContractTitle"),
-    description: t("newContractDescription"),
+    title: copy.newContractTitle,
+    description: copy.newContractDescription,
     alternates: localizedAlternates(safeLocale, pathname),
     robots: { index: true, follow: true },
     openGraph: {
       type: "website",
       siteName,
-      title: t("newContractTitle"),
-      description: t("newContractDescription"),
+      title: copy.newContractTitle,
+      description: copy.newContractDescription,
       url: localizedPath(safeLocale, pathname),
       locale: openGraphLocale(safeLocale),
       images: [
@@ -41,15 +41,15 @@ export async function generateMetadata({
           url: ogImagePath,
           width: 1200,
           height: 630,
-          alt: t("ogImageAlt"),
+          alt: copy.ogImageAlt,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: t("newContractTitle"),
-      description: t("newContractDescription"),
-      images: [{ url: ogImagePath, alt: t("ogImageAlt") }],
+      title: copy.newContractTitle,
+      description: copy.newContractDescription,
+      images: [{ url: ogImagePath, alt: copy.ogImageAlt }],
     },
   };
 }

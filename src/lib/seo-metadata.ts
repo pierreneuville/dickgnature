@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
-import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { privatePageMetadata } from "@/lib/seo";
+import { privatePageMetadata, seoCopy, type SeoCopy } from "@/lib/seo";
 
 const privateDescriptionKeys = {
   contractTitle: "contractDescription",
   contractSignTitle: "contractSignDescription",
   tokenSignTitle: "tokenSignDescription",
   proofTitle: "proofDescription",
-} as const;
+} as const satisfies Partial<Record<keyof SeoCopy, keyof SeoCopy>>;
 
 export async function localizedPrivateMetadata(
   locale: string,
@@ -18,9 +17,9 @@ export async function localizedPrivateMetadata(
   const safeLocale = hasLocale(routing.locales, locale)
     ? locale
     : routing.defaultLocale;
-  const t = await getTranslations({ locale: safeLocale, namespace: "meta" });
+  const copy = seoCopy[safeLocale];
   return {
-    ...privatePageMetadata(t(titleKey)),
-    description: t(privateDescriptionKeys[titleKey]),
+    ...privatePageMetadata(copy[titleKey]),
+    description: copy[privateDescriptionKeys[titleKey]],
   };
 }

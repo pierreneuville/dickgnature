@@ -5,6 +5,7 @@ import {
   openGraphLocale,
   privatePageMetadata,
   safeJsonLd,
+  seoCopy,
 } from "./seo";
 
 describe("SEO helpers", () => {
@@ -34,6 +35,11 @@ describe("SEO helpers", () => {
   it("maps locales to valid Open Graph locale values", () => {
     expect(openGraphLocale("en")).toBe("en_US");
     expect(openGraphLocale("pt")).toBe("pt_PT");
+  });
+
+  it("provides distinct localized metadata for every public locale", () => {
+    expect(new Set(Object.values(seoCopy).map((copy) => copy.title)).size).toBe(4);
+    expect(Object.values(seoCopy).every((copy) => copy.description.length > 40)).toBe(true);
   });
 
   it("marks private agreement pages as non-indexable", () => {
