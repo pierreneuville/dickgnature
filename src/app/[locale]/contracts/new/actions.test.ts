@@ -1,7 +1,13 @@
 // @vitest-environment node
-import { afterAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/db";
 import { createContractAction } from "./actions";
+
+// L'action lit la locale active du segment [locale] via getLocale(). Hors contexte de requête
+// (test node), on la stubbe pour vérifier qu'elle est bien capturée et persistée sur le contrat.
+vi.mock("next-intl/server", () => ({
+  getLocale: async () => "fr",
+}));
 
 function formDataOf(fields: Record<string, string>): FormData {
   const fd = new FormData();
@@ -35,6 +41,7 @@ describe("createContractAction", () => {
     const rows = await prisma.contract.findMany();
     expect(rows).toHaveLength(1);
     expect(rows[0].tone).toBe("fun");
+    expect(rows[0].locale).toBe("fr");
   });
 
   it("coerces an unknown tone to the default", async () => {

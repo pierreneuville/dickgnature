@@ -1,5 +1,6 @@
 "use server";
 
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { createContract } from "@/lib/contracts";
 import type { ErrorMessageKey } from "@/lib/error-codes";
@@ -12,10 +13,14 @@ export async function createContractAction(
   formData: FormData,
 ): Promise<CreateContractState> {
   const rawTone = formData.get("tone");
+  // La langue active (segment [locale]) devient la langue du contrat : emails et PDF signés
+  // seront rendus dans cette langue. createContract renormalise toute valeur inattendue.
+  const locale = await getLocale();
   const parsed = {
     title: String(formData.get("title") ?? ""),
     body: String(formData.get("body") ?? ""),
     tone: isTone(rawTone) ? rawTone : DEFAULT_TONE,
+    locale,
   };
 
   let id: string;

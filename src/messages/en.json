@@ -462,5 +462,28 @@
     "addSignerFailed": "Couldn't add that signer. Give it another go.",
     "signFailed": "That signature didn't stick. Give it another go.",
     "createContractFailed": "Give the title and agreement text a quick check."
+  },
+  "emails": {
+    "fun": {
+      "sender": "dickgnature",
+      "subject": "Signed, sealed, no drama 🎉 — {title}",
+      "text": "Hey {name},\n\nEveryone has signed “{title}”. Your shiny signed copy is attached. Keep it somewhere safer than the group chat.\n\nCatch you later,\ndickgnature",
+      "html": "<p>Hey {name},</p><p>Everyone has signed <strong>“{title}”</strong>.</p><p>Your shiny signed copy is attached. Keep it somewhere safer than the group chat.</p><p>Catch you later,<br/><strong>dickgnature</strong></p>"
+    },
+    "serious": {
+      "sender": "Signed agreements",
+      "subject": "Your signed agreement — {title}",
+      "text": "Hello {name},\n\nAll parties have signed “{title}”. Your copy of the signed agreement and its audit trail is attached.\n\nKind regards,\nSigning service",
+      "html": "<p>Hello {name},</p><p>All parties have signed <strong>“{title}”</strong>.</p><p>Your copy of the signed agreement and its audit trail is attached.</p><p>Kind regards,<br/>Signing service</p>"
+    }
+  },
+  "pdf": {
+    "sesBadge": "SES — Simple electronic signature",
+    "completedOn": "Document completed on {date}.",
+    "funDisclaimer": "Playful agreement — not a universal legal guarantee",
+    "agreementHeading": "Agreement text",
+    "signaturesHeading": "Signatures",
+    "consentSignatureLine": "Explicit consent: {consent} · Signature: {sign}",
+    "pageLabel": "Page {current} / {total}"
   }
 }

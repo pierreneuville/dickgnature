@@ -20,6 +20,7 @@ function proof(documentHash: string | null = "a".repeat(64)): ContractProof {
     title: "Prêt de vélo",
     body: "Sam rend le vélo vendredi.",
     tone: "serious",
+    locale: "fr",
     status: documentHash ? "completed" : "sent",
     createdAt: new Date("2026-08-11T10:00:00Z"),
     completedAt: documentHash ? new Date("2026-08-11T10:05:00Z") : null,

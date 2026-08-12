@@ -1,3 +1,4 @@
+import { getMessageTranslator, type MessageTranslator } from "@/i18n/messages";
 import { createEmailTransport, type EmailMessage, type EmailTransport } from "@/lib/email-transport";
 import { generateSignedPdf } from "@/lib/pdf";
 import {
@@ -31,39 +32,33 @@ function attachmentFilename(title: string): string {
   return `signed-agreement-${slug || "document"}.pdf`;
 }
 
-function sender(tone: ContractProof["tone"], address: string): string {
-  return tone === "fun"
-    ? `dickgnature <${address}>`
-    : `Signed agreements <${address}>`;
-}
-
+// Le sujet et le corps sont rendus dans la langue du contrat (proof.locale) via le catalogue
+// `emails`. Le ton (fun/serious) choisit la variante ; il reste orthogonal à la langue (ADR-005).
+// Seuls les champs destinés au HTML reçoivent des valeurs échappées ; texte et sujet restent bruts.
 export function buildCompletedContractEmail(
   proof: ContractProof,
   participant: ProofParticipant,
   pdf: Uint8Array,
+  t: MessageTranslator,
   fromAddress = process.env.RESEND_FROM_EMAIL?.trim() || DEFAULT_FROM_ADDRESS,
 ): EmailMessage {
-  const title = escapeHtml(proof.title);
-  const name = escapeHtml(participant.name);
+  const variant = proof.tone === "fun" ? "fun" : "serious";
   const filename = attachmentFilename(proof.title);
 
-  if (proof.tone === "fun") {
-    return {
-      from: sender(proof.tone, fromAddress),
-      to: participant.email,
-      subject: `Signed, sealed, no drama 🎉 — ${proof.title}`,
-      text: `Hey ${participant.name},\n\nEveryone has signed “${proof.title}”. Your shiny signed copy is attached. Keep it somewhere safer than the group chat.\n\nCatch you later,\ndickgnature`,
-      html: `<p>Hey ${name},</p><p>Everyone has signed <strong>“${title}”</strong>.</p><p>Your shiny signed copy is attached. Keep it somewhere safer than the group chat.</p><p>Catch you later,<br><strong>dickgnature</strong></p>`,
-      attachments: [{ filename, contentType: "application/pdf", content: pdf }],
-    };
-  }
-
   return {
-    from: sender(proof.tone, fromAddress),
+    from: `${t(`${variant}.sender`)} <${fromAddress}>`,
     to: participant.email,
-    subject: `Your signed agreement — ${proof.title}`,
-    text: `Hello ${participant.name},\n\nAll parties have signed “${proof.title}”. Your copy of the signed agreement and its audit trail is attached.\n\nKind regards,\nSigning service`,
-    html: `<p>Hello ${name},</p><p>All parties have signed <strong>“${title}”</strong>.</p><p>Your copy of the signed agreement and its audit trail is attached.</p><p>Kind regards,<br>Signing service</p>`,
+    subject: t(`${variant}.subject`, { title: proof.title }),
+    text: t(`${variant}.text`, { name: participant.name, title: proof.title }),
+    // Le corps HTML porte des balises (`<p>`, `<strong>`) : `markup` les rend en chaîne via des
+    // gestionnaires, alors que l'appel simple les rejetterait. Les valeurs interpolées restent
+    // échappées ; les balises produites ici sont sûres car statiques et sous notre contrôle.
+    html: t.markup(`${variant}.html`, {
+      name: escapeHtml(participant.name),
+      title: escapeHtml(proof.title),
+      p: (chunks) => `<p>${chunks}</p>`,
+      strong: (chunks) => `<strong>${chunks}</strong>`,
+    }),
     attachments: [{ filename, contentType: "application/pdf", content: pdf }],
   };
 }
@@ -79,11 +74,12 @@ export async function sendCompletedContractEmails(
     );
   }
 
-  // Un seul rendu PDF, partagé à l'identique entre tous les destinataires.
+  // Un seul rendu PDF et un seul traducteur, partagés à l'identique entre tous les destinataires.
+  const t = await getMessageTranslator(proof.locale, "emails");
   const pdf = await generateSignedPdf(proof);
   await Promise.all(
     proof.participants.map((participant) =>
-      transport.send(buildCompletedContractEmail(proof, participant, pdf)),
+      transport.send(buildCompletedContractEmail(proof, participant, pdf, t)),
     ),
   );
 }

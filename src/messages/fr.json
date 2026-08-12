@@ -462,5 +462,28 @@
     "addSignerFailed": "Impossible d'ajouter ce signataire. Réessayez.",
     "signFailed": "La signature n'a pas été enregistrée. Réessayez.",
     "createContractFailed": "Vérifiez le titre et le texte de l'accord."
+  },
+  "emails": {
+    "fun": {
+      "sender": "dickgnature",
+      "subject": "Signé, scellé, sans chichi 🎉 — {title}",
+      "text": "Salut {name},\n\nTout le monde a signé « {title} ». Ta copie signée toute neuve est en pièce jointe. Range-la quelque part de plus sûr que la boucle de messages.\n\nÀ bientôt,\ndickgnature",
+      "html": "<p>Salut {name},</p><p>Tout le monde a signé <strong>« {title} »</strong>.</p><p>Ta copie signée toute neuve est en pièce jointe. Range-la quelque part de plus sûr que la boucle de messages.</p><p>À bientôt,<br/><strong>dickgnature</strong></p>"
+    },
+    "serious": {
+      "sender": "Accords signés",
+      "subject": "Votre accord signé — {title}",
+      "text": "Bonjour {name},\n\nToutes les parties ont signé « {title} ». Votre copie de l’accord signé et sa piste d’audit sont en pièce jointe.\n\nCordialement,\nService de signature",
+      "html": "<p>Bonjour {name},</p><p>Toutes les parties ont signé <strong>« {title} »</strong>.</p><p>Votre copie de l’accord signé et sa piste d’audit sont en pièce jointe.</p><p>Cordialement,<br/>Service de signature</p>"
+    }
+  },
+  "pdf": {
+    "sesBadge": "SES — Signature électronique simple",
+    "completedOn": "Document finalisé le {date}.",
+    "funDisclaimer": "Accord pour rire — pas une garantie juridique universelle",
+    "agreementHeading": "Texte de l’accord",
+    "signaturesHeading": "Signatures",
+    "consentSignatureLine": "Consentement explicite : {consent} · Signature : {sign}",
+    "pageLabel": "Page {current} / {total}"
   }
 }

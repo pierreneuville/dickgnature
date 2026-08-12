@@ -462,5 +462,28 @@
     "addSignerFailed": "No se pudo añadir ese firmante. Inténtalo de nuevo.",
     "signFailed": "La firma no se registró. Inténtalo de nuevo.",
     "createContractFailed": "Revisa el título y el texto del acuerdo."
+  },
+  "emails": {
+    "fun": {
+      "sender": "dickgnature",
+      "subject": "Firmado, sellado, sin dramas 🎉 — {title}",
+      "text": "Hola {name},\n\nTodo el mundo ha firmado «{title}». Tu copia firmada está adjunta. Guárdala en un lugar más seguro que el chat del grupo.\n\nHasta pronto,\ndickgnature",
+      "html": "<p>Hola {name},</p><p>Todo el mundo ha firmado <strong>«{title}»</strong>.</p><p>Tu copia firmada está adjunta. Guárdala en un lugar más seguro que el chat del grupo.</p><p>Hasta pronto,<br/><strong>dickgnature</strong></p>"
+    },
+    "serious": {
+      "sender": "Acuerdos firmados",
+      "subject": "Tu acuerdo firmado — {title}",
+      "text": "Hola {name},\n\nTodas las partes han firmado «{title}». Se adjunta tu copia del acuerdo firmado y su registro de auditoría.\n\nUn saludo,\nServicio de firma",
+      "html": "<p>Hola {name},</p><p>Todas las partes han firmado <strong>«{title}»</strong>.</p><p>Se adjunta tu copia del acuerdo firmado y su registro de auditoría.</p><p>Un saludo,<br/>Servicio de firma</p>"
+    }
+  },
+  "pdf": {
+    "sesBadge": "SES — Firma electrónica simple",
+    "completedOn": "Documento completado el {date}.",
+    "funDisclaimer": "Acuerdo en broma — no es una garantía legal universal",
+    "agreementHeading": "Texto del acuerdo",
+    "signaturesHeading": "Firmas",
+    "consentSignatureLine": "Consentimiento explícito: {consent} · Firma: {sign}",
+    "pageLabel": "Página {current} / {total}"
   }
 }
