@@ -79,5 +79,13 @@ export function createEmailTransport(
   env: Record<string, string | undefined> = process.env,
 ): EmailTransport {
   const apiKey = env.RESEND_API_KEY?.trim();
-  return apiKey ? new ResendEmailTransport(apiKey) : new LogEmailTransport();
+  if (apiKey) {
+    return new ResendEmailTransport(apiKey);
+  }
+  if (env.NODE_ENV === "production") {
+    throw new EmailTransportError(
+      "RESEND_API_KEY is required to send email in production.",
+    );
+  }
+  return new LogEmailTransport();
 }

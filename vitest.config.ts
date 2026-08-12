@@ -44,6 +44,7 @@ export default defineConfig({
         "src/**/signature-canvas.tsx",
         "src/**/sign-form.tsx",
         "src/**/participants-form.tsx",
+        "src/**/resend-invitation.tsx",
         // Glue navigateur : déclenchement de canvas-confetti (canvas 2D absent en jsdom). La
         // détection et le garde-fou prefers-reduced-motion vivent dans src/lib/easter-egg.ts et
         // easter-egg-banner.tsx, tous deux testés.

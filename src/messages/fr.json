@@ -160,7 +160,12 @@
     "removeAria": "Retirer ce signataire",
     "addAnother": "+ Ajouter une autre personne",
     "invitePending": "Envoi du bat-signal…",
-    "invite": "Les inviter à signer"
+    "invite": "Les inviter à signer",
+    "resend": "Renvoyer l’invitation",
+    "resendAria": "Renvoyer l’invitation à signer à {name}",
+    "noticeInviteEmailFailed": "Certaines invitations ont été créées, mais leur e-mail n’a pas pu être envoyé. Utilisez « Renvoyer l’invitation » ci-dessous pour réessayer.",
+    "noticeInviteResent": "E-mail d’invitation envoyé.",
+    "noticeResendFailed": "Cet e-mail d’invitation n’a pas pu être envoyé. Veuillez réessayer."
   },
   "linkState": {
     "open": "En attente",
@@ -486,6 +491,20 @@
       "subject": "Votre accord signé — {title}",
       "text": "Bonjour {name},\n\nToutes les parties ont signé « {title} ». Votre copie de l’accord signé et sa piste d’audit sont en pièce jointe.\n\nCordialement,\nService de signature",
       "html": "<p>Bonjour {name},</p><p>Toutes les parties ont signé <strong>« {title} »</strong>.</p><p>Votre copie de l’accord signé et sa piste d’audit sont en pièce jointe.</p><p>Cordialement,<br/>Service de signature</p>"
+    }
+  },
+  "invitationEmails": {
+    "fun": {
+      "sender": "dickgnature",
+      "subject": "Tu es invité·e à signer 🖋️ — {title}",
+      "text": "Salut {name},\n\nTu es invité·e à signer « {title} ». Ouvre ton lien privé et ajoute ta signature — aucun compte nécessaire :\n\n{link}\n\nÀ noter : ce lien expire dans {days} jours.\n\nÀ bientôt,\ndickgnature",
+      "html": "<p>Salut {name},</p><p>Tu es invité·e à signer <strong>« {title} »</strong>. Ouvre ton lien privé et ajoute ta signature — aucun compte nécessaire.</p><p><link>Relire et signer</link></p><p>À noter : ce lien expire dans {days} jours.</p><p>À bientôt,<br/><strong>dickgnature</strong></p>"
+    },
+    "serious": {
+      "sender": "Invitations à signer",
+      "subject": "Invitation à signer — {title}",
+      "text": "Bonjour {name},\n\nVous êtes invité(e) à signer « {title} ». Ouvrez votre lien privé pour relire et signer l’accord — aucun compte n’est requis :\n\n{link}\n\nÀ noter : ce lien expire dans {days} jours.\n\nCordialement,\nService de signature",
+      "html": "<p>Bonjour {name},</p><p>Vous êtes invité(e) à signer <strong>« {title} »</strong>. Ouvrez votre lien privé pour relire et signer l’accord — aucun compte n’est requis.</p><p><link>Relire et signer</link></p><p>À noter : ce lien expire dans {days} jours.</p><p>Cordialement,<br/>Service de signature</p>"
     }
   },
   "pdf": {

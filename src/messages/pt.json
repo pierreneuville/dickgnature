@@ -160,7 +160,12 @@
     "removeAria": "Remover este signatário",
     "addAnother": "+ Adicionar outra pessoa",
     "invitePending": "A enviar o bat-sinal…",
-    "invite": "Convidá-los a assinar"
+    "invite": "Convidá-los a assinar",
+    "resend": "Reenviar convite",
+    "resendAria": "Reenviar o convite para assinar a {name}",
+    "noticeInviteEmailFailed": "Alguns convites foram criados, mas não foi possível enviar o e-mail. Utilize «Reenviar convite» abaixo para tentar novamente.",
+    "noticeInviteResent": "E-mail de convite enviado.",
+    "noticeResendFailed": "Não foi possível enviar esse e-mail de convite. Tente novamente."
   },
   "linkState": {
     "open": "A aguardar",
@@ -486,6 +491,20 @@
       "subject": "O seu acordo assinado — {title}",
       "text": "Olá {name},\n\nTodas as partes assinaram «{title}». A sua cópia do acordo assinado e o respetivo registo de auditoria estão em anexo.\n\nCom os melhores cumprimentos,\nServiço de assinatura",
       "html": "<p>Olá {name},</p><p>Todas as partes assinaram <strong>«{title}»</strong>.</p><p>A sua cópia do acordo assinado e o respetivo registo de auditoria estão em anexo.</p><p>Com os melhores cumprimentos,<br/>Serviço de assinatura</p>"
+    }
+  },
+  "invitationEmails": {
+    "fun": {
+      "sender": "dickgnature",
+      "subject": "Foste convidado(a) a assinar 🖋️ — {title}",
+      "text": "Olá {name},\n\nFoste convidado(a) a assinar «{title}». Abre o teu link privado e adiciona a tua assinatura — sem conta:\n\n{link}\n\nAtenção: este link expira dentro de {days} dias.\n\nAté breve,\ndickgnature",
+      "html": "<p>Olá {name},</p><p>Foste convidado(a) a assinar <strong>«{title}»</strong>. Abre o teu link privado e adiciona a tua assinatura — sem conta.</p><p><link>Rever e assinar</link></p><p>Atenção: este link expira dentro de {days} dias.</p><p>Até breve,<br/><strong>dickgnature</strong></p>"
+    },
+    "serious": {
+      "sender": "Convites para assinar",
+      "subject": "Convite para assinar — {title}",
+      "text": "Olá {name},\n\nFoi convidado(a) a assinar «{title}». Abra o seu link privado para rever e assinar o acordo — não é necessária conta:\n\n{link}\n\nNota: este link expira dentro de {days} dias.\n\nCom os melhores cumprimentos,\nServiço de assinatura",
+      "html": "<p>Olá {name},</p><p>Foi convidado(a) a assinar <strong>«{title}»</strong>. Abra o seu link privado para rever e assinar o acordo — não é necessária conta.</p><p><link>Rever e assinar</link></p><p>Nota: este link expira dentro de {days} dias.</p><p>Com os melhores cumprimentos,<br/>Serviço de assinatura</p>"
     }
   },
   "pdf": {
