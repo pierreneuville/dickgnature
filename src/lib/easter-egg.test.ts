@@ -18,6 +18,8 @@ describe("matchesEasterEggName", () => {
     expect(matchesEasterEggName("sssb")).toBe(true);
     expect(matchesEasterEggName("SSSB")).toBe(true);
     expect(matchesEasterEggName("Pierre 184")).toBe(true);
+    expect(matchesEasterEggName("Racoon")).toBe(true);
+    expect(matchesEasterEggName("racoon")).toBe(true);
   });
 
   it("matches ignoring superfluous whitespace", () => {
@@ -58,5 +60,6 @@ describe("EASTER_EGG_NAMES", () => {
   it("centralises the trigger list", () => {
     expect(EASTER_EGG_NAMES).toContain("SSSB");
     expect(EASTER_EGG_NAMES).toContain("Pierre 184");
+    expect(EASTER_EGG_NAMES).toContain("Racoon");
   });
 });

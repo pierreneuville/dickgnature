@@ -3,7 +3,7 @@
 // toucher aux pages. Toute la détection est pure et testée ; l'effet visuel vit dans confetti.ts.
 
 // Liste des noms déclencheurs. Ajouter une entrée ici suffit à étendre le clin d'œil.
-export const EASTER_EGG_NAMES = ["SSSB", "Pierre 184"] as const;
+export const EASTER_EGG_NAMES = ["SSSB", "Pierre 184", "Racoon"] as const;
 
 // Normalise un nom pour comparaison : espaces de bord retirés, espaces internes réduits à un
 // seul, casse ignorée. « pierre   184 » et «  Pierre 184 » matchent donc tous les deux.

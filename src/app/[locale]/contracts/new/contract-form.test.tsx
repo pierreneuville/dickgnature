@@ -16,6 +16,9 @@ vi.mock("@/i18n/navigation", () => ({
   useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
 }));
 
+// Le bandeau easter egg tire canvas-confetti (pas de canvas 2D en jsdom) : on stub l'effet.
+vi.mock("@/lib/confetti", () => ({ burstConfetti: () => Promise.resolve() }));
+
 function renderForm(ui: ReactNode) {
   return render(
     <NextIntlClientProvider locale="en" messages={messages}>
@@ -65,5 +68,48 @@ describe("ContractForm templates", () => {
     const body = screen.getByLabelText<HTMLTextAreaElement>("Agreement").value;
     expect(body).toContain("Camille and Noa agree");
     expect(body).not.toContain("dramatic flair encouraged");
+  });
+});
+
+describe("ContractForm easter egg", () => {
+  const eggText = /you found the easter egg/i;
+
+  it("winks when a reserved name is typed into a template party field", () => {
+    renderForm(<ContractForm />);
+    expect(screen.queryByText(eggText)).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Agreement type"), {
+      target: { value: "bet" },
+    });
+    fireEvent.change(screen.getByLabelText("Person calling the dare"), {
+      target: { value: "Racoon" },
+    });
+
+    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(screen.getByText(/Racoon, you found the easter egg/)).toBeInTheDocument();
+  });
+
+  it("winks when a reserved name is typed into the free-form title", () => {
+    renderForm(<ContractForm />);
+    fireEvent.change(screen.getByLabelText("Title"), {
+      target: { value: "Pierre 184" },
+    });
+    expect(screen.getByText(/Pierre 184, you found the easter egg/)).toBeInTheDocument();
+  });
+
+  it("ignores case and surrounding whitespace", () => {
+    renderForm(<ContractForm />);
+    fireEvent.change(screen.getByLabelText("Title"), {
+      target: { value: "  sssb  " },
+    });
+    expect(screen.getByText(eggText)).toBeInTheDocument();
+  });
+
+  it("stays silent for names that are not reserved", () => {
+    renderForm(<ContractForm />);
+    fireEvent.change(screen.getByLabelText("Title"), {
+      target: { value: "Camille" },
+    });
+    expect(screen.queryByText(eggText)).not.toBeInTheDocument();
   });
 });
