@@ -388,8 +388,18 @@ export async function signAsParticipant(
 
   // L'envoi se fait après le commit : le PDF relit ainsi une preuve complète et figée. Ce hook
   // n'est atteint que par la dernière signature, donc une seule campagne part par contrat.
+  // L'accord EST scellé dès le commit ci-dessus ; l'email n'est qu'une notification secondaire.
+  // Un échec d'envoi (ex. 403 Resend) ne doit donc PAS remonter et faire échouer la signature du
+  // dernier signataire. On l'isole, on le loggue clairement, et la complétion reste acquise.
   if (result.transitionedToCompleted) {
-    await sendCompletedContractEmails(contract.id, options.emailTransport);
+    try {
+      await sendCompletedContractEmails(contract.id, options.emailTransport);
+    } catch (error) {
+      console.error(
+        `[completion-email] envoi des notifications échoué pour le contrat ${contract.id} ` +
+          `(l'accord reste complété) : ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
   }
 
   return toDomain(result.row);

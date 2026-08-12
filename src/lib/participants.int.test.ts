@@ -1,8 +1,12 @@
 // @vitest-environment node
-import { afterAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/db";
 import { createContract, getContract } from "@/lib/contracts";
 import { listSignatures, SignatureError } from "@/lib/signatures";
+import {
+  EmailTransportError,
+  type EmailTransport,
+} from "@/lib/email-transport";
 import {
   addParticipants,
   getParticipantByToken,
@@ -116,6 +120,46 @@ describe("participants (integration, real DB)", () => {
     expect(proof?.documentHash).toMatch(/^[a-f0-9]{64}$/);
     expect(proof?.completedAt).not.toBeNull();
     expect(proof?.participants.every((item) => item.consentedAt !== null)).toBe(true);
+  });
+
+  it("seals the completion even if the notification email fails (403 Resend), and logs it", async () => {
+    const contract = await funContract();
+    const [kevin, sam] = await addParticipants(contract.id, [
+      { name: "Kevin", email: "kevin@example.fr" },
+      { name: "Sam", email: "sam@example.fr" },
+    ]);
+
+    await signAsParticipant(kevin.token, {
+      mode: "handwritten",
+      image: PNG,
+      consent: true,
+    });
+
+    // Le dernier signataire complète le contrat ; l'envoi échoue (ex. expéditeur en mode test Resend).
+    const failing: EmailTransport = {
+      send: () => {
+        throw new EmailTransportError("Resend rejected the email (403): test-mode restriction");
+      },
+    };
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    // La signature ne doit PAS échouer : l'accord est scellé, l'email n'est que secondaire.
+    const signed = await signAsParticipant(
+      sam.token,
+      { mode: "pattern", image: PNG, consent: true },
+      { emailTransport: failing },
+    );
+
+    expect(signed.signedAt).not.toBeNull();
+    expect((await getContract(contract.id))?.status).toBe("completed");
+    const proof = await getContractProof(contract.id);
+    expect(proof?.documentHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(proof?.completedAt).not.toBeNull();
+
+    // L'échec est loggué clairement, en citant le contrat, sans planter la transaction.
+    expect(consoleError).toHaveBeenCalledOnce();
+    expect(consoleError.mock.calls[0]?.[0]).toContain(contract.id);
+    consoleError.mockRestore();
   });
 
   it("requires explicit consent and records the first opening only once", async () => {
