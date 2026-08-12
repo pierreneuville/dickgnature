@@ -40,7 +40,9 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # node 24 (npm 11) : même résolveur que le package-lock.json versionné. node 20 (npm 10)
+          # rejette ce lock (drift @swc/helpers) alors qu'il est cohérent pour npm 11.
+          node-version: 24
           cache: npm
 
       - run: npm ci
