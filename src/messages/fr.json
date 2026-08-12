@@ -178,10 +178,21 @@
     "pickerHandwrittenLabel": "Dessinez-la vous-même",
     "pickerHandwrittenHint": "Tracez votre vraie signature au doigt ou à la souris.",
     "pickerPatternLabel": "Utilisez le tampon coquin",
-    "pickerPatternHint": "Suivez le guide ou posez le tampon en un geste.",
+    "pickerPatternHint": "Choisissez un gribouillis dans la galerie pour le poser en un geste.",
     "handwritten": "Signature manuscrite",
     "pattern": "Gribouillis de signature",
     "addedAlt": "{mode} ajoutée"
+  },
+  "signatureStamps": {
+    "galleryAria": "Choisissez un gribouillis de signature",
+    "labels": {
+      "classic": "Le classique",
+      "lean": "L'incliné",
+      "southpaw": "Le gaucher",
+      "grand": "Le grand",
+      "petite": "Le petit",
+      "curvy": "Le tout en courbes"
+    }
   },
   "sign": {
     "heading": "Signer : {title}",

@@ -1,39 +1,34 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import SignaturePad from "signature_pad";
 import type { SignatureMode } from "@/lib/signatures";
-
-// Tracé du motif « tampon » : une signature-gag préfabriquée, apposée en un tap. Coordonnées
-// normalisées (0..1) redimensionnées à la taille du canvas. Fun-only par construction (le bouton
-// n'existe qu'en mode "pattern", lui-même réservé au ton "fun" côté domaine).
-const STAMP_PATH: ReadonlyArray<readonly [number, number]> = [
-  [0.30, 0.62],
-  [0.34, 0.42],
-  [0.40, 0.34],
-  [0.47, 0.36],
-  [0.50, 0.46],
-  [0.50, 0.60],
-  [0.52, 0.60],
-  [0.52, 0.46],
-  [0.55, 0.36],
-  [0.62, 0.34],
-  [0.68, 0.42],
-  [0.72, 0.62],
-];
+import type { Tone } from "@/lib/tone";
+import {
+  stampsForTone,
+  stampToPointGroups,
+  type SignatureStamp,
+} from "@/lib/signature-stamps";
+import { StampGallery } from "./stamp-gallery";
 
 // Glue navigateur (canvas HTML5 via signature_pad). Non couvrable en jsdom (pas de contexte 2D) :
-// exclue du coverage, comme la glue de routing. La logique testable vit dans src/lib/signatures.ts
-// et dans mode-picker/signatures-list.
+// exclue du coverage, comme la glue de routing. La logique testable vit dans src/lib/signatures.ts,
+// src/lib/signature-stamps.ts et dans mode-picker/stamp-gallery/signatures-list.
 export function SignatureCanvas({
   mode,
+  tone,
   onChange,
 }: {
   mode: SignatureMode;
+  tone: Tone;
   onChange: (dataUrl: string | null) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const padRef = useRef<SignaturePad | null>(null);
+  const [selectedStamp, setSelectedStamp] = useState<string | null>(null);
+
+  // Fun-only : vide en ton "serious", d'où une galerie qui ne se rend jamais hors "fun".
+  const stamps = stampsForTone(tone);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -54,6 +49,7 @@ export function SignatureCanvas({
       const ctx = canvas.getContext("2d");
       ctx?.scale(ratio, ratio);
       pad.clear();
+      setSelectedStamp(null);
       onChange(null);
     };
 
@@ -74,6 +70,7 @@ export function SignatureCanvas({
 
   const clear = () => {
     padRef.current?.clear();
+    setSelectedStamp(null);
     onChange(null);
   };
 
@@ -86,56 +83,25 @@ export function SignatureCanvas({
     onChange(pad.isEmpty() ? null : pad.toDataURL("image/png"));
   };
 
-  const stamp = () => {
+  // Apposer un motif de la galerie : on repart d'un canvas propre puis on injecte les tracés du
+  // motif (redimensionnés à la taille CSS du canvas), exactement comme signature_pad enregistre un
+  // tracé manuel. L'export PNG est donc identique à toute autre signature → aucune régression preuve.
+  const pickStamp = (stamp: SignatureStamp) => {
     const pad = padRef.current;
     const canvas = canvasRef.current;
     if (!pad || !canvas) return;
     const ratio = Math.max(window.devicePixelRatio || 1, 1);
     const w = canvas.width / ratio;
     const h = canvas.height / ratio;
-    const points = STAMP_PATH.map(([x, y]) => ({
-      x: x * w,
-      y: y * h,
-      time: Date.now(),
-      pressure: 0,
-    }));
-    pad.fromData([
-      ...pad.toData(),
-      {
-        penColor: "#e11d8f",
-        dotSize: 0,
-        minWidth: 1.5,
-        maxWidth: 3.5,
-        velocityFilterWeight: 0.7,
-        compositeOperation: "source-over",
-        points,
-      },
-    ]);
+    pad.clear();
+    pad.fromData(stampToPointGroups(stamp, w, h));
+    setSelectedStamp(stamp.id);
     onChange(pad.toDataURL("image/png"));
   };
 
   return (
     <div className="signature-canvas">
-      <div className={`canvas-frame${mode === "pattern" ? " has-stencil" : ""}`}>
-        {mode === "pattern" ? (
-          <svg
-            className="stencil"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <polyline
-              points={STAMP_PATH.map(([x, y]) => `${x * 100},${y * 100}`).join(
-                " ",
-              )}
-              fill="none"
-              stroke="#e11d8f"
-              strokeWidth="2"
-              strokeDasharray="3 3"
-              opacity="0.35"
-            />
-          </svg>
-        ) : null}
+      <div className="canvas-frame">
         <canvas
           ref={canvasRef}
           className="canvas-surface"
@@ -150,12 +116,15 @@ export function SignatureCanvas({
         <button type="button" className="ghost" onClick={clear}>
           Clear the lot
         </button>
-        {mode === "pattern" ? (
-          <button type="button" className="ghost" onClick={stamp}>
-            Drop the stamp
-          </button>
-        ) : null}
       </div>
+
+      {mode === "pattern" ? (
+        <StampGallery
+          stamps={stamps}
+          selected={selectedStamp}
+          onPick={pickStamp}
+        />
+      ) : null}
     </div>
   );
 }

@@ -178,10 +178,21 @@
     "pickerHandwrittenLabel": "Desenhe-a você mesmo",
     "pickerHandwrittenHint": "Trace a sua assinatura real com o dedo ou o rato.",
     "pickerPatternLabel": "Use o carimbo atrevido",
-    "pickerPatternHint": "Siga o guia ou pouse o carimbo num toque.",
+    "pickerPatternHint": "Escolha um rabisco na galeria para pousá-lo num toque.",
     "handwritten": "Assinatura manuscrita",
     "pattern": "Rabisco de assinatura",
     "addedAlt": "{mode} adicionada"
+  },
+  "signatureStamps": {
+    "galleryAria": "Escolha um rabisco de assinatura",
+    "labels": {
+      "classic": "O clássico",
+      "lean": "O inclinado",
+      "southpaw": "O canhoto",
+      "grand": "O grande",
+      "petite": "O pequeno",
+      "curvy": "O curvilíneo"
+    }
   },
   "sign": {
     "heading": "Assinar: {title}",

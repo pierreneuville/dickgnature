@@ -9,7 +9,7 @@ import { DEFAULT_TONE, isTone, type Tone } from "@/lib/tone";
 
 // Modes de signature (S2).
 // - "handwritten" : vraie signature manuscrite, disponible QUEL QUE SOIT le ton (défaut serious).
-// - "pattern"     : motif parodique guidé (stencil + tampon), réservé au ton "fun".
+// - "pattern"     : galerie de motifs parodiques posables en un tap, réservée au ton "fun".
 // La contrainte "pattern → fun uniquement" est une règle de domaine appliquée ici, jamais
 // déléguée au client (le mode serious ne doit jamais se voir imposer l'humour — cf. spec).
 export const SIGNATURE_MODES = ["handwritten", "pattern"] as const;

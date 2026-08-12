@@ -178,10 +178,21 @@
     "pickerHandwrittenLabel": "Dibújala tú mismo",
     "pickerHandwrittenHint": "Traza tu firma real con el dedo o el ratón.",
     "pickerPatternLabel": "Usa el sello pícaro",
-    "pickerPatternHint": "Sigue la guía o coloca el sello de un toque.",
+    "pickerPatternHint": "Elige un garabato de la galería para colocarlo de un toque.",
     "handwritten": "Firma manuscrita",
     "pattern": "Garabato de firma",
     "addedAlt": "{mode} añadida"
+  },
+  "signatureStamps": {
+    "galleryAria": "Elige un garabato de firma",
+    "labels": {
+      "classic": "El clásico",
+      "lean": "El inclinado",
+      "southpaw": "El zurdo",
+      "grand": "El grande",
+      "petite": "El pequeño",
+      "curvy": "El curvilíneo"
+    }
   },
   "sign": {
     "heading": "Firmar: {title}",

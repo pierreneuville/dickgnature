@@ -1334,12 +1334,47 @@ form > button,
   border-radius: 10px;
 }
 
-.stencil {
-  position: absolute;
-  inset: 0;
+.stamp-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.stamp-thumb {
+  margin: 0;
+  padding: 0.25rem;
+  aspect-ratio: 1;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.stamp-thumb:hover {
+  transform: translateY(-2px);
+}
+
+.stamp-thumb.is-selected {
+  border-color: var(--fg);
+  box-shadow: inset 0 0 0 1px var(--fg);
+}
+
+.stamp-thumb svg {
+  display: block;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-thumb {
+    transition: none;
+  }
+
+  .stamp-thumb:hover {
+    transform: none;
+  }
 }
 
 .canvas-actions {
