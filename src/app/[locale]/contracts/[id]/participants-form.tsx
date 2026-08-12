@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui";
 import {
   addParticipantsAction,
   type ParticipantsState,
@@ -60,29 +61,32 @@ export function ParticipantsForm({ contractId }: { contractId: string }) {
             onChange={(event) => update(row.key, "email", event.target.value)}
           />
           {rows.length > 1 ? (
-            <button
+            <Button
               type="button"
-              className="ghost"
+              variant="quiet"
+              size="sm"
+              className="participant-remove"
               onClick={() => removeRow(row.key)}
               aria-label={t("removeAria")}
             >
               ✕
-            </button>
+            </Button>
           ) : null}
         </div>
       ))}
 
       <div className="participants-form-actions">
-        <button
+        <Button
           type="button"
-          className="ghost"
+          variant="quiet"
+          size="sm"
           onClick={() => setRows((current) => [...current, emptyRow()])}
         >
           {t("addAnother")}
-        </button>
-        <button type="submit" disabled={pending}>
+        </Button>
+        <Button type="submit" size="sm" disabled={pending}>
           {pending ? t("invitePending") : t("invite")}
-        </button>
+        </Button>
       </div>
 
       {state.error ? <p className="error">{tErrors(state.error)}</p> : null}

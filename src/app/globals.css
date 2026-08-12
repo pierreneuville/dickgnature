@@ -1540,14 +1540,20 @@ button.ghost {
 }
 
 .participant-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem 0.75rem;
-  flex-wrap: wrap;
-  padding: 0.6rem 0.75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.75rem 1rem;
+  padding: 1rem;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: #fff;
+}
+
+.participant-identity {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
 }
 
 .participant-name {
@@ -1564,7 +1570,7 @@ button.ghost {
 }
 
 .participant-state {
-  margin-left: auto;
+  align-self: start;
   font-size: 0.75rem;
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
@@ -1586,17 +1592,25 @@ button.ghost {
 
 .participant-link {
   display: inline-flex;
+  width: 100%;
   min-height: 2.75rem;
   align-items: center;
   font-size: 0.8rem;
-  color: var(--accent, #e11d8f);
+}
+
+.participant-actions {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 0.5rem;
 }
 
 .participant-resend {
-  display: inline-flex;
+  display: block;
+  width: 100%;
 }
 
 .participant-resend button {
+  width: 100%;
   font-size: 0.8rem;
 }
 
@@ -1629,9 +1643,9 @@ button.ghost {
 }
 
 .participant-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem;
-  flex-wrap: wrap;
 }
 
 .participant-row input {
@@ -1644,14 +1658,46 @@ button.ghost {
 }
 
 .participants-form-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem;
-  flex-wrap: wrap;
   align-items: center;
 }
 
 .participants-form-actions > button {
+  width: 100%;
   min-height: 2.75rem;
+}
+
+.participant-remove {
+  width: 2.75rem;
+  justify-self: end;
+}
+
+@media (min-width: 700px) {
+  .participant-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .participant-link,
+  .participant-resend,
+  .participant-resend button {
+    width: auto;
+  }
+
+  .participant-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  }
+
+  .participants-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .participants-form-actions > button {
+    width: auto;
+  }
 }
 
 /* ---- Page de signature publique (tokenisée) ---- */
