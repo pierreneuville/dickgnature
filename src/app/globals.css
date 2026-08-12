@@ -47,11 +47,15 @@
 }
 
 html {
+  max-width: 100%;
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
 body {
+  max-width: 100%;
   margin: 0;
+  overflow-x: clip;
   color: var(--ink);
   background: var(--paper);
   font-family: var(--font-body);
@@ -107,9 +111,28 @@ select {
 }
 
 .container {
-  width: min(100% - 2rem, 1180px);
+  width: min(calc(100% - 2rem), 1180px);
+  min-width: 0;
   margin-inline: auto;
   padding-block: 1.25rem 4rem;
+}
+
+main,
+.tone-surface,
+article,
+section,
+form,
+fieldset,
+.ui-card,
+.ui-field {
+  min-width: 0;
+  max-width: 100%;
+}
+
+img,
+svg,
+canvas {
+  max-width: 100%;
 }
 
 h1,
@@ -122,6 +145,7 @@ p {
 h1,
 h2,
 h3 {
+  overflow-wrap: anywhere;
   line-height: 1.08;
   letter-spacing: -0.035em;
 }
@@ -150,6 +174,7 @@ h3 {
 /* Shared primitives */
 .ui-button {
   display: inline-flex;
+  max-width: 100%;
   min-height: 2.75rem;
   align-items: center;
   justify-content: center;
@@ -197,7 +222,7 @@ h3 {
 }
 
 .ui-button--sm {
-  min-height: 2.4rem;
+  min-height: 2.75rem;
   padding: 0.65rem 1rem;
   font-size: 0.88rem;
 }
@@ -281,6 +306,7 @@ input[type="text"],
 input[type="email"],
 textarea,
 select {
+  max-width: 100%;
   width: 100%;
   min-height: 3rem;
   padding: 0.75rem 0.9rem;
@@ -389,17 +415,21 @@ textarea {
 
 .site-header {
   display: flex;
+  min-width: 0;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  flex-wrap: wrap;
   padding-block: 0.25rem 1.5rem;
 }
 
 /* Regroupe la nav (repliée en mobile) et le sélecteur de langue (toujours visible). */
 .site-header__actions {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 1.25rem;
+  margin-left: auto;
 }
 
 .site-header__nav {
@@ -968,6 +998,7 @@ textarea {
 
 /* Existing contract surfaces remain compatible while they migrate to primitives. */
 form {
+  width: 100%;
   max-width: 46rem;
 }
 
@@ -979,6 +1010,7 @@ form > label {
 form > button,
 .button {
   display: inline-flex;
+  max-width: 100%;
   min-height: 2.8rem;
   align-items: center;
   justify-content: center;
@@ -994,10 +1026,12 @@ form > button,
 }
 
 .contract-body {
+  max-width: 100%;
   padding: 1.25rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--surface);
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
 
@@ -1056,6 +1090,7 @@ form > button,
 .template-picker,
 .contract-fields {
   min-width: 0;
+  max-width: 100%;
   padding: 1.25rem;
 }
 
@@ -1165,7 +1200,7 @@ form > button,
 
 @media (min-width: 700px) {
   .container {
-    width: min(100% - 3rem, 1180px);
+    width: min(calc(100% - 3rem), 1180px);
     padding-top: 1.5rem;
   }
 
@@ -1283,7 +1318,7 @@ form > button,
 .signatures {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
 }
 
 .signatures h2 {
@@ -1292,7 +1327,7 @@ form > button,
 }
 
 .signatures-empty {
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 .signatures-list {
@@ -1315,19 +1350,21 @@ form > button,
   width: 220px;
   height: 110px;
   object-fit: contain;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 8px;
   background: #fafafa;
 }
 
 .signature-mode {
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 /* ---- Sélecteur de mode ---- */
 .mode-picker {
   display: flex;
+  min-width: 0;
+  max-width: 100%;
   gap: 0.75rem;
   margin-bottom: 1rem;
   flex-wrap: wrap;
@@ -1335,6 +1372,8 @@ form > button,
 
 .mode-tab {
   flex: 1 1 180px;
+  min-width: 0;
+  min-height: 2.75rem;
   margin: 0;
   text-align: left;
   display: flex;
@@ -1342,14 +1381,14 @@ form > button,
   gap: 0.2rem;
   padding: 0.7rem 0.9rem;
   background: #fff;
-  color: var(--fg);
-  border: 1px solid var(--border);
+  color: var(--ink);
+  border: 1px solid var(--line);
   border-radius: 10px;
 }
 
 .mode-tab.is-active {
-  border-color: var(--fg);
-  box-shadow: inset 0 0 0 1px var(--fg);
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
 }
 
 .mode-tab-label {
@@ -1359,13 +1398,18 @@ form > button,
 .mode-tab-hint {
   font-weight: 400;
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 /* ---- Canvas de signature ---- */
+.signature-canvas {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .canvas-frame {
   position: relative;
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--line);
   border-radius: 10px;
   background: #fff;
   touch-action: none;
@@ -1390,7 +1434,7 @@ form > button,
   padding: 0.25rem;
   aspect-ratio: 1;
   background: #fff;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 10px;
   cursor: pointer;
   transition: border-color 0.15s ease, transform 0.15s ease;
@@ -1401,8 +1445,8 @@ form > button,
 }
 
 .stamp-thumb.is-selected {
-  border-color: var(--fg);
-  box-shadow: inset 0 0 0 1px var(--fg);
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
 }
 
 .stamp-thumb svg {
@@ -1429,11 +1473,13 @@ form > button,
 }
 
 button.ghost {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   margin-top: 0;
   padding: 0.4rem 0.75rem;
   background: transparent;
-  color: var(--fg);
-  border: 1px solid var(--border);
+  color: var(--ink);
+  border: 1px solid var(--line);
   border-radius: 8px;
   font-size: 0.85rem;
 }
@@ -1448,13 +1494,16 @@ button.ghost {
   align-items: flex-start;
   gap: 0.65rem;
   padding: 0.8rem 0.9rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 500;
 }
 
 .consent-field input {
+  width: 1.25rem;
+  min-width: 1.25rem;
+  height: 1.25rem;
   margin-top: 0.2rem;
 }
 
@@ -1463,7 +1512,7 @@ button.ghost {
 }
 
 .back-link a {
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 /* ---- Participants (suivi créateur, S3) ---- */
@@ -1473,11 +1522,11 @@ button.ghost {
 
 .contract-status {
   font-size: 0.9rem;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 .participants-empty {
-  color: var(--muted);
+  color: var(--ink-soft);
   font-size: 0.9rem;
 }
 
@@ -1496,17 +1545,21 @@ button.ghost {
   gap: 0.5rem 0.75rem;
   flex-wrap: wrap;
   padding: 0.6rem 0.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 10px;
   background: #fff;
 }
 
 .participant-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-weight: 600;
 }
 
 .participant-email {
-  color: var(--muted);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--ink-soft);
   font-size: 0.85rem;
 }
 
@@ -1515,8 +1568,8 @@ button.ghost {
   font-size: 0.75rem;
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  color: var(--muted);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
 }
 
 .participant-state.is-signed {
@@ -1532,6 +1585,9 @@ button.ghost {
 }
 
 .participant-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   font-size: 0.8rem;
   color: var(--accent, #e11d8f);
 }
@@ -1549,7 +1605,7 @@ button.ghost {
   margin: 0 0 0.75rem;
   padding: 0.6rem 0.85rem;
   border-radius: 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   font-size: 0.9rem;
 }
 
@@ -1580,8 +1636,9 @@ button.ghost {
 
 .participant-row input {
   flex: 1 1 12rem;
+  min-width: 0;
   padding: 0.5rem 0.65rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 8px;
   font: inherit;
 }
@@ -1593,15 +1650,19 @@ button.ghost {
   align-items: center;
 }
 
+.participants-form-actions > button {
+  min-height: 2.75rem;
+}
+
 /* ---- Page de signature publique (tokenisée) ---- */
 .signing-panel {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
 }
 
 .signer-identity {
-  color: var(--muted);
+  color: var(--ink-soft);
   font-size: 0.9rem;
 }
 
@@ -1619,8 +1680,8 @@ button.ghost {
 .secondary-button {
   margin-left: 0.65rem;
   background: #fff;
-  color: var(--fg);
-  border: 1px solid var(--border);
+  color: var(--ink);
+  border: 1px solid var(--line);
 }
 
 .proof-link a {
@@ -1642,7 +1703,7 @@ button.ghost {
 }
 
 .proof-intro {
-  color: var(--muted);
+  color: var(--ink-soft);
   max-width: 62ch;
 }
 
@@ -1655,7 +1716,7 @@ button.ghost {
 
 .proof-pillars div {
   padding: 1rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 12px;
   background: #fafafa;
 }
@@ -1666,7 +1727,7 @@ button.ghost {
 
 .proof-pillars dd {
   margin: 0.4rem 0 0;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 .document-hash {
@@ -1683,7 +1744,7 @@ button.ghost {
 }
 
 .proof-pending {
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 .audit-log {
@@ -1698,14 +1759,14 @@ button.ghost {
 }
 
 .audit-log time {
-  color: var(--muted);
+  color: var(--ink-soft);
   font-family: ui-monospace, monospace;
   font-size: 0.82rem;
 }
 
 .audit-log li span:last-child:not(:nth-child(2)) {
   grid-column: 2;
-  color: var(--muted);
+  color: var(--ink-soft);
   font-size: 0.85rem;
 }
 
