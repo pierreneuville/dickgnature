@@ -1,7 +1,18 @@
 {
   "meta": {
     "title": "dickgnature — Deux personnes, un accord, zéro prise de tête",
-    "description": "Créez et signez un accord à deux en moins de 60 secondes, sans compte pour le signataire et avec une preuve claire."
+    "description": "Créez et signez un accord à deux en moins de 60 secondes, sans compte pour le signataire et avec une preuve claire.",
+    "ogImageAlt": "Un accord illustré et ludique signé par deux personnes avec une confirmation bien visible",
+    "newContractTitle": "Créez un accord en moins de 60 secondes — dickgnature",
+    "newContractDescription": "Partez d’un modèle en français clair, adaptez-le et envoyez un lien de signature privé — aucun compte signataire requis.",
+    "contractTitle": "Votre accord privé — dickgnature",
+    "contractDescription": "Consultez l’accord privé, ses participants, ses signatures et son état d’avancement.",
+    "contractSignTitle": "Signez votre accord privé — dickgnature",
+    "contractSignDescription": "Relisez l’accord privé et ajoutez votre signature lorsque vous êtes prêt.",
+    "tokenSignTitle": "Relisez et signez votre accord — dickgnature",
+    "tokenSignDescription": "Ouvrez votre invitation privée pour relire et signer l’accord en toute sécurité.",
+    "proofTitle": "Preuve privée de l’accord — dickgnature",
+    "proofDescription": "Consultez la preuve d’achèvement privée et la piste des signatures de cet accord."
   },
   "common": {
     "skipToContent": "Aller au contenu",
@@ -227,5 +238,213 @@
     "body": "Voyez ça comme notre petit clin d’œil rien que pour vous. Continuez — votre signature compte toujours, promis.",
     "dismiss": "C’est noté, merci",
     "regionLabel": "Une petite surprise coquine"
+  },
+  "templates": {
+    "iou": {
+      "title": "Reconnaissance de dette",
+      "description": "Notez l'argent dû et la date à laquelle il rentre au bercail.",
+      "vars": {
+        "debtor": {
+          "label": "Personne qui rembourse",
+          "placeholder": "Camille Martin"
+        },
+        "creditor": {
+          "label": "Personne qui a avancé",
+          "placeholder": "Noa Bernard"
+        },
+        "amount": {
+          "label": "Montant",
+          "placeholder": "120 €"
+        },
+        "dueDate": {
+          "label": "Date de remboursement",
+          "placeholder": "30 septembre 2026"
+        }
+      },
+      "body": {
+        "fun": "{{debtor}} confirme que {{creditor}} a sauvé la mise en avançant {{amount}}. Promis juré : la totalité sera remboursée d'ici le {{dueDate}}. Chacun garde une copie, au cas où une mémoire deviendrait soudain créative.",
+        "serious": "{{debtor}} reconnaît devoir à {{creditor}} la somme de {{amount}}. Ce montant sera remboursé en totalité au plus tard le {{dueDate}}. Les deux parties acceptent ces termes et en conservent chacune une copie."
+      }
+    },
+    "item-loan": {
+      "title": "Objet prêté",
+      "description": "Prêtez quelque chose sans perdre le fil de qui le rend, ni quand.",
+      "vars": {
+        "lender": {
+          "label": "Personne qui prête",
+          "placeholder": "Noa Bernard"
+        },
+        "borrower": {
+          "label": "Personne qui emprunte",
+          "placeholder": "Camille Martin"
+        },
+        "item": {
+          "label": "Objet prêté",
+          "placeholder": "Vidéoprojecteur Epson"
+        },
+        "returnDate": {
+          "label": "Date de retour",
+          "placeholder": "18 août 2026"
+        }
+      },
+      "body": {
+        "fun": "{{lender}} confie le précieux {{item}} à {{borrower}}. La mission : le traiter comme le dernier sur Terre et le rendre complet, intact, et au plus tard le {{returnDate}}.",
+        "serious": "{{lender}} prête à {{borrower}} l'objet suivant : {{item}}. {{borrower}} s'engage à en prendre raisonnablement soin et à le rendre complet et en bon état pour le {{returnDate}}."
+      }
+    },
+    "shared-expenses": {
+      "title": "Dépenses partagées",
+      "description": "Réglez qui paie quoi avant que la conversation de groupe ne vire au malaise.",
+      "vars": {
+        "partyOne": {
+          "label": "Première personne",
+          "placeholder": "Camille Martin"
+        },
+        "partyTwo": {
+          "label": "Deuxième personne",
+          "placeholder": "Noa Bernard"
+        },
+        "expense": {
+          "label": "Dépense partagée",
+          "placeholder": "week-end à Marseille"
+        },
+        "amount": {
+          "label": "Montant total",
+          "placeholder": "460 €"
+        },
+        "settlementDate": {
+          "label": "Date de règlement",
+          "placeholder": "31 août 2026"
+        }
+      },
+      "body": {
+        "fun": "{{partyOne}} et {{partyTwo}} partagent « {{expense}} », d'un total de {{amount}}, à parts égales. Tout sera réglé d'ici le {{settlementDate}}. Paix des ménages rétablie ; tableur facultatif.",
+        "serious": "{{partyOne}} et {{partyTwo}} conviennent de partager à parts égales la dépense suivante : {{expense}}, pour un total de {{amount}}. Tout solde entre les parties sera réglé au plus tard le {{settlementDate}}."
+      }
+    },
+    "bet": {
+      "title": "Pari ou défi",
+      "description": "Gravez un défi glorieux et ses enjeux dans le marbre numérique.",
+      "vars": {
+        "challenger": {
+          "label": "Personne qui lance le défi",
+          "placeholder": "Camille Martin"
+        },
+        "opponent": {
+          "label": "Personne qui le relève",
+          "placeholder": "Noa Bernard"
+        },
+        "challenge": {
+          "label": "Le défi",
+          "placeholder": "courir 10 km en moins d'une heure"
+        },
+        "deadline": {
+          "label": "Échéance",
+          "placeholder": "1er octobre 2026"
+        },
+        "stake": {
+          "label": "Les enjeux",
+          "placeholder": "un brunch fait maison"
+        }
+      },
+      "body": {
+        "fun": "{{challenger}} met officiellement {{opponent}} au défi de {{challenge}} avant le {{deadline}}. Si le pari est tenu, {{challenger}} doit {{stake}}. Sinon, ce sera {{opponent}}. Mauvais perdant interdit ; sens du drame encouragé.",
+        "serious": "{{challenger}} et {{opponent}} conviennent du défi suivant : {{challenge}}, à accomplir avant le {{deadline}}. En cas de réussite, {{challenger}} fournira {{stake}} ; sinon, {{opponent}} le fournira. Les deux parties détermineront ensemble si le défi a été accompli."
+      }
+    },
+    "roommates": {
+      "title": "Accord de colocation",
+      "description": "Fixez une règle claire pour la vie et les frais du foyer partagé.",
+      "vars": {
+        "roommateOne": {
+          "label": "Premier colocataire",
+          "placeholder": "Camille Martin"
+        },
+        "roommateTwo": {
+          "label": "Deuxième colocataire",
+          "placeholder": "Noa Bernard"
+        },
+        "address": {
+          "label": "Adresse du logement",
+          "placeholder": "12 Rue des Lilas, Lyon"
+        },
+        "sharedExpense": {
+          "label": "Frais partagés",
+          "placeholder": "électricité, internet et produits ménagers"
+        },
+        "splitRule": {
+          "label": "Répartition",
+          "placeholder": "moitié-moitié"
+        },
+        "startDate": {
+          "label": "Date de début",
+          "placeholder": "1er septembre 2026"
+        }
+      },
+      "body": {
+        "fun": "À partir du {{startDate}}, {{roommateOne}} et {{roommateTwo}}, colocataires au {{address}}, partagent {{sharedExpense}} comme suit : {{splitRule}}. Chacun paie à temps et signale tout souci — un frigo vide, c'est déjà bien assez de drame domestique.",
+        "serious": "À partir du {{startDate}}, {{roommateOne}} et {{roommateTwo}}, résidents au {{address}}, conviennent de partager les frais suivants : {{sharedExpense}}. La répartition sera : {{splitRule}}. Chaque partie informera promptement l'autre de toute difficulté de paiement."
+      }
+    },
+    "small-service": {
+      "title": "Petit service",
+      "description": "Cadrez un petit travail, son prix et sa date de livraison.",
+      "vars": {
+        "provider": {
+          "label": "Personne qui réalise le travail",
+          "placeholder": "Camille Martin"
+        },
+        "client": {
+          "label": "Personne qui l'engage",
+          "placeholder": "Noa Bernard"
+        },
+        "service": {
+          "label": "Le service",
+          "placeholder": "photographier la fête d'anniversaire"
+        },
+        "amount": {
+          "label": "Prix convenu",
+          "placeholder": "250 €"
+        },
+        "deliveryDate": {
+          "label": "Date de livraison",
+          "placeholder": "15 octobre 2026"
+        }
+      },
+      "body": {
+        "fun": "{{provider}} réalisera ce qui suit pour {{client}} : {{service}}. Livraison attendue pour le {{deliveryDate}}, contre {{amount}}. Retours clairs, paiement à l'heure et check triomphal inclus.",
+        "serious": "{{provider}} s'engage à fournir à {{client}} le service suivant : {{service}}. La livraison aura lieu au plus tard le {{deliveryDate}}. En contrepartie, {{client}} paiera {{amount}} selon les termes convenus entre les parties."
+      }
+    },
+    "simple-nda": {
+      "title": "Accord de confidentialité simple",
+      "description": "Gardez confidentielle une information précise et partagée.",
+      "vars": {
+        "partyOne": {
+          "label": "Première partie",
+          "placeholder": "Camille Martin"
+        },
+        "partyTwo": {
+          "label": "Deuxième partie",
+          "placeholder": "Noa Bernard"
+        },
+        "confidentialInfo": {
+          "label": "Information confidentielle",
+          "placeholder": "le prototype du projet Orion"
+        },
+        "allowedPurpose": {
+          "label": "Usage autorisé",
+          "placeholder": "évaluer une collaboration potentielle"
+        },
+        "endDate": {
+          "label": "Fin de confidentialité",
+          "placeholder": "31 décembre 2027"
+        }
+      },
+      "body": {
+        "fun": "{{partyOne}} et {{partyTwo}} gardent ceci sous clé : {{confidentialInfo}}. Cela ne peut servir qu'à {{allowedPurpose}} et ne sera partagé avec personne d'autre sans accord préalable jusqu'au {{endDate}}. Bouche cousue, accord signé.",
+        "serious": "{{partyOne}} et {{partyTwo}} conviennent de garder confidentielle l'information suivante : {{confidentialInfo}}. Elle ne peut être utilisée que pour {{allowedPurpose}} et ne peut être communiquée à un tiers sans accord écrit préalable jusqu'au {{endDate}}."
+      }
+    }
   }
 }

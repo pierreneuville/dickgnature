@@ -1,7 +1,18 @@
 {
   "meta": {
     "title": "dickgnature — Duas pessoas, um acordo, zero complicação",
-    "description": "Crie e assine um acordo entre duas pessoas em menos de 60 segundos, sem conta para quem assina e com uma prova clara."
+    "description": "Crie e assine um acordo entre duas pessoas em menos de 60 segundos, sem conta para quem assina e com uma prova clara.",
+    "ogImageAlt": "Um acordo ilustrado e divertido assinado por duas pessoas com uma confirmação bem visível",
+    "newContractTitle": "Crie um acordo em menos de 60 segundos — dickgnature",
+    "newContractDescription": "Comece com um modelo em português claro, personalize-o e envie um link privado para assinatura — sem conta para assinar.",
+    "contractTitle": "O seu acordo privado — dickgnature",
+    "contractDescription": "Consulte o acordo privado, os participantes, as assinaturas e o estado atual.",
+    "contractSignTitle": "Assine o seu acordo privado — dickgnature",
+    "contractSignDescription": "Reveja o acordo privado e adicione a sua assinatura quando estiver pronto.",
+    "tokenSignTitle": "Reveja e assine o seu acordo — dickgnature",
+    "tokenSignDescription": "Abra o seu convite privado para rever e assinar o acordo em segurança.",
+    "proofTitle": "Prova privada do acordo — dickgnature",
+    "proofDescription": "Consulte a prova privada de conclusão e o registo de assinaturas deste acordo."
   },
   "common": {
     "skipToContent": "Ir para o conteúdo",
@@ -227,5 +238,213 @@
     "body": "Veja isto como a nossa piscadela de olho só para si. Continue — a sua assinatura conta na mesma, prometido.",
     "dismiss": "Percebido, obrigado",
     "regionLabel": "Uma pequena surpresa atrevida"
+  },
+  "templates": {
+    "iou": {
+      "title": "Declaração de dívida",
+      "description": "Registe o dinheiro devido e a data em que regressa a casa.",
+      "vars": {
+        "debtor": {
+          "label": "Pessoa que reembolsa",
+          "placeholder": "Camille Martin"
+        },
+        "creditor": {
+          "label": "Pessoa que adiantou",
+          "placeholder": "Noa Bernard"
+        },
+        "amount": {
+          "label": "Montante",
+          "placeholder": "120 €"
+        },
+        "dueDate": {
+          "label": "Data de reembolso",
+          "placeholder": "30 de setembro de 2026"
+        }
+      },
+      "body": {
+        "fun": "{{debtor}} confirma que {{creditor}} salvou o dia ao adiantar {{amount}}. Promessa de mindinho: a totalidade será reembolsada até {{dueDate}}. Cada um guarda uma cópia, caso alguma memória se torne subitamente criativa.",
+        "serious": "{{debtor}} reconhece dever a {{creditor}} a quantia de {{amount}}. O montante será reembolsado na totalidade o mais tardar até {{dueDate}}. Ambas as partes aceitam estes termos e guardam cada uma uma cópia deste acordo."
+      }
+    },
+    "item-loan": {
+      "title": "Objeto emprestado",
+      "description": "Empreste algo sem perder o rasto de quem o devolve, ou quando.",
+      "vars": {
+        "lender": {
+          "label": "Pessoa que empresta",
+          "placeholder": "Noa Bernard"
+        },
+        "borrower": {
+          "label": "Pessoa que pede emprestado",
+          "placeholder": "Camille Martin"
+        },
+        "item": {
+          "label": "Objeto emprestado",
+          "placeholder": "Videoprojetor Epson"
+        },
+        "returnDate": {
+          "label": "Data de devolução",
+          "placeholder": "18 de agosto de 2026"
+        }
+      },
+      "body": {
+        "fun": "{{lender}} confia o precioso {{item}} a {{borrower}}. A missão: tratá-lo como o último à face da Terra e devolvê-lo completo, intacto e o mais tardar até {{returnDate}}.",
+        "serious": "{{lender}} empresta a {{borrower}} o seguinte objeto: {{item}}. {{borrower}} compromete-se a cuidar dele razoavelmente e a devolvê-lo completo e em bom estado até {{returnDate}}."
+      }
+    },
+    "shared-expenses": {
+      "title": "Despesas partilhadas",
+      "description": "Acertem quem paga o quê antes de a conversa de grupo ficar estranha.",
+      "vars": {
+        "partyOne": {
+          "label": "Primeira pessoa",
+          "placeholder": "Camille Martin"
+        },
+        "partyTwo": {
+          "label": "Segunda pessoa",
+          "placeholder": "Noa Bernard"
+        },
+        "expense": {
+          "label": "Despesa partilhada",
+          "placeholder": "fim de semana em Marselha"
+        },
+        "amount": {
+          "label": "Montante total",
+          "placeholder": "460 €"
+        },
+        "settlementDate": {
+          "label": "Data de acerto",
+          "placeholder": "31 de agosto de 2026"
+        }
+      },
+      "body": {
+        "fun": "{{partyOne}} e {{partyTwo}} dividem « {{expense}} », num total de {{amount}}, em partes iguais. Tudo ficará acertado até {{settlementDate}}. Paz doméstica reposta; folha de cálculo opcional.",
+        "serious": "{{partyOne}} e {{partyTwo}} acordam dividir em partes iguais a seguinte despesa: {{expense}}, num total de {{amount}}. Qualquer saldo entre as partes será acertado o mais tardar até {{settlementDate}}."
+      }
+    },
+    "bet": {
+      "title": "Aposta ou desafio",
+      "description": "Grave um desafio glorioso e o que está em jogo em pedra digital.",
+      "vars": {
+        "challenger": {
+          "label": "Pessoa que lança o desafio",
+          "placeholder": "Camille Martin"
+        },
+        "opponent": {
+          "label": "Pessoa que o aceita",
+          "placeholder": "Noa Bernard"
+        },
+        "challenge": {
+          "label": "O desafio",
+          "placeholder": "correr 10 km em menos de uma hora"
+        },
+        "deadline": {
+          "label": "Prazo",
+          "placeholder": "1 de outubro de 2026"
+        },
+        "stake": {
+          "label": "O que está em jogo",
+          "placeholder": "um brunch caseiro"
+        }
+      },
+      "body": {
+        "fun": "{{challenger}} desafia oficialmente {{opponent}} a {{challenge}} antes de {{deadline}}. Se conseguir, {{challenger}} deve {{stake}}. Caso contrário, é {{opponent}}. Proibido ser mau perdedor; sentido de drama encorajado.",
+        "serious": "{{challenger}} e {{opponent}} acordam o seguinte desafio: {{challenge}}, a concluir antes de {{deadline}}. Em caso de sucesso, {{challenger}} fornecerá {{stake}}; caso contrário, {{opponent}} fornecê-lo-á. Ambas as partes determinarão em conjunto se o desafio foi concluído."
+      }
+    },
+    "roommates": {
+      "title": "Acordo de coabitação",
+      "description": "Defina uma regra clara para a vida e os custos da casa partilhada.",
+      "vars": {
+        "roommateOne": {
+          "label": "Primeiro colega de casa",
+          "placeholder": "Camille Martin"
+        },
+        "roommateTwo": {
+          "label": "Segundo colega de casa",
+          "placeholder": "Noa Bernard"
+        },
+        "address": {
+          "label": "Morada da casa",
+          "placeholder": "12 Rue des Lilas, Lyon"
+        },
+        "sharedExpense": {
+          "label": "Custos partilhados",
+          "placeholder": "eletricidade, internet e produtos domésticos"
+        },
+        "splitRule": {
+          "label": "Como dividir",
+          "placeholder": "metade cada"
+        },
+        "startDate": {
+          "label": "Data de início",
+          "placeholder": "1 de setembro de 2026"
+        }
+      },
+      "body": {
+        "fun": "A partir de {{startDate}}, {{roommateOne}} e {{roommateTwo}}, colegas de casa em {{address}}, dividem {{sharedExpense}} assim: {{splitRule}}. Cada um paga a tempo e avisa se houver algum problema — um frigorífico vazio já é drama doméstico suficiente.",
+        "serious": "A partir de {{startDate}}, {{roommateOne}} e {{roommateTwo}}, residentes em {{address}}, acordam partilhar os seguintes custos: {{sharedExpense}}. A divisão será: {{splitRule}}. Cada parte informará prontamente a outra de qualquer dificuldade de pagamento."
+      }
+    },
+    "small-service": {
+      "title": "Pequeno serviço",
+      "description": "Defina um pequeno trabalho, o seu preço e a data de entrega.",
+      "vars": {
+        "provider": {
+          "label": "Pessoa que faz o trabalho",
+          "placeholder": "Camille Martin"
+        },
+        "client": {
+          "label": "Pessoa que a contrata",
+          "placeholder": "Noa Bernard"
+        },
+        "service": {
+          "label": "O serviço",
+          "placeholder": "fotografar a festa de aniversário"
+        },
+        "amount": {
+          "label": "Preço acordado",
+          "placeholder": "250 €"
+        },
+        "deliveryDate": {
+          "label": "Data de entrega",
+          "placeholder": "15 de outubro de 2026"
+        }
+      },
+      "body": {
+        "fun": "{{provider}} fará o seguinte para {{client}}: {{service}}. Entrega prevista até {{deliveryDate}}, por {{amount}}. Feedback claro, pagamento a horas e um high-five de celebração incluídos.",
+        "serious": "{{provider}} compromete-se a prestar a {{client}} o seguinte serviço: {{service}}. A entrega terá lugar o mais tardar até {{deliveryDate}}. Em contrapartida, {{client}} pagará {{amount}} nos termos acordados por ambas as partes."
+      }
+    },
+    "simple-nda": {
+      "title": "Acordo de confidencialidade simples",
+      "description": "Mantenha reservada uma informação específica e partilhada.",
+      "vars": {
+        "partyOne": {
+          "label": "Primeira parte",
+          "placeholder": "Camille Martin"
+        },
+        "partyTwo": {
+          "label": "Segunda parte",
+          "placeholder": "Noa Bernard"
+        },
+        "confidentialInfo": {
+          "label": "Informação confidencial",
+          "placeholder": "o protótipo do projeto Orion"
+        },
+        "allowedPurpose": {
+          "label": "Utilização permitida",
+          "placeholder": "avaliar uma potencial colaboração"
+        },
+        "endDate": {
+          "label": "Fim da confidencialidade",
+          "placeholder": "31 de dezembro de 2027"
+        }
+      },
+      "body": {
+        "fun": "{{partyOne}} e {{partyTwo}} mantêm isto a sete chaves: {{confidentialInfo}}. Só pode ser usado para {{allowedPurpose}} e não será partilhado com mais ninguém sem acordo prévio até {{endDate}}. Boca fechada, acordo assinado.",
+        "serious": "{{partyOne}} e {{partyTwo}} acordam manter confidencial a seguinte informação: {{confidentialInfo}}. Só pode ser utilizada para {{allowedPurpose}} e não pode ser divulgada a terceiros sem acordo escrito prévio até {{endDate}}."
+      }
+    }
   }
 }

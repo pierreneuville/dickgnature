@@ -1,13 +1,14 @@
 "use client";
 
 import { type ChangeEvent, useActionState, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import { Badge, Button, Card, InputField, SelectField, TextareaField } from "@/components/ui";
 import {
-  CONTRACT_TEMPLATES,
-  getContractTemplate,
+  buildContractTemplate,
+  CONTRACT_TEMPLATE_SHAPES,
   renderContractTemplate,
   type ContractTemplate,
+  type ContractTemplateMessages,
 } from "@/lib/contract-templates";
 import { DEFAULT_TONE, type Tone } from "@/lib/tone";
 import { createContractAction, type CreateContractState } from "./actions";
@@ -20,6 +21,7 @@ function emptyValues(template: ContractTemplate) {
 
 export function ContractForm() {
   const t = useTranslations("contractForm");
+  const messages = useMessages();
   const [state, formAction, pending] = useActionState(
     createContractAction,
     initialState,
@@ -30,7 +32,12 @@ export function ContractForm() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  const template = getContractTemplate(templateId);
+  // Templates localisés dans la langue active : les chaînes viennent du catalogue i18n, la
+  // structure (ordre, ton suggéré) reste indépendante de la langue.
+  const templates = CONTRACT_TEMPLATE_SHAPES.map((shape) =>
+    buildContractTemplate(shape, messages.templates[shape.id] as ContractTemplateMessages),
+  );
+  const template = templates.find((item) => item.id === templateId);
 
   function applyTemplate(
     nextTemplate: ContractTemplate,
@@ -46,7 +53,7 @@ export function ContractForm() {
     const nextId = event.target.value;
     setTemplateId(nextId);
 
-    const nextTemplate = getContractTemplate(nextId);
+    const nextTemplate = templates.find((item) => item.id === nextId);
     if (!nextTemplate) return;
 
     const nextVariables = emptyValues(nextTemplate);
@@ -88,7 +95,7 @@ export function ContractForm() {
           onChange={handleTemplateChange}
         >
           <option value="">{t("customOption")}</option>
-          {CONTRACT_TEMPLATES.map((item) => (
+          {templates.map((item) => (
             <option key={item.id} value={item.id}>{item.title}</option>
           ))}
         </SelectField>
