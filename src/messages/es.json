@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "title": "dickgnature — Dos personas, un acuerdo, cero complicaciones",
+    "description": "Crea y firma un acuerdo entre dos personas en menos de 60 segundos, sin cuenta para quien firma y con una prueba clara."
+  },
+  "common": {
+    "skipToContent": "Saltar al contenido",
+    "language": "Idioma",
+    "header": {
+      "homeAria": "dickgnature, inicio",
+      "navAria": "Navegación principal",
+      "howItWorks": "Cómo funciona",
+      "theProof": "La prueba",
+      "makeAgreement": "Crear un acuerdo"
+    },
+    "footer": {
+      "tagline": "Acuerdos sencillos, prueba legible y, sobre todo, ningún traje requerido.",
+      "fineprint": "Parodia honesta · Firma electrónica simple (SES) · Alojamiento en la UE"
+    }
+  },
+  "landing": {
+    "hero": {
+      "badge": "Dos personas. Un acuerdo. Cero circo.",
+      "titleLine1": "Hazlo casi oficial.",
+      "titleLine2": "Mantenlo deliciosamente humano.",
+      "lede": "Convierte «dijimos que lo haríamos» en un acuerdo firmado en menos de 60 segundos. Sin cuenta para firmar, sin laberinto legal y con una prueba de verdad.",
+      "ctaPrimary": "Hacerlo casi oficial",
+      "showHow": "Muéstrame cómo",
+      "benefitsAria": "Ventajas clave",
+      "benefitNoAccount": "Sin cuenta para firmar",
+      "benefitPhone": "Pensado para el móvil",
+      "benefitEu": "Alojado en la UE",
+      "visualAria": "Vista previa de un acuerdo completado",
+      "orbitOne": "muy casi-oficial",
+      "orbitTwo": "cero papeleo"
+    },
+    "preview": {
+      "eyebrow": "Acuerdo n.º 0042",
+      "status": "Hecho y firmado",
+      "title": "El Pacto del Último Cruasán",
+      "body": "Camille se compromete solemnemente a dejar el último cruasán a Noa cada domingo, salvo resaca verdaderamente histórica.",
+      "signedAt": "Firmado a las {time}",
+      "footer": "PDF + prueba entregados"
+    },
+    "value": {
+      "aria": "Nuestra promesa",
+      "speedNum": "< 60 s",
+      "speedLabel": "para poner el acuerdo en marcha",
+      "accountsNum": "0",
+      "accountsLabel": "cuentas para firmar",
+      "priceNum": "1 precio",
+      "priceLabel": "por acuerdo completado"
+    },
+    "steps": {
+      "kicker": "Tan fácil como un apretón de manos",
+      "title": "De «espera, ¿qué acordamos?» a firmado y resuelto.",
+      "intro": "Tres pasitos. Sin odisea de registro. Sin malabares ceremoniosos con PDF.",
+      "callTitle": "Ponle nombre",
+      "callBody": "Añade un título, unas líneas y dos correos. La burocracia puede quedarse fuera de esta.",
+      "signTitle": "Fírmalo",
+      "signBody": "Cada persona abre un enlace privado en su móvil — sin cuenta, sin rodeos.",
+      "keepTitle": "Guarda los comprobantes",
+      "keepBody": "El PDF firmado y su registro de auditoría llegan a las dos personas."
+    },
+    "proofSection": {
+      "kicker": "Serio donde importa",
+      "title": "El nombre es la broma. La prueba no.",
+      "body": "Detrás de la interfaz divertida, cada acuerdo completado registra quién aceptó qué, y cuándo, en un archivo de prueba claro."
+    },
+    "modeSection": {
+      "kicker": "Dos estilos, la misma prueba sólida",
+      "title": "Divertido cuando encaja. Serio cuando cuenta.",
+      "funBadge": "Modo divertido",
+      "funTitle": "Para apuestas, retos y pequeños pactos legendarios.",
+      "funBody": "Divertido por diseño, con una advertencia honesta y cero falsa pose legal.",
+      "seriousBadge": "Modo serio",
+      "seriousTitle": "Para acuerdos que mantienen la corbata.",
+      "seriousBody": "Una experiencia neutra y creíble, del primer borrador al PDF final."
+    },
+    "finalCta": {
+      "kicker": "Tu palabra merece algo mejor que una nota de voz perdida",
+      "titleLine1": "Dilo. Fírmalo.",
+      "titleLine2": "Sigue con tu vida.",
+      "button": "Cerrar el acuerdo",
+      "note": "No necesitas cuenta para empezar."
+    }
+  },
+  "trust": {
+    "title": "Una prueba que de verdad entiendes.",
+    "intro": "Una firma electrónica simple para acuerdos del día a día. Te decimos lo que prueba — y lo que no.",
+    "consentTitle": "Consentimiento",
+    "consentBody": "La acción de firma y el acuerdo quedan registrados.",
+    "timestampsTitle": "Marcas de tiempo",
+    "timestampsBody": "Cada evento conserva su fecha y hora.",
+    "fingerprintTitle": "Huella",
+    "fingerprintBody": "El documento queda vinculado a una huella SHA-256.",
+    "auditTitle": "Registro de auditoría",
+    "auditBody": "La cronología completa se mantiene legible en el archivo de prueba."
+  },
+  "contractNew": {
+    "back": "← Volver al inicio",
+    "kicker": "Tu acuerdo, sin el suplicio",
+    "title": "Crear un acuerdo",
+    "tagline": "Elige una plantilla en español claro, rellena los huecos y luego ajusta cada palabra hasta que suene a ti."
+  },
+  "contractForm": {
+    "easyMode": "Modo fácil",
+    "pickStart": "Elige tu punto de partida",
+    "templatesBlurb": "Siete plantillas en español claro. Nada está grabado en piedra todavía.",
+    "typeLabel": "Tipo de acuerdo",
+    "typeHint": "O empieza gloriosamente de cero con una página en blanco.",
+    "customOption": "Acuerdo personalizado",
+    "suggestedVibe": "Tono sugerido: {vibe}",
+    "vibeFun": "Divertido",
+    "vibeSerious": "Serio",
+    "fillBlanks": "Rellena los huecos",
+    "fillBlanksBlurb": "Tus respuestas entran directamente en el acuerdo de abajo.",
+    "fullyEditable": "Totalmente editable",
+    "makeItYours": "Haz que suene a ti",
+    "counter": "{count, number} / 20 000",
+    "titleLabel": "Título",
+    "agreementLabel": "Acuerdo",
+    "agreementHint": "Esta plantilla es solo un trampolín. Reescribe lo que quieras.",
+    "toneLabel": "Tono",
+    "toneHint": "El serio se mantiene neutro. El divertido puede aflojarse la corbata.",
+    "toneFun": "Divertido (desenfadado)",
+    "toneSerious": "Serio (neutro)",
+    "submitPending": "Haciéndolo casi oficial…",
+    "submit": "Crear el acuerdo",
+    "submitNote": "Podrás echarle un último vistazo antes de compartirlo. Sin trampas."
+  },
+  "contract": {
+    "peopleSigningAria": "Personas que firman",
+    "whosIn": "¿Quién participa?",
+    "signaturesAria": "Firmas",
+    "signaturesHeading": "Firmas",
+    "addSignature": "Añadir mi firma",
+    "downloadPdf": "Descargar el PDF firmado",
+    "proofLink": "Ver qué hace útil esta prueba"
+  },
+  "participants": {
+    "statusLabel": "Estado",
+    "empty": "Esto está tranquilo. Añade abajo a las personas que deben firmar.",
+    "openLink": "Abrir el enlace de firma",
+    "namePlaceholder": "Nombre",
+    "nameAria": "Nombre del firmante",
+    "emailPlaceholder": "nombre@ejemplo.com",
+    "emailAria": "Correo del firmante",
+    "removeAria": "Quitar a este firmante",
+    "addAnother": "+ Añadir otra persona",
+    "invitePending": "Enviando la batiseñal…",
+    "invite": "Invitarles a firmar"
+  },
+  "linkState": {
+    "open": "En espera",
+    "signed": "Firmado",
+    "expired": "Caducado"
+  },
+  "contractStatus": {
+    "draft": "Borrador",
+    "sent": "Enviado",
+    "partially_signed": "Parcialmente firmado",
+    "completed": "Completado"
+  },
+  "signatureMode": {
+    "styleAria": "Estilo de firma",
+    "pickerHandwrittenLabel": "Dibújala tú mismo",
+    "pickerHandwrittenHint": "Traza tu firma real con el dedo o el ratón.",
+    "pickerPatternLabel": "Usa el sello pícaro",
+    "pickerPatternHint": "Sigue la guía o coloca el sello de un toque.",
+    "handwritten": "Firma manuscrita",
+    "pattern": "Garabato de firma",
+    "addedAlt": "{mode} añadida"
+  },
+  "sign": {
+    "heading": "Firmar: {title}",
+    "back": "← Volver al acuerdo",
+    "consent": "Acepto explícitamente firmar este documento y que este acuerdo quede sellado con fecha y hora en su registro de auditoría.",
+    "savePending": "Guardando tu obra maestra…",
+    "submit": "Firmar este acuerdo",
+    "signingAria": "Firma",
+    "signingAs": "Firmando como:",
+    "done": "Bien hecho, {name} — tu firma está a buen recaudo.",
+    "expired": "Este enlace de firma ha caducado. Pide a quien creó el acuerdo que te envíe uno nuevo.",
+    "markHeading": "Tu firma va aquí",
+    "tokenSubmit": "Firmar y sellar"
+  },
+  "signaturesList": {
+    "empty": "Aún no hay firmas. El bolígrafo espera."
+  },
+  "proof": {
+    "sesBadge": "SES · Firma electrónica simple",
+    "title": "Qué hace de este PDF una prueba útil",
+    "intro": "Este registro documenta un acuerdo electrónico simple sin afirmar que la firma sustituye universalmente a una firma manuscrita.",
+    "consentTitle": "Consentimiento explícito",
+    "consentBody": "Cada firmante marca primero una casilla dedicada. Ese consentimiento se sella con fecha y hora y se vincula al correo que facilitó.",
+    "timestampsTitle": "Marcas de tiempo UTC",
+    "timestampsBody": "Los eventos de creación, invitación, apertura, consentimiento y firma usan un formato UTC sin ambigüedad.",
+    "fingerprintTitle": "Huella del documento",
+    "fingerprintBody": "El SHA-256 cubre el contenido canónico congelado al completarse: el acuerdo, sus firmantes y sus firmas.",
+    "eventLogTitle": "Registro de eventos",
+    "eventLogBody": "La cronología conecta cada acción con el correo facilitado por ese participante.",
+    "documentProofHeading": "Prueba del documento",
+    "pending": "La huella final se congelará cuando todos hayan firmado.",
+    "eventLogHeading": "Registro de eventos",
+    "back": "← Volver al acuerdo"
+  },
+  "auditEvent": {
+    "CONTRACT_CREATED": "Acuerdo creado",
+    "INVITATION_SENT": "Invitación a firmar enviada",
+    "DOCUMENT_OPENED": "Documento abierto",
+    "CONSENT_RECORDED": "Consentimiento explícito registrado",
+    "DOCUMENT_SIGNED": "Firma registrada",
+    "fallback": "Evento de auditoría"
+  },
+  "contractView": {
+    "disclaimer": "Acuerdo divertido — no es una garantía jurídica universal. Registra un entendimiento entre personas, sin pretender dictar la ley ante un tribunal."
+  },
+  "tone": {
+    "funLabel": "Divertido",
+    "funTagline": "El acuerdo más casi-serio de tu vida.",
+    "seriousLabel": "Serio",
+    "seriousTagline": "Acuerdo entre dos partes."
+  },
+  "easterEgg": {
+    "heading": "¡Eh {name}, has encontrado el huevo de pascua! 🎉",
+    "body": "Tómalo como nuestro guiño solo para ti. Sigue — tu firma cuenta igual, prometido.",
+    "dismiss": "Entendido, gracias",
+    "regionLabel": "Una pequeña sorpresa traviesa"
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "title": "dickgnature — Two people, one agreement, zero fuss",
+    "description": "Create and sign a two-person agreement in under 60 seconds, with no signer account and a clear proof trail."
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "language": "Language",
+    "header": {
+      "homeAria": "dickgnature, home",
+      "navAria": "Main navigation",
+      "howItWorks": "How it works",
+      "theProof": "The proof",
+      "makeAgreement": "Make an agreement"
+    },
+    "footer": {
+      "tagline": "Simple agreements, readable proof, and absolutely no suit required.",
+      "fineprint": "Honest parody · Simple electronic signature (SES) · EU hosting"
+    }
+  },
+  "landing": {
+    "hero": {
+      "badge": "Two people. One deal. Zero circus.",
+      "titleLine1": "Make it official-ish.",
+      "titleLine2": "Keep it delightfully human.",
+      "lede": "Turn “we said we would” into a signed agreement in under 60 seconds. No signer account, no legalese maze, and a real proof trail.",
+      "ctaPrimary": "Make it official-ish",
+      "showHow": "Show me how",
+      "benefitsAria": "Key benefits",
+      "benefitNoAccount": "No signer account",
+      "benefitPhone": "Phone-friendly",
+      "benefitEu": "Hosted in the EU",
+      "visualAria": "Preview of a completed agreement",
+      "orbitOne": "very official-ish",
+      "orbitTwo": "zero paper cuts"
+    },
+    "preview": {
+      "eyebrow": "Agreement #0042",
+      "status": "Done & signed",
+      "title": "The Last Croissant Pact",
+      "body": "Camille solemnly agrees to leave the last croissant to Noa every Sunday, barring a truly historic hangover.",
+      "signedAt": "Signed at {time}",
+      "footer": "PDF + proof trail delivered"
+    },
+    "value": {
+      "aria": "Product promise",
+      "speedNum": "< 60 sec",
+      "speedLabel": "to get the deal moving",
+      "accountsNum": "0",
+      "accountsLabel": "signer accounts",
+      "priceNum": "1 price",
+      "priceLabel": "per completed agreement"
+    },
+    "steps": {
+      "kicker": "As easy as a handshake",
+      "title": "From “wait, what did we agree?” to signed and sorted.",
+      "intro": "Three tiny steps. No onboarding odyssey. No ceremonial PDF juggling.",
+      "callTitle": "Call it",
+      "callBody": "Add a title, a few lines, and two emails. Bureaucracy can sit this one out.",
+      "signTitle": "Sign it",
+      "signBody": "Each person opens a private link on their phone — no account, no detour.",
+      "keepTitle": "Keep the receipts",
+      "keepBody": "The signed PDF and its audit trail land with both people."
+    },
+    "proofSection": {
+      "kicker": "Serious where it matters",
+      "title": "The name is the joke. The proof isn’t.",
+      "body": "Behind the playful interface, every completed agreement records who accepted what, and when, in a clear proof file."
+    },
+    "modeSection": {
+      "kicker": "Two moods, same solid trail",
+      "title": "Fun when it fits. Straight-faced when it counts.",
+      "funBadge": "Fun mode",
+      "funTitle": "For bets, dares, and legendary little pacts.",
+      "funBody": "Playful by design, with an honest disclaimer and no fake legal swagger.",
+      "seriousBadge": "Serious mode",
+      "seriousTitle": "For agreements that keep their tie on.",
+      "seriousBody": "A neutral, credible experience from first draft to final PDF."
+    },
+    "finalCta": {
+      "kicker": "Your word deserves better than a lost voice note",
+      "titleLine1": "Say it. Sign it.",
+      "titleLine2": "Get on with life.",
+      "button": "Seal the deal",
+      "note": "No account needed to get started."
+    }
+  },
+  "trust": {
+    "title": "Proof you can actually understand.",
+    "intro": "A simple electronic signature for everyday agreements. We tell you what it proves — and what it doesn’t.",
+    "consentTitle": "Consent",
+    "consentBody": "The signature action and agreement are recorded.",
+    "timestampsTitle": "Timestamps",
+    "timestampsBody": "Every event keeps its date and time.",
+    "fingerprintTitle": "Fingerprint",
+    "fingerprintBody": "The document is bound to a SHA-256 fingerprint.",
+    "auditTitle": "Audit trail",
+    "auditBody": "The full timeline stays readable in the proof file."
+  },
+  "contractNew": {
+    "back": "← Back home",
+    "kicker": "Your deal, minus the ordeal",
+    "title": "Make an agreement",
+    "tagline": "Pick a plain-English template, fill in the blanks, then tweak every word until it sounds like you."
+  },
+  "contractForm": {
+    "easyMode": "Easy mode",
+    "pickStart": "Pick your starting point",
+    "templatesBlurb": "Seven plain-English templates. Nothing is set in stone yet.",
+    "typeLabel": "Agreement type",
+    "typeHint": "Or go gloriously off-script with a blank page.",
+    "customOption": "Custom agreement",
+    "suggestedVibe": "Suggested vibe: {vibe}",
+    "vibeFun": "Fun",
+    "vibeSerious": "Serious",
+    "fillBlanks": "Fill in the blanks",
+    "fillBlanksBlurb": "Your answers jump straight into the agreement below.",
+    "fullyEditable": "Fully editable",
+    "makeItYours": "Make it sound like you",
+    "counter": "{count, number} / 20,000",
+    "titleLabel": "Title",
+    "agreementLabel": "Agreement",
+    "agreementHint": "This template is just a launchpad. Rewrite anything you like.",
+    "toneLabel": "Tone",
+    "toneHint": "Serious stays neutral. Fun gets to loosen its tie.",
+    "toneFun": "Fun (playful)",
+    "toneSerious": "Serious (neutral)",
+    "submitPending": "Making it official-ish…",
+    "submit": "Create the agreement",
+    "submitNote": "You'll get one more look before you share it. No trapdoors."
+  },
+  "contract": {
+    "peopleSigningAria": "People signing",
+    "whosIn": "Who's in?",
+    "signaturesAria": "Signatures",
+    "signaturesHeading": "Signatures",
+    "addSignature": "Add my signature",
+    "downloadPdf": "Download signed PDF",
+    "proofLink": "See what makes this proof useful"
+  },
+  "participants": {
+    "statusLabel": "Status",
+    "empty": "It's quiet in here. Add the people who need to sign below.",
+    "openLink": "Open signing link",
+    "namePlaceholder": "Name",
+    "nameAria": "Signer name",
+    "emailPlaceholder": "name@example.com",
+    "emailAria": "Signer email",
+    "removeAria": "Remove this signer",
+    "addAnother": "+ Add another person",
+    "invitePending": "Sending the bat-signal…",
+    "invite": "Invite them to sign"
+  },
+  "linkState": {
+    "open": "Waiting",
+    "signed": "Signed",
+    "expired": "Expired"
+  },
+  "contractStatus": {
+    "draft": "Draft",
+    "sent": "Sent",
+    "partially_signed": "Partly signed",
+    "completed": "Completed"
+  },
+  "signatureMode": {
+    "styleAria": "Signature style",
+    "pickerHandwrittenLabel": "Draw it yourself",
+    "pickerHandwrittenHint": "Draw your real signature with a finger or mouse.",
+    "pickerPatternLabel": "Use the cheeky stamp",
+    "pickerPatternHint": "Trace the guide or drop the stamp in one tap.",
+    "handwritten": "Handwritten signature",
+    "pattern": "Signature doodle",
+    "addedAlt": "{mode} added"
+  },
+  "sign": {
+    "heading": "Sign: {title}",
+    "back": "← Back to the agreement",
+    "consent": "I explicitly agree to sign this document and have this agreement timestamped in its audit trail.",
+    "savePending": "Saving your masterpiece…",
+    "submit": "Sign this agreement",
+    "signingAria": "Signature",
+    "signingAs": "Signing as:",
+    "done": "Nice one, {name} — your signature is safely in the bag.",
+    "expired": "This signing link has expired. Ask the agreement creator to send you a fresh one.",
+    "markHeading": "Your mark goes here",
+    "tokenSubmit": "Sign and seal it"
+  },
+  "signaturesList": {
+    "empty": "No signatures yet. The pen is waiting."
+  },
+  "proof": {
+    "sesBadge": "SES · Simple electronic signature",
+    "title": "What makes this PDF useful proof",
+    "intro": "This trail documents a simple electronic agreement without claiming the signature is a universal replacement for a handwritten one.",
+    "consentTitle": "Explicit consent",
+    "consentBody": "Every signer ticks a dedicated box first. That consent is timestamped and tied to the email address they provided.",
+    "timestampsTitle": "UTC timestamps",
+    "timestampsBody": "Creation, invitation, opening, consent, and signature events use an unambiguous UTC format.",
+    "fingerprintTitle": "Document fingerprint",
+    "fingerprintBody": "The SHA-256 covers the canonical content frozen at completion: the agreement, its signers, and their signatures.",
+    "eventLogTitle": "Event log",
+    "eventLogBody": "The timeline connects each action to the email address provided by that participant.",
+    "documentProofHeading": "Document proof",
+    "pending": "The final fingerprint will be frozen once everyone has signed.",
+    "eventLogHeading": "Event log",
+    "back": "← Back to the agreement"
+  },
+  "auditEvent": {
+    "CONTRACT_CREATED": "Agreement created",
+    "INVITATION_SENT": "Signing invitation sent",
+    "DOCUMENT_OPENED": "Document opened",
+    "CONSENT_RECORDED": "Explicit consent recorded",
+    "DOCUMENT_SIGNED": "Signature recorded",
+    "fallback": "Audit event"
+  },
+  "contractView": {
+    "disclaimer": "Playful agreement — not a universal legal guarantee. It records an understanding between people, without pretending to be a courtroom wizard."
+  },
+  "tone": {
+    "funLabel": "Fun",
+    "funTagline": "The most serious-ish agreement of your life.",
+    "seriousLabel": "Serious",
+    "seriousTagline": "Agreement between two parties."
+  },
+  "easterEgg": {
+    "heading": "Hey {name}, you found the easter egg! 🎉",
+    "body": "Consider this our little wink just for you. Carry on — your signature still counts, promise.",
+    "dismiss": "Got it, thanks",
+    "regionLabel": "A cheeky little surprise"
+  }
+}

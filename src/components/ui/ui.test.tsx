@@ -1,5 +1,8 @@
+import type { ReactNode } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
+import messages from "@/messages/en.json";
 import {
   Badge,
   Button,
@@ -16,6 +19,27 @@ import {
   ToneSurface,
   TrustBlock,
 } from ".";
+
+// Les liens conscients de la locale et le sélecteur de langue s'appuient sur next/navigation
+// (contexte App Router absent en jsdom). On stub la couche navigation : ces tests vérifient le
+// rendu présentiel (texte, rôles, href), pas le routing i18n lui-même.
+vi.mock("@/i18n/navigation", () => ({
+  Link: ({ href, children, ...rest }: { href: unknown; children?: ReactNode }) => (
+    <a href={String(href)} {...rest}>
+      {children}
+    </a>
+  ),
+  usePathname: () => "/",
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
+}));
+
+function renderIntl(ui: ReactNode) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>,
+  );
+}
 
 describe("UI primitives", () => {
   it("renders button variants and handles interaction", () => {
@@ -74,7 +98,7 @@ describe("UI primitives", () => {
   });
 
   it("renders shells, tones and a strictly SES trust block", () => {
-    render(
+    renderIntl(
       <ToneSurface tone="serious">
         <SiteHeader />
         <TrustBlock />

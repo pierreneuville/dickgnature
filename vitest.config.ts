@@ -14,6 +14,13 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     globalSetup: ["./test/global-setup.ts"],
+    // next-intl est distribué en ESM et importe "next/navigation" en spécifieur nu ; on l'inline
+    // pour que Vite le transforme et résolve les sous-chemins du paquet "next" comme en prod.
+    server: {
+      deps: {
+        inline: ["next-intl"],
+      },
+    },
     // Integration tests share one disposable PostgreSQL database, so their deleteMany resets
     // must not race each other. test/global-setup.ts also refuses non-test database names.
     fileParallelism: false,
@@ -38,6 +45,12 @@ export default defineConfig({
         // détection et le garde-fou prefers-reduced-motion vivent dans src/lib/easter-egg.ts et
         // easter-egg-banner.tsx, tous deux testés.
         "src/lib/confetti.ts",
+        // Glue runtime i18n : wrappers next-intl liés au contexte App Router / requête serveur,
+        // non exécutables en jsdom. La logique testable vit dans src/i18n/routing.ts (testé) et le
+        // sélecteur language-switcher.tsx (testé). Le comportement de routing est validé au build.
+        "src/i18n/navigation.ts",
+        "src/i18n/request.ts",
+        "src/proxy.ts",
       ],
       thresholds: {
         lines: 70,
