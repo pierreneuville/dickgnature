@@ -113,4 +113,17 @@ describe("UI primitives", () => {
     expect(screen.getByRole("navigation", { name: "Main navigation" })).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /dickgnature, home/i })).toHaveLength(2);
   });
+
+  it("keeps the language switcher outside the mobile-collapsed nav so it stays reachable", () => {
+    // Régression du bug « bloqué en FR sur mobile » : la nav (.site-header__nav) est masquée en
+    // dessous de 700px. Si le sélecteur y vivait, un mobile détecté FR n'aurait aucun moyen de
+    // changer de langue. Il doit donc rester hors de la nav, dans .site-header__actions.
+    const { container } = renderIntl(<SiteHeader />);
+    const select = screen.getByLabelText(messages.common.language);
+    expect(select).toBeInTheDocument();
+    const nav = container.querySelector(".site-header__nav");
+    expect(nav).not.toBeNull();
+    expect(nav?.contains(select)).toBe(false);
+    expect(container.querySelector(".site-header__actions")?.contains(select)).toBe(true);
+  });
 });

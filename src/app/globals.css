@@ -391,7 +391,15 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   padding-block: 0.25rem 1.5rem;
+}
+
+/* Regroupe la nav (repliée en mobile) et le sélecteur de langue (toujours visible). */
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
 }
 
 .site-header__nav {
@@ -400,6 +408,42 @@ textarea {
   gap: 1.5rem;
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+/* Sélecteur de langue : atteignable dès le mobile. L'étiquette reste dans l'arbre d'accessibilité
+   (lecteurs d'écran) mais est masquée visuellement pour tenir dans l'en-tête compact. */
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+}
+
+.lang-switcher__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lang-switcher__select {
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lang-switcher__select:disabled {
+  cursor: progress;
+  opacity: 0.6;
 }
 
 .site-header__nav > a:not(.ui-button) {
