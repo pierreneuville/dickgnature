@@ -32,9 +32,9 @@ export async function addParticipantsAction(
       return { error: error.message };
     }
     if (error instanceof z.ZodError) {
-      return { error: error.issues[0]?.message ?? "Participant invalide." };
+      return { error: error.issues[0]?.message ?? "That signer doesn't look valid." };
     }
-    return { error: "Ajout impossible. Réessaie." };
+    return { error: "Couldn't add that signer. Give it another go." };
   }
 
   redirect(`/contracts/${contractId}`);

@@ -31,7 +31,7 @@ export default async function SignContractPage({
           {theme.brand}
         </span>
       </p>
-      <h1>Signer : {contract.title}</h1>
+      <h1>Sign: {contract.title}</h1>
       <p className="tagline">{theme.tagline}</p>
 
       <SignForm
@@ -40,7 +40,7 @@ export default async function SignContractPage({
       />
 
       <p className="back-link">
-        <Link href={`/contracts/${contract.id}`}>← Revenir au contrat</Link>
+        <Link href={`/contracts/${contract.id}`}>← Back to the agreement</Link>
       </p>
     </ToneSurface>
   );

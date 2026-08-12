@@ -14,11 +14,8 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     globalSetup: ["./test/global-setup.ts"],
-    env: {
-      DATABASE_URL: "file:./test.db",
-    },
-    // Les tests d'intégration partagent une même base SQLite (test.db) : on désactive le
-    // parallélisme entre fichiers pour éviter que leurs resets (deleteMany) ne se percutent.
+    // Integration tests share one disposable PostgreSQL database, so their deleteMany resets
+    // must not race each other. test/global-setup.ts also refuses non-test database names.
     fileParallelism: false,
     coverage: {
       provider: "v8",

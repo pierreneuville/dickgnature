@@ -15,7 +15,7 @@ const initialState: SignActionState = {};
 export function SignForm({
   tone,
   action,
-  submitLabel = "Signer le contrat",
+  submitLabel = "Sign this agreement",
 }: {
   tone: Tone;
   action: (
@@ -56,15 +56,15 @@ export function SignForm({
           required
         />
         <span>
-          Je consens explicitement à signer ce document et à ce que cet accord
-          soit horodaté dans la piste d&apos;audit.
+          I explicitly agree to sign this document and have this agreement
+          timestamped in its audit trail.
         </span>
       </label>
 
       {state.error ? <p className="error">{state.error}</p> : null}
 
       <button type="submit" disabled={pending || image === null || !consent}>
-        {pending ? "Enregistrement…" : submitLabel}
+        {pending ? "Saving your masterpiece…" : submitLabel}
       </button>
     </form>
   );

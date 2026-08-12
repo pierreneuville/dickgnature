@@ -139,20 +139,20 @@ export function SignatureCanvas({
         <canvas
           ref={canvasRef}
           className="canvas-surface"
-          aria-label="Zone de signature"
+          aria-label="Signature area"
         />
       </div>
 
       <div className="canvas-actions">
         <button type="button" className="ghost" onClick={undo}>
-          Annuler le dernier trait
+          Undo last stroke
         </button>
         <button type="button" className="ghost" onClick={clear}>
-          Effacer
+          Clear the lot
         </button>
         {mode === "pattern" ? (
           <button type="button" className="ghost" onClick={stamp}>
-            Tampon
+            Drop the stamp
           </button>
         ) : null}
       </div>

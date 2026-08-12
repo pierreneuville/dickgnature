@@ -43,16 +43,16 @@ export function ParticipantsForm({ contractId }: { contractId: string }) {
           <input
             type="text"
             name="name"
-            placeholder="Nom"
-            aria-label="Nom du participant"
+            placeholder="Name"
+            aria-label="Signer name"
             value={row.name}
             onChange={(event) => update(row.key, "name", event.target.value)}
           />
           <input
             type="email"
             name="email"
-            placeholder="email@exemple.fr"
-            aria-label="Email du participant"
+            placeholder="name@example.com"
+            aria-label="Signer email"
             value={row.email}
             onChange={(event) => update(row.key, "email", event.target.value)}
           />
@@ -61,7 +61,7 @@ export function ParticipantsForm({ contractId }: { contractId: string }) {
               type="button"
               className="ghost"
               onClick={() => removeRow(row.key)}
-              aria-label="Retirer ce participant"
+              aria-label="Remove this signer"
             >
               ✕
             </button>
@@ -75,10 +75,10 @@ export function ParticipantsForm({ contractId }: { contractId: string }) {
           className="ghost"
           onClick={() => setRows((current) => [...current, emptyRow()])}
         >
-          + Ajouter un participant
+          + Add another person
         </button>
         <button type="submit" disabled={pending}>
-          {pending ? "Envoi…" : "Inviter à signer"}
+          {pending ? "Sending the bat-signal…" : "Invite them to sign"}
         </button>
       </div>
 

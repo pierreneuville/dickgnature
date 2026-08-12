@@ -22,7 +22,7 @@ export async function createContractAction(
     const contract = await createContract(parsed);
     id = contract.id;
   } catch {
-    return { error: "Vérifie le titre et le corps du contrat." };
+    return { error: "Give the title and agreement text a quick check." };
   }
 
   redirect(`/contracts/${id}`);

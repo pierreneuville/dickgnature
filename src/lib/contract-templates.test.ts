@@ -28,18 +28,18 @@ describe("contract templates", () => {
     const rendered = renderContractTemplate(template!, "fun", {
       challenger: "  Camille  ",
       opponent: "Noa",
-      challenge: "faire 30 pompes",
-      deadline: "samedi",
-      stake: "une pizza",
+      challenge: "do 30 push-ups",
+      deadline: "Saturday",
+      stake: "a pizza",
     });
 
     expect(rendered).toEqual({
-      title: "Pari ou défi",
+      title: "Bet or dare",
       tone: "fun",
-      body: expect.stringContaining("Camille défie officiellement Noa"),
+      body: expect.stringContaining("Camille officially dares Noa"),
     });
-    expect(rendered.body).toContain("faire 30 pompes");
-    expect(rendered.body).toContain("une pizza");
+    expect(rendered.body).toContain("do 30 push-ups");
+    expect(rendered.body).toContain("a pizza");
     expect(rendered.body).not.toMatch(/{{|}}/);
   });
 
@@ -52,8 +52,8 @@ describe("contract templates", () => {
     });
 
     expect(rendered.body).toContain("85 €");
-    expect(rendered.body).toContain("[Personne qui rembourse]");
-    expect(rendered.body).toContain("[Date de remboursement]");
+    expect(rendered.body).toContain("[Person paying back]");
+    expect(rendered.body).toContain("[Payback date]");
     expect(rendered.body).not.toMatch(/{{|}}/);
   });
 

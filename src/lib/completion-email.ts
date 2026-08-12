@@ -28,13 +28,13 @@ function attachmentFilename(title: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 72);
-  return `contrat-signe-${slug || "document"}.pdf`;
+  return `signed-agreement-${slug || "document"}.pdf`;
 }
 
 function sender(tone: ContractProof["tone"], address: string): string {
   return tone === "fun"
     ? `dickgnature <${address}>`
-    : `Dossiers signés <${address}>`;
+    : `Signed agreements <${address}>`;
 }
 
 export function buildCompletedContractEmail(
@@ -51,9 +51,9 @@ export function buildCompletedContractEmail(
     return {
       from: sender(proof.tone, fromAddress),
       to: participant.email,
-      subject: `C'est signé 🎉 — ${proof.title}`,
-      text: `Salut ${participant.name},\n\nTout le monde a signé « ${proof.title} ». Ta copie du contrat signé est jointe à cet email. Garde-la bien au chaud.\n\nÀ bientôt,\ndickgnature`,
-      html: `<p>Salut ${name},</p><p>Tout le monde a signé <strong>« ${title} »</strong>.</p><p>Ta copie du contrat signé est jointe à cet email. Garde-la bien au chaud.</p><p>À bientôt,<br><strong>dickgnature</strong></p>`,
+      subject: `Signed, sealed, no drama 🎉 — ${proof.title}`,
+      text: `Hey ${participant.name},\n\nEveryone has signed “${proof.title}”. Your shiny signed copy is attached. Keep it somewhere safer than the group chat.\n\nCatch you later,\ndickgnature`,
+      html: `<p>Hey ${name},</p><p>Everyone has signed <strong>“${title}”</strong>.</p><p>Your shiny signed copy is attached. Keep it somewhere safer than the group chat.</p><p>Catch you later,<br><strong>dickgnature</strong></p>`,
       attachments: [{ filename, contentType: "application/pdf", content: pdf }],
     };
   }
@@ -61,9 +61,9 @@ export function buildCompletedContractEmail(
   return {
     from: sender(proof.tone, fromAddress),
     to: participant.email,
-    subject: `Votre contrat signé — ${proof.title}`,
-    text: `Bonjour ${participant.name},\n\nToutes les parties ont signé « ${proof.title} ». Vous trouverez en pièce jointe votre copie du contrat signé et de sa piste d'audit.\n\nCordialement,\nService de signature`,
-    html: `<p>Bonjour ${name},</p><p>Toutes les parties ont signé <strong>« ${title} »</strong>.</p><p>Vous trouverez en pièce jointe votre copie du contrat signé et de sa piste d'audit.</p><p>Cordialement,<br>Service de signature</p>`,
+    subject: `Your signed agreement — ${proof.title}`,
+    text: `Hello ${participant.name},\n\nAll parties have signed “${proof.title}”. Your copy of the signed agreement and its audit trail is attached.\n\nKind regards,\nSigning service`,
+    html: `<p>Hello ${name},</p><p>All parties have signed <strong>“${title}”</strong>.</p><p>Your copy of the signed agreement and its audit trail is attached.</p><p>Kind regards,<br>Signing service</p>`,
     attachments: [{ filename, contentType: "application/pdf", content: pdf }],
   };
 }
@@ -75,7 +75,7 @@ export async function sendCompletedContractEmails(
   const proof = await getContractProof(contractId);
   if (!proof || !isCompletedProof(proof)) {
     throw new CompletionEmailError(
-      "Les copies signées ne peuvent être envoyées qu'après la complétion du contrat.",
+      "Signed copies can only be sent after the agreement is complete.",
     );
   }
 

@@ -4,46 +4,46 @@ import type { ContractProof } from "@/lib/signed-document";
 export function ProofView({ proof }: { proof: ContractProof }) {
   return (
     <article className="proof-page">
-      <p className="ses-badge">SES · Signature électronique simple</p>
-      <h1>Pourquoi ce PDF est probant</h1>
+      <p className="ses-badge">SES · Simple electronic signature</p>
+      <h1>What makes this PDF useful proof</h1>
       <p className="proof-intro">
-        Cette piste documente un accord électronique simple sans présenter la
-        signature comme un équivalent manuscrit universel.
+        This trail documents a simple electronic agreement without claiming
+        the signature is a universal replacement for a handwritten one.
       </p>
 
       <dl className="proof-pillars">
         <div>
-          <dt>Consentement explicite</dt>
+          <dt>Explicit consent</dt>
           <dd>
-            Chaque signataire coche une case dédiée avant de signer. Ce
-            consentement est horodaté et associé à son email déclaré.
+            Every signer ticks a dedicated box first. That consent is timestamped
+            and tied to the email address they provided.
           </dd>
         </div>
         <div>
-          <dt>Horodatage UTC</dt>
+          <dt>UTC timestamps</dt>
           <dd>
-            Création, envoi, ouverture, consentement et signature utilisent un
-            format UTC non ambigu.
+            Creation, invitation, opening, consent, and signature events use an
+            unambiguous UTC format.
           </dd>
         </div>
         <div>
-          <dt>Empreinte du document</dt>
+          <dt>Document fingerprint</dt>
           <dd>
-            Le SHA-256 porte sur le contenu canonique figé à la complétion :
-            contrat, signataires et signatures.
+            The SHA-256 covers the canonical content frozen at completion: the
+            agreement, its signers, and their signatures.
           </dd>
         </div>
         <div>
-          <dt>Journal d&apos;événements</dt>
+          <dt>Event log</dt>
           <dd>
-            La chronologie relie les actions à l&apos;email déclaré par chaque
-            participant.
+            The timeline connects each action to the email address provided by
+            that participant.
           </dd>
         </div>
       </dl>
 
       <section aria-labelledby="document-proof-heading">
-        <h2 id="document-proof-heading">Preuve du document</h2>
+        <h2 id="document-proof-heading">Document proof</h2>
         {proof.documentHash ? (
           <p className="document-hash">
             <strong>SHA-256</strong>
@@ -51,14 +51,13 @@ export function ProofView({ proof }: { proof: ContractProof }) {
           </p>
         ) : (
           <p className="proof-pending" role="status">
-            L&apos;empreinte définitive sera figée quand tous les participants
-            auront signé.
+            The final fingerprint will be frozen once everyone has signed.
           </p>
         )}
       </section>
 
       <section aria-labelledby="audit-heading">
-        <h2 id="audit-heading">Journal d&apos;événements</h2>
+        <h2 id="audit-heading">Event log</h2>
         <ol className="audit-log">
           {proof.auditEvents.map((event) => (
             <li key={event.id}>

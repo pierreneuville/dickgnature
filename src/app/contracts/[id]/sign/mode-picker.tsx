@@ -7,13 +7,13 @@ import {
 } from "@/lib/signatures";
 
 const MODE_LABELS: Record<SignatureMode, string> = {
-  handwritten: "Signature manuscrite",
-  pattern: "Motif",
+  handwritten: "Draw it yourself",
+  pattern: "Use the cheeky stamp",
 };
 
 const MODE_HINTS: Record<SignatureMode, string> = {
-  handwritten: "Dessine ta vraie signature au doigt ou à la souris.",
-  pattern: "Suis le pochoir ou appose le tampon en un tap.",
+  handwritten: "Draw your real signature with a finger or mouse.",
+  pattern: "Trace the guide or drop the stamp in one tap.",
 };
 
 // Sélecteur de mode purement présentiel : il n'affiche QUE les modes autorisés pour le ton.
@@ -35,7 +35,7 @@ export function ModePicker({
   }
 
   return (
-    <div className="mode-picker" role="radiogroup" aria-label="Mode de signature">
+    <div className="mode-picker" role="radiogroup" aria-label="Signature style">
       {modes.map((mode) => (
         <button
           key={mode}

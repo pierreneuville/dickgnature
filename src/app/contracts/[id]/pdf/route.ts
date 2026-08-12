@@ -10,12 +10,12 @@ export async function GET(
   const { id } = await context.params;
   const proof = await getContractProof(id);
   if (!proof) {
-    return Response.json({ error: "Contrat introuvable." }, { status: 404 });
+    return Response.json({ error: "Agreement not found." }, { status: 404 });
   }
 
   try {
     const bytes = await generateSignedPdf(proof);
-    const filename = `contrat-${id}-signe.pdf`;
+    const filename = `agreement-${id}-signed.pdf`;
     return new Response(Buffer.from(bytes), {
       headers: {
         "Content-Type": "application/pdf",

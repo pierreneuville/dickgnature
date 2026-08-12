@@ -21,10 +21,10 @@ export type ContractStatus = (typeof CONTRACT_STATUSES)[number];
 export const DEFAULT_CONTRACT_STATUS: ContractStatus = "draft";
 
 export const CONTRACT_STATUS_LABELS: Record<ContractStatus, string> = {
-  draft: "Brouillon",
-  sent: "Envoyé",
-  partially_signed: "Signé en partie",
-  completed: "Complété",
+  draft: "Draft",
+  sent: "Sent",
+  partially_signed: "Partly signed",
+  completed: "Completed",
 };
 
 export function isContractStatus(value: unknown): value is ContractStatus {

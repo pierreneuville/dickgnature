@@ -36,13 +36,13 @@ describe("ProofView", () => {
     render(<ProofView proof={proof()} />);
 
     expect(
-      screen.getByRole("heading", { name: "Pourquoi ce PDF est probant" }),
+      screen.getByRole("heading", { name: "What makes this PDF useful proof" }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/SES · Signature électronique simple/)).toBeInTheDocument();
-    expect(screen.getByText("Consentement explicite")).toBeInTheDocument();
-    expect(screen.getByText("Horodatage UTC")).toBeInTheDocument();
-    expect(screen.getByText("Empreinte du document")).toBeInTheDocument();
-    expect(screen.getAllByText("Journal d'événements")).toHaveLength(2);
+    expect(screen.getByText(/SES · Simple electronic signature/)).toBeInTheDocument();
+    expect(screen.getByText("Explicit consent")).toBeInTheDocument();
+    expect(screen.getByText("UTC timestamps")).toBeInTheDocument();
+    expect(screen.getByText("Document fingerprint")).toBeInTheDocument();
+    expect(screen.getAllByText("Event log")).toHaveLength(2);
     expect(screen.getByText("a".repeat(64))).toBeInTheDocument();
     expect(screen.getByText("sam@example.fr")).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/QES/i);
@@ -50,6 +50,6 @@ describe("ProofView", () => {
 
   it("explains that the definitive hash is pending before completion", () => {
     render(<ProofView proof={proof(null)} />);
-    expect(screen.getByRole("status")).toHaveTextContent(/tous les participants/i);
+    expect(screen.getByRole("status")).toHaveTextContent(/once everyone has signed/i);
   });
 });

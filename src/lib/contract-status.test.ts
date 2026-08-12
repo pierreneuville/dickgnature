@@ -57,7 +57,7 @@ describe("contract status helpers", () => {
   });
 
   it("exposes a human label for every status", () => {
-    expect(CONTRACT_STATUS_LABELS.partially_signed).toBe("Signé en partie");
-    expect(CONTRACT_STATUS_LABELS.completed).toBe("Complété");
+    expect(CONTRACT_STATUS_LABELS.partially_signed).toBe("Partly signed");
+    expect(CONTRACT_STATUS_LABELS.completed).toBe("Completed");
   });
 });

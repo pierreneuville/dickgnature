@@ -24,7 +24,7 @@ const THEMES: Record<Tone, ToneTheme> = {
   fun: {
     label: "Fun",
     brand: "dickgnature",
-    tagline: "Le contrat le plus sérieux de ta vie (ou pas).",
+    tagline: "The most serious-ish agreement of your life.",
     showParodyDisclaimer: true,
     accent: "#e11d8f",
   },
@@ -32,7 +32,7 @@ const THEMES: Record<Tone, ToneTheme> = {
     // Mode serious : neutre, aucune marque parodique.
     label: "Serious",
     brand: "Signature",
-    tagline: "Accord entre deux parties.",
+    tagline: "Agreement between two parties.",
     showParodyDisclaimer: false,
     accent: "#1f2937",
   },

@@ -33,8 +33,8 @@ const MAX_IMAGE_CHARS = 3_000_000;
 
 export const signatureImageSchema = z
   .string()
-  .max(MAX_IMAGE_CHARS, "Signature trop volumineuse.")
-  .regex(PNG_DATA_URL, "Image de signature invalide (PNG attendu).");
+  .max(MAX_IMAGE_CHARS, "That signature image is too large.")
+  .regex(PNG_DATA_URL, "That signature image is invalid (PNG expected).");
 
 export type Signature = {
   id: string;
@@ -83,13 +83,13 @@ export async function createSignature(
     where: { id: input.contractId },
   });
   if (!contract) {
-    throw new SignatureError("Contrat introuvable.");
+    throw new SignatureError("Agreement not found.");
   }
 
   const tone = toneOf(contract.tone);
   if (!isModeAllowedForTone(tone, input.mode)) {
     throw new SignatureError(
-      `Le mode « ${input.mode} » n'est pas disponible pour ce contrat.`,
+      `The “${input.mode}” style isn't available for this agreement.`,
     );
   }
 

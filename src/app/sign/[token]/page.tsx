@@ -45,25 +45,25 @@ export default async function TokenSignPage({
 
       <section className="signing-panel" aria-label="Signature">
         <p className="signer-identity">
-          Signataire : <strong>{participant.name}</strong>
+          Signing as: <strong>{participant.name}</strong>
         </p>
 
         {state === "signed" ? (
           <p className="signing-done" role="status">
-            Merci {participant.name}, ta signature est bien enregistrée.
+            Nice one, {participant.name} — your signature is safely in the bag.
           </p>
         ) : state === "expired" ? (
           <p className="signing-expired" role="status">
-            Ce lien de signature a expiré. Demande au créateur du contrat de
-            t&apos;en renvoyer un nouveau.
+            This signing link has expired. Ask the agreement creator to send
+            you a fresh one.
           </p>
         ) : (
           <>
-            <h2>Ta signature</h2>
+            <h2>Your mark goes here</h2>
             <SignForm
               tone={contract.tone}
               action={signViaTokenAction.bind(null, token)}
-              submitLabel="Signer"
+              submitLabel="Sign and seal it"
             />
           </>
         )}

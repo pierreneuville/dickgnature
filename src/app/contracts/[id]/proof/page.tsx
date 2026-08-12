@@ -24,7 +24,7 @@ export default async function ContractProofPage({
 
       <ProofView proof={proof} />
       <p className="back-link">
-        <Link href={`/contracts/${id}`}>← Revenir au contrat</Link>
+        <Link href={`/contracts/${id}`}>← Back to the agreement</Link>
       </p>
     </ToneSurface>
   );

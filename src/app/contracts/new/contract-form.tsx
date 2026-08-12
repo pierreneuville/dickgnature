@@ -72,20 +72,20 @@ export function ContractForm() {
       <Card as="section" className="template-picker" aria-labelledby="template-title">
         <div className="template-picker__heading">
           <div>
-            <Badge tone="brand">Point de départ</Badge>
-            <h2 id="template-title">Choisis un modèle</h2>
+            <Badge tone="brand">Easy mode</Badge>
+            <h2 id="template-title">Pick your starting point</h2>
           </div>
-          <p>Sept accords en langage clair, toujours modifiables avant création.</p>
+          <p>Seven plain-English templates. Nothing is set in stone yet.</p>
         </div>
 
         <SelectField
           id="template"
-          label="Type d’accord"
-          hint="Tu peux aussi partir d’une page blanche."
+          label="Agreement type"
+          hint="Or go gloriously off-script with a blank page."
           value={templateId}
           onChange={handleTemplateChange}
         >
-          <option value="">Contrat personnalisé</option>
+          <option value="">Custom agreement</option>
           {CONTRACT_TEMPLATES.map((item) => (
             <option key={item.id} value={item.id}>{item.title}</option>
           ))}
@@ -95,11 +95,11 @@ export function ContractForm() {
           <div className="template-picker__details" aria-live="polite">
             <div className="template-picker__summary">
               <p>{template.description}</p>
-              <Badge>Ton conseillé : {template.suggestedTone === "fun" ? "Fun" : "Serious"}</Badge>
+              <Badge>Suggested vibe: {template.suggestedTone === "fun" ? "Fun" : "Serious"}</Badge>
             </div>
             <fieldset className="template-variables">
-              <legend>Personnalise les variables</legend>
-              <p>Chaque réponse est reportée instantanément dans le contrat.</p>
+              <legend>Fill in the blanks</legend>
+              <p>Your answers jump straight into the agreement below.</p>
               <div className="template-variables__grid">
                 {template.variables.map((variable) => (
                   <InputField
@@ -121,16 +121,16 @@ export function ContractForm() {
       <Card as="section" className="contract-fields" aria-labelledby="contract-fields-title">
         <div className="contract-fields__heading">
           <div>
-            <Badge>Aperçu modifiable</Badge>
-            <h2 id="contract-fields-title">Relis ton accord</h2>
+            <Badge>Fully editable</Badge>
+            <h2 id="contract-fields-title">Make it sound like you</h2>
           </div>
-          <span className="template-picker__counter">{body.length.toLocaleString("fr-FR")} / 20 000</span>
+          <span className="template-picker__counter">{body.length.toLocaleString("en-US")} / 20,000</span>
         </div>
 
         <InputField
           id="title"
           name="title"
-          label="Titre"
+          label="Title"
           type="text"
           required
           maxLength={200}
@@ -141,8 +141,8 @@ export function ContractForm() {
         <TextareaField
           id="body"
           name="body"
-          label="Contrat"
-          hint="Le modèle est une base : adapte librement chaque phrase."
+          label="Agreement"
+          hint="This template is just a launchpad. Rewrite anything you like."
           required
           maxLength={20000}
           value={body}
@@ -152,22 +152,22 @@ export function ContractForm() {
         <SelectField
           id="tone"
           name="tone"
-          label="Ton"
-          hint="Le mode Serious reste neutre ; le mode Fun garde une touche parodique."
+          label="Tone"
+          hint="Serious stays neutral. Fun gets to loosen its tie."
           value={tone}
           onChange={handleToneChange}
         >
-          <option value="fun">Fun (parodique)</option>
-          <option value="serious">Serious (neutre)</option>
+          <option value="fun">Fun (playful)</option>
+          <option value="serious">Serious (neutral)</option>
         </SelectField>
 
         {state.error ? <p className="ui-field__error" role="alert">{state.error}</p> : null}
 
         <div className="contract-editor__submit">
           <Button type="submit" size="lg" disabled={pending}>
-            {pending ? "Création…" : "Créer le contrat"}
+            {pending ? "Making it official-ish…" : "Create the agreement"}
           </Button>
-          <p>Tu pourras encore le relire avant de le partager.</p>
+          <p>You&apos;ll get one more look before you share it. No trapdoors.</p>
         </div>
       </Card>
     </form>

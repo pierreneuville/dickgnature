@@ -27,12 +27,12 @@ export function generateSignatureToken(): string {
 
 // Frontière de validation d'un participant (entrée créateur). Email normalisé en minuscules.
 export const participantInputSchema = z.object({
-  name: z.string().trim().min(1, "Nom requis").max(120),
+  name: z.string().trim().min(1, "A name is required.").max(120),
   email: z
     .string()
     .trim()
     .toLowerCase()
-    .email("Email invalide")
+    .email("Enter a valid email address.")
     .max(320),
 });
 
@@ -99,17 +99,17 @@ export async function addParticipants(
     where: { id: contractId },
   });
   if (!contract) {
-    throw new ParticipantError("Contrat introuvable.");
+    throw new ParticipantError("Agreement not found.");
   }
   if (contract.status === "partially_signed" || contract.status === "completed") {
     throw new ParticipantError(
-      "Les participants sont figés dès la première signature.",
+      "The signer list is locked after the first signature.",
     );
   }
 
   const parsed = inputs.map((input) => participantInputSchema.parse(input));
   if (parsed.length === 0) {
-    throw new ParticipantError("Ajoute au moins un participant.");
+    throw new ParticipantError("Add at least one person to sign.");
   }
 
   const expiresAt = new Date(Date.now() + LINK_TTL_MS);
@@ -149,7 +149,7 @@ export async function addParticipants(
   } catch (error) {
     if (isUniqueViolation(error)) {
       throw new ParticipantError(
-        "Un participant avec cet email existe déjà sur ce contrat.",
+        "Someone with that email is already on this agreement.",
       );
     }
     throw error;
@@ -253,26 +253,26 @@ export async function signAsParticipant(
 ): Promise<Participant> {
   const resolved = await getParticipantByToken(token);
   if (!resolved) {
-    throw new ParticipantError("Lien de signature invalide.");
+    throw new ParticipantError("That signing link isn't valid.");
   }
 
   const { participant, contract } = resolved;
   const state = participantLinkState(participant);
   if (state === "expired") {
-    throw new ParticipantError("Ce lien de signature a expiré.");
+    throw new ParticipantError("This signing link has expired.");
   }
   if (state === "signed") {
-    throw new ParticipantError("Ce lien a déjà été signé.");
+    throw new ParticipantError("This link has already been signed.");
   }
   if (input.consent !== true) {
     throw new ParticipantError(
-      "Tu dois consentir explicitement à signer ce document.",
+      "Please explicitly agree before signing this document.",
     );
   }
 
   if (!isModeAllowedForTone(contract.tone, input.mode)) {
     throw new SignatureError(
-      `Le mode « ${input.mode} » n'est pas disponible pour ce contrat.`,
+      `The “${input.mode}” style isn't available for this agreement.`,
     );
   }
 
@@ -348,7 +348,7 @@ export async function signAsParticipant(
           !item.signedAt ||
           !signature
         ) {
-          throw new ParticipantError("Piste de preuve incomplète.");
+          throw new ParticipantError("The proof trail is incomplete.");
         }
         return {
           id: item.id,

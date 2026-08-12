@@ -20,7 +20,8 @@ export function ContractView({ contract }: { contract: Contract }) {
 
       {theme.showParodyDisclaimer ? (
         <p className="disclaimer" role="note">
-          Parodie — sans valeur légale universelle. Ce document illustre un accord entre amis.
+          Playful agreement — not a universal legal guarantee. It records an
+          understanding between people, without pretending to be a courtroom wizard.
         </p>
       ) : null}
     </article>

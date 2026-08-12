@@ -1,8 +1,8 @@
 import type { Signature, SignatureMode } from "@/lib/signatures";
 
 const MODE_LABELS: Record<SignatureMode, string> = {
-  handwritten: "Signature manuscrite",
-  pattern: "Motif",
+  handwritten: "Handwritten signature",
+  pattern: "Signature doodle",
 };
 
 // Rendu des signatures persistées d'un contrat. Chaque image PNG (dataURL) est ré-affichée ;
@@ -10,7 +10,7 @@ const MODE_LABELS: Record<SignatureMode, string> = {
 export function SignaturesList({ signatures }: { signatures: Signature[] }) {
   if (signatures.length === 0) {
     return (
-      <p className="signatures-empty">Aucune signature pour l&apos;instant.</p>
+      <p className="signatures-empty">No signatures yet. The pen is waiting.</p>
     );
   }
 
@@ -22,7 +22,7 @@ export function SignaturesList({ signatures }: { signatures: Signature[] }) {
           <img
             className="signature-image"
             src={signature.image}
-            alt={`${MODE_LABELS[signature.mode]} apposée`}
+            alt={`${MODE_LABELS[signature.mode]} added`}
           />
           <span className="signature-mode">{MODE_LABELS[signature.mode]}</span>
         </li>

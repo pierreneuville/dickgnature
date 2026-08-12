@@ -82,11 +82,11 @@ describe("UI primitives", () => {
         <SiteFooter />
       </ToneSurface>,
     );
-    expect(screen.getByText("Une preuve compréhensible, sans poudre aux yeux.")).toBeInTheDocument();
-    expect(screen.getByText("Empreinte")).toBeInTheDocument();
-    expect(screen.getAllByLabelText(/niveau SES/i)).toHaveLength(2);
+    expect(screen.getByText("Proof you can actually understand.")).toBeInTheDocument();
+    expect(screen.getByText("Fingerprint")).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/SES level/i)).toHaveLength(2);
     expect(screen.queryByText(/QES/)).not.toBeInTheDocument();
-    expect(screen.getByRole("navigation", { name: "Navigation principale" })).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /dickgnature, accueil/i })).toHaveLength(2);
+    expect(screen.getByRole("navigation", { name: "Main navigation" })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /dickgnature, home/i })).toHaveLength(2);
   });
 });

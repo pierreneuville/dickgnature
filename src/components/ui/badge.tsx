@@ -17,7 +17,7 @@ export function Badge({ tone = "neutral", className, ...props }: BadgeProps) {
 
 export function SesBadge() {
   return (
-    <Badge tone="success" aria-label="Signature électronique simple, niveau SES">
+    <Badge tone="success" aria-label="Simple electronic signature, SES level">
       <span aria-hidden="true">✓</span> Niveau SES
     </Badge>
   );

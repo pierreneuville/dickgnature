@@ -5,12 +5,12 @@ export default function NewContractPage() {
   return (
     <div className="new-contract-page">
       <header className="new-contract-page__hero">
-        <Link className="new-contract-page__back" href="/">← Retour à l’accueil</Link>
-        <span className="kicker">Un accord en quelques minutes</span>
-        <h1>Nouveau contrat</h1>
+        <Link className="new-contract-page__back" href="/">← Back home</Link>
+        <span className="kicker">Your deal, minus the ordeal</span>
+        <h1>Make an agreement</h1>
         <p className="tagline">
-          Pars d’un modèle clair, remplace les quelques variables, puis ajuste le
-          texte jusqu’à ce qu’il vous ressemble.
+          Pick a plain-English template, fill in the blanks, then tweak every
+          word until it sounds like you.
         </p>
       </header>
 

@@ -28,7 +28,7 @@ describe("ContractView", () => {
   it("shows the parody brand and disclaimer in fun mode", () => {
     render(<ContractView contract={contract({ tone: "fun" })} />);
     expect(screen.getByText("dickgnature")).toBeInTheDocument();
-    expect(screen.getByRole("note")).toHaveTextContent(/parodie/i);
+    expect(screen.getByRole("note")).toHaveTextContent(/playful agreement/i);
   });
 
   it("stays neutral in serious mode: no parody brand, no disclaimer", () => {

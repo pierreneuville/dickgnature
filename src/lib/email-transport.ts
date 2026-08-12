@@ -51,7 +51,7 @@ export class ResendEmailTransport implements EmailTransport {
     if (!response.ok) {
       const details = await response.text();
       throw new EmailTransportError(
-        `Resend a refusé l'email (${response.status})${details ? ` : ${details}` : "."}`,
+        `Resend rejected the email (${response.status})${details ? `: ${details}` : "."}`,
       );
     }
   }
@@ -61,7 +61,7 @@ export class ResendEmailTransport implements EmailTransport {
 export class LogEmailTransport implements EmailTransport {
   async send(message: EmailMessage): Promise<void> {
     console.info(
-      `[email:log] ${message.subject} -> ${message.to} (${message.attachments.length} pièce(s) jointe(s))`,
+      `[email:log] ${message.subject} -> ${message.to} (${message.attachments.length} attachment(s))`,
     );
   }
 }

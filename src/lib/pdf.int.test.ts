@@ -78,20 +78,20 @@ describe("signed PDF (integration, parsed output)", () => {
     expect(parsed.text).toContain("Prêt de la perceuse");
     expect(parsed.text).toContain("Kevin rend la perceuse avant dimanche.");
     expect(parsed.text).toContain("kevin@example.fr");
-    expect(parsed.text).toContain("Pourquoi ce PDF est probant");
-    expect(parsed.text).toContain("SES — Signature électronique simple");
-    expect(parsed.text).toContain("Consentement explicite");
-    expect(parsed.text).toContain("Horodatage UTC");
-    expect(parsed.text).toContain("Empreinte du document");
-    expect(parsed.text).toContain("Journal d'événements");
+    expect(parsed.text).toContain("What makes this PDF useful proof");
+    expect(parsed.text).toContain("SES — Simple electronic signature");
+    expect(parsed.text).toContain("Explicit consent");
+    expect(parsed.text).toContain("UTC timestamps");
+    expect(parsed.text).toContain("Document fingerprint");
+    expect(parsed.text).toContain("Event log");
     expect(parsed.text).toContain(proof.documentHash ?? "missing-hash");
-    expect(parsed.text).not.toContain("Parodie");
+    expect(parsed.text).not.toContain("Playful agreement");
     expect(parsed.text).not.toMatch(/QES/i);
   });
 
   it("adds the honest parody disclaimer to fun PDFs only", async () => {
     const proof = await completedProof("fun");
     const { text } = await extractPdfText(await generateSignedPdf(proof));
-    expect(text).toContain("Parodie — sans valeur légale universelle");
+    expect(text).toContain("Playful agreement — not a universal legal guarantee");
   });
 });

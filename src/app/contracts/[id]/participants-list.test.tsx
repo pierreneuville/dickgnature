@@ -19,8 +19,8 @@ function row(overrides: Partial<ParticipantRow> = {}): ParticipantRow {
 describe("ParticipantsList", () => {
   it("shows the contract status and an empty state with no participant", () => {
     render(<ParticipantsList participants={[]} status="draft" />);
-    expect(screen.getByText("Brouillon")).toBeInTheDocument();
-    expect(screen.getByText(/aucun participant/i)).toBeInTheDocument();
+    expect(screen.getByText("Draft")).toBeInTheDocument();
+    expect(screen.getByText(/quiet in here/i)).toBeInTheDocument();
   });
 
   it("renders each participant with its state and a signing link only while open", () => {
@@ -34,14 +34,14 @@ describe("ParticipantsList", () => {
       />,
     );
 
-    expect(screen.getByText("Signé en partie")).toBeInTheDocument();
+    expect(screen.getByText("Partly signed")).toBeInTheDocument();
     expect(screen.getByText("Kevin")).toBeInTheDocument();
     expect(screen.getByText("Sam")).toBeInTheDocument();
-    expect(screen.getByText("En attente")).toBeInTheDocument();
-    expect(screen.getByText("Signé")).toBeInTheDocument();
+    expect(screen.getByText("Waiting")).toBeInTheDocument();
+    expect(screen.getByText("Signed")).toBeInTheDocument();
 
     // Un seul lien de signature : celui du participant en attente (usage unique respecté à l'affichage).
-    const links = screen.getAllByRole("link", { name: /lien de signature/i });
+    const links = screen.getAllByRole("link", { name: /open signing link/i });
     expect(links).toHaveLength(1);
     expect(links[0]).toHaveAttribute("href", "/sign/tok-1");
   });

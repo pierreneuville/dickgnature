@@ -26,7 +26,7 @@ export async function signViaTokenAction(
     if (error instanceof ParticipantError || error instanceof SignatureError) {
       return { error: error.message };
     }
-    return { error: "Signature invalide. Réessaie." };
+    return { error: "That signature didn't stick. Give it another go." };
   }
 
   redirect(`/sign/${token}`);

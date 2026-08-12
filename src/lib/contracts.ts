@@ -8,8 +8,8 @@ import { DEFAULT_TONE, TONES, type Tone } from "@/lib/tone";
 
 // Frontière de validation (entrée utilisateur). Le ton par défaut est "fun" (décision Gate 1).
 export const createContractSchema = z.object({
-  title: z.string().trim().min(1, "Titre requis").max(200),
-  body: z.string().trim().min(1, "Le corps du contrat est requis").max(20000),
+  title: z.string().trim().min(1, "A title is required.").max(200),
+  body: z.string().trim().min(1, "Agreement text is required.").max(20000),
   tone: z.enum(TONES).default(DEFAULT_TONE),
 });
 

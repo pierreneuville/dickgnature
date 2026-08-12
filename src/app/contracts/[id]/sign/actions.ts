@@ -21,7 +21,7 @@ export async function submitSignatureAction(
   const mode = isSignatureMode(rawMode) ? rawMode : "handwritten";
   const image = String(formData.get("image") ?? "");
   if (formData.get("consent") !== "on") {
-    return { error: "Tu dois consentir explicitement à signer ce document." };
+    return { error: "Please explicitly agree before signing this document." };
   }
 
   try {
@@ -30,7 +30,7 @@ export async function submitSignatureAction(
     if (error instanceof SignatureError) {
       return { error: error.message };
     }
-    return { error: "Signature invalide. Réessaie." };
+    return { error: "That signature didn't stick. Give it another go." };
   }
 
   redirect(`/contracts/${contractId}`);

@@ -6,42 +6,42 @@ describe("ContractForm templates", () => {
   it("offers all seven templates and fills the editable contract", () => {
     render(<ContractForm />);
 
-    const picker = screen.getByLabelText("Type d’accord");
+    const picker = screen.getByLabelText("Agreement type");
     expect(picker.querySelectorAll("option")).toHaveLength(8);
 
     fireEvent.change(picker, { target: { value: "item-loan" } });
 
-    expect(screen.getByLabelText("Titre")).toHaveValue("Prêt d’objet");
-    expect(screen.getByLabelText("Ton")).toHaveValue("fun");
-    expect(screen.getByLabelText<HTMLTextAreaElement>("Contrat").value).toContain(
-      "[Objet prêté]",
+    expect(screen.getByLabelText("Title")).toHaveValue("Borrowed item");
+    expect(screen.getByLabelText("Tone")).toHaveValue("fun");
+    expect(screen.getByLabelText<HTMLTextAreaElement>("Agreement").value).toContain(
+      "[Borrowed item]",
     );
-    expect(screen.getByText(/prêter un objet sans perdre de vue/i)).toBeInTheDocument();
+    expect(screen.getByText(/lend something without losing track/i)).toBeInTheDocument();
   });
 
   it("renders variable edits and switches to the serious version", () => {
     render(<ContractForm />);
 
-    fireEvent.change(screen.getByLabelText("Type d’accord"), {
+    fireEvent.change(screen.getByLabelText("Agreement type"), {
       target: { value: "bet" },
     });
-    fireEvent.change(screen.getByLabelText("Personne qui lance le défi"), {
+    fireEvent.change(screen.getByLabelText("Person calling the dare"), {
       target: { value: "Camille" },
     });
-    fireEvent.change(screen.getByLabelText("Personne qui relève le défi"), {
+    fireEvent.change(screen.getByLabelText("Person taking it on"), {
       target: { value: "Noa" },
     });
 
-    expect(screen.getByLabelText<HTMLTextAreaElement>("Contrat").value).toContain(
-      "Camille défie officiellement Noa",
+    expect(screen.getByLabelText<HTMLTextAreaElement>("Agreement").value).toContain(
+      "Camille officially dares Noa",
     );
 
-    fireEvent.change(screen.getByLabelText("Ton"), {
+    fireEvent.change(screen.getByLabelText("Tone"), {
       target: { value: "serious" },
     });
 
-    const body = screen.getByLabelText<HTMLTextAreaElement>("Contrat").value;
-    expect(body).toContain("Camille et Noa conviennent");
-    expect(body).not.toContain("panache recommandé");
+    const body = screen.getByLabelText<HTMLTextAreaElement>("Agreement").value;
+    expect(body).toContain("Camille and Noa agree");
+    expect(body).not.toContain("dramatic flair encouraged");
   });
 });

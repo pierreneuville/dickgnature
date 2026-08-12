@@ -9,11 +9,11 @@ export const AUDIT_EVENT_TYPES = [
 export type AuditEventType = (typeof AUDIT_EVENT_TYPES)[number];
 
 export const AUDIT_EVENT_LABELS: Record<AuditEventType, string> = {
-  CONTRACT_CREATED: "Création du contrat",
-  INVITATION_SENT: "Envoi de l'invitation",
-  DOCUMENT_OPENED: "Ouverture du document",
-  CONSENT_RECORDED: "Consentement explicite enregistré",
-  DOCUMENT_SIGNED: "Signature enregistrée",
+  CONTRACT_CREATED: "Agreement created",
+  INVITATION_SENT: "Signing invitation sent",
+  DOCUMENT_OPENED: "Document opened",
+  CONSENT_RECORDED: "Explicit consent recorded",
+  DOCUMENT_SIGNED: "Signature recorded",
 };
 
 export function isAuditEventType(value: string): value is AuditEventType {
@@ -21,7 +21,7 @@ export function isAuditEventType(value: string): value is AuditEventType {
 }
 
 export function auditEventLabel(type: string): string {
-  return isAuditEventType(type) ? AUDIT_EVENT_LABELS[type] : "Événement d'audit";
+  return isAuditEventType(type) ? AUDIT_EVENT_LABELS[type] : "Audit event";
 }
 
 export function formatUtc(date: Date): string {

@@ -16,7 +16,7 @@ import {
 const A4: [number, number] = [595.28, 841.89];
 const MARGIN = 52;
 const CONTENT_WIDTH = A4[0] - MARGIN * 2;
-const FUN_DISCLAIMER = "Parodie — sans valeur légale universelle";
+const FUN_DISCLAIMER = "Playful agreement — not a universal legal guarantee";
 
 export class PdfGenerationError extends Error {}
 
@@ -114,7 +114,7 @@ class PdfLayout {
   }
 
   badge(): void {
-    const label = "SES — Signature électronique simple";
+    const label = "SES — Simple electronic signature";
     const size = 10;
     const width = this.bold.widthOfTextAtSize(pdfSafeText(label), size) + 24;
     this.ensureSpace(34);
@@ -145,7 +145,7 @@ function participantFrozen(participant: ProofParticipant) {
     !participant.signedAt ||
     !participant.signature
   ) {
-    throw new PdfGenerationError("Piste de preuve incomplète.");
+    throw new PdfGenerationError("The proof trail is incomplete.");
   }
   return {
     id: participant.id,
@@ -162,7 +162,7 @@ function participantFrozen(participant: ProofParticipant) {
 function verifyFrozenHash(proof: ContractProof): void {
   if (!isCompletedProof(proof)) {
     throw new PdfGenerationError(
-      "Le PDF signé n'est disponible qu'une fois le contrat complété.",
+      "The signed PDF is only available once the agreement is complete.",
     );
   }
   const calculated = sha256FrozenDocument({
@@ -176,7 +176,7 @@ function verifyFrozenHash(proof: ContractProof): void {
   });
   if (calculated !== proof.documentHash) {
     throw new PdfGenerationError(
-      "L'empreinte ne correspond plus au contenu figé du contrat.",
+      "The fingerprint no longer matches the agreement's frozen content.",
     );
   }
 }
@@ -186,12 +186,12 @@ async function drawSignature(
   participant: ProofParticipant,
 ): Promise<void> {
   if (!participant.signature || !participant.signedAt || !participant.consentedAt) {
-    throw new PdfGenerationError("Signature ou consentement manquant.");
+    throw new PdfGenerationError("A signature or consent record is missing.");
   }
   layout.ensureSpace(150);
   layout.text(`${participant.name} — ${participant.email}`, { bold: true, size: 11 });
   layout.text(
-    `Consentement explicite : ${formatUtc(participant.consentedAt)} · Signature : ${formatUtc(participant.signedAt)}`,
+    `Explicit consent: ${formatUtc(participant.consentedAt)} · Signature: ${formatUtc(participant.signedAt)}`,
     { size: 8.5 },
   );
   const base64 = participant.signature.image.slice(
@@ -220,12 +220,12 @@ async function drawSignature(
 export async function generateSignedPdf(proof: ContractProof): Promise<Uint8Array> {
   verifyFrozenHash(proof);
   if (!isCompletedProof(proof)) {
-    throw new PdfGenerationError("Piste de preuve incomplète.");
+    throw new PdfGenerationError("The proof trail is incomplete.");
   }
 
   const pdf = await PDFDocument.create();
   pdf.setTitle(proof.title);
-  pdf.setSubject("Contrat signé avec piste d'audit SES");
+  pdf.setSubject("Signed agreement with SES audit trail");
   pdf.setCreationDate(proof.completedAt);
   pdf.setModificationDate(proof.completedAt);
   const regular = await pdf.embedFont(StandardFonts.Helvetica);
@@ -234,11 +234,11 @@ export async function generateSignedPdf(proof: ContractProof): Promise<Uint8Arra
 
   layout.badge();
   layout.heading(proof.title);
-  layout.text(`Document complété le ${formatUtc(proof.completedAt)}.`, { size: 9 });
+  layout.text(`Document completed on ${formatUtc(proof.completedAt)}.`, { size: 9 });
   if (proof.tone === "fun") {
     layout.text(FUN_DISCLAIMER, { bold: true, color: rgb(0.62, 0.22, 0.08) });
   }
-  layout.heading("Texte du contrat", 15);
+  layout.heading("Agreement text", 15);
   layout.text(proof.body, { size: 11 });
   layout.heading("Signatures", 15);
   for (const participant of proof.participants) {
@@ -247,25 +247,25 @@ export async function generateSignedPdf(proof: ContractProof): Promise<Uint8Arra
 
   layout.newPage();
   layout.badge();
-  layout.heading("Pourquoi ce PDF est probant");
+  layout.heading("What makes this PDF useful proof");
   layout.text(
-    "Ce dossier réunit les éléments d'une signature électronique simple (SES). Il documente l'accord sans prétendre être un équivalent manuscrit universel.",
+    "This file brings together the elements of a simple electronic signature (SES). It documents the agreement without claiming to be a universal equivalent of a handwritten signature.",
   );
   layout.text(
-    "Consentement explicite — chaque signataire a coché une case dédiée avant de signer ; l'instant UTC est conservé.",
+    "Explicit consent — every signer ticked a dedicated box before signing; the UTC time is retained.",
     { bold: true },
   );
   layout.text(
-    "Horodatage UTC — création, invitation, ouverture, consentement et signature sont datés dans un format non ambigu.",
+    "UTC timestamps — creation, invitation, opening, consent, and signature events use an unambiguous format.",
     { bold: true },
   );
   layout.text(
-    "Empreinte du document — le SHA-256 ci-dessous porte sur la représentation canonique du contrat figé, de ses signataires et de leurs signatures au moment de la complétion.",
+    "Document fingerprint — the SHA-256 below covers the canonical representation of the frozen agreement, its signers, and their signatures at completion.",
     { bold: true },
   );
   layout.text(`SHA-256 : ${proof.documentHash}`, { size: 9 });
   layout.text(
-    "Journal d'événements — la chronologie relie les actions à l'adresse email déclarée par chaque signataire.",
+    "Event log — the timeline connects each action to the email address provided by that signer.",
     { bold: true },
   );
   for (const event of proof.auditEvents) {
@@ -288,7 +288,7 @@ export async function generateSignedPdf(proof: ContractProof): Promise<Uint8Arra
       font: regular,
       color: rgb(0.42, 0.45, 0.5),
     });
-    page.drawText(`Empreinte SHA-256 : ${proof.documentHash.slice(0, 16)}…`, {
+    page.drawText(`SHA-256 fingerprint: ${proof.documentHash.slice(0, 16)}…`, {
       x: A4[0] - MARGIN - 190,
       y: 28,
       size: 8,

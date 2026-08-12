@@ -20,7 +20,7 @@ function sig(overrides: Partial<Signature> = {}): Signature {
 describe("SignaturesList", () => {
   it("shows an empty state when there is no signature", () => {
     render(<SignaturesList signatures={[]} />);
-    expect(screen.getByText(/aucune signature/i)).toBeInTheDocument();
+    expect(screen.getByText(/no signatures yet/i)).toBeInTheDocument();
   });
 
   it("re-displays each persisted signature image with its mode", () => {
@@ -32,7 +32,7 @@ describe("SignaturesList", () => {
     const images = screen.getAllByRole("img");
     expect(images).toHaveLength(2);
     expect(images[0]).toHaveAttribute("src", PNG);
-    expect(screen.getByText("Motif")).toBeInTheDocument();
-    expect(screen.getByText("Signature manuscrite")).toBeInTheDocument();
+    expect(screen.getByText("Signature doodle")).toBeInTheDocument();
+    expect(screen.getByText("Handwritten signature")).toBeInTheDocument();
   });
 });

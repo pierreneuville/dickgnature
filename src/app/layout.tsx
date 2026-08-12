@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "dickgnature — Le contrat à deux, sans le cirque",
+  title: "dickgnature — Two people, one agreement, zero fuss",
   description:
-    "Créez et signez un contrat à deux en moins de 60 secondes, sans compte et avec un dossier de preuve lisible.",
+    "Create and sign a two-person agreement in under 60 seconds, with no signer account and a clear proof trail.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr">
+    <html lang="en">
       <body>
-        <a className="skip-link" href="#main-content">Aller au contenu</a>
+        <a className="skip-link" href="#main-content">Skip to content</a>
         <main className="container" id="main-content">{children}</main>
       </body>
     </html>

@@ -51,8 +51,8 @@ export default async function ContractPage({
 
       <ContractView contract={contract} />
 
-      <section className="participants-section" aria-label="Participants">
-        <h2>Participants</h2>
+      <section className="participants-section" aria-label="People signing">
+        <h2>Who&apos;s in?</h2>
         <ParticipantsList participants={rows} status={contract.status} />
         <ParticipantsForm contractId={contract.id} />
       </section>
@@ -62,20 +62,20 @@ export default async function ContractPage({
         <SignaturesList signatures={signatures} />
         <div className="canvas-actions">
           <ButtonLink href={`/contracts/${contract.id}/sign`}>
-            Signer le contrat
+            Add my signature
           </ButtonLink>
           {contract.status === "completed" ? (
             <ButtonLink
               variant="secondary"
               href={`/contracts/${contract.id}/pdf`}
             >
-              Télécharger le PDF signé
+              Download signed PDF
             </ButtonLink>
           ) : null}
         </div>
         <p className="proof-link">
           <Link href={`/contracts/${contract.id}/proof`}>
-            Pourquoi ce PDF est probant
+            See what makes this proof useful
           </Link>
         </p>
       </section>

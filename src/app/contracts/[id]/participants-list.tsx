@@ -6,9 +6,9 @@ import {
 import type { LinkState } from "@/lib/participants";
 
 const LINK_STATE_LABELS: Record<LinkState, string> = {
-  open: "En attente",
-  signed: "Signé",
-  expired: "Expiré",
+  open: "Waiting",
+  signed: "Signed",
+  expired: "Expired",
 };
 
 // Vue « suivi créateur » : qui a signé, qui est en attente, et le lien à transmettre. Le calcul
@@ -32,12 +32,12 @@ export function ParticipantsList({
   return (
     <div className="participants">
       <p className="contract-status">
-        Statut : <strong>{CONTRACT_STATUS_LABELS[status]}</strong>
+        Status: <strong>{CONTRACT_STATUS_LABELS[status]}</strong>
       </p>
 
       {participants.length === 0 ? (
         <p className="participants-empty">
-          Aucun participant. Ajoute des signataires ci-dessous.
+          It&apos;s quiet in here. Add the people who need to sign below.
         </p>
       ) : (
         <ul className="participants-list">
@@ -55,7 +55,7 @@ export function ParticipantsList({
                   className="participant-link"
                   href={`/sign/${participant.token}`}
                 >
-                  Lien de signature
+                  Open signing link
                 </Link>
               ) : null}
             </li>

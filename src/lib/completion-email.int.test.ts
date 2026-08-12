@@ -51,13 +51,13 @@ describe("signed contract completion emails (integration)", () => {
       "sam@example.fr",
     ]);
     for (const message of capture.messages) {
-      expect(message.subject).toBe("Votre contrat signé — Accord de prêt");
+      expect(message.subject).toBe("Your signed agreement — Accord de prêt");
       expect(`${message.from} ${message.subject} ${message.text} ${message.html}`).not.toMatch(
         /dickgnature|parodie|🎉/i,
       );
       expect(message.attachments).toHaveLength(1);
       expect(message.attachments[0]).toMatchObject({
-        filename: "contrat-signe-accord-de-pret.pdf",
+        filename: "signed-agreement-accord-de-pret.pdf",
         contentType: "application/pdf",
       });
       expect(new TextDecoder().decode(message.attachments[0].content.slice(0, 5))).toBe(
@@ -87,9 +87,9 @@ describe("signed contract completion emails (integration)", () => {
     );
 
     expect(capture.messages).toHaveLength(1);
-    expect(capture.messages[0].subject).toBe("C'est signé 🎉 — Pari du match");
+    expect(capture.messages[0].subject).toBe("Signed, sealed, no drama 🎉 — Pari du match");
     expect(capture.messages[0].from).toContain("dickgnature");
-    expect(capture.messages[0].html).toContain("Garde-la bien au chaud");
+    expect(capture.messages[0].html).toContain("safer than the group chat");
     expect(capture.messages[0].attachments[0].contentType).toBe("application/pdf");
   });
 
@@ -105,6 +105,6 @@ describe("signed contract completion emails (integration)", () => {
 
     await expect(
       sendCompletedContractEmails(contract.id, new CaptureEmailTransport()),
-    ).rejects.toThrow(/complétion/);
+    ).rejects.toThrow(/agreement is complete/);
   });
 });
