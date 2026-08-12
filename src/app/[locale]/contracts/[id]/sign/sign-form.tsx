@@ -2,6 +2,7 @@
 
 import { useActionState, useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui";
 import type { Tone } from "@/lib/tone";
 import type { SignActionState, SignatureMode } from "@/lib/signatures";
 import { ModePicker } from "./mode-picker";
@@ -63,9 +64,13 @@ export function SignForm({
 
       {state.error ? <p className="error">{tErrors(state.error)}</p> : null}
 
-      <button type="submit" disabled={pending || image === null || !consent}>
+      <Button
+        type="submit"
+        size="lg"
+        disabled={pending || image === null || !consent}
+      >
         {pending ? t("savePending") : (submitLabel ?? t("submit"))}
-      </button>
+      </Button>
     </form>
   );
 }

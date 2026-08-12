@@ -1063,18 +1063,20 @@ form > button,
 
 .new-contract-page__hero {
   max-width: 48rem;
-  padding-block: 1rem 2rem;
+  padding-block: 0.5rem 1.25rem;
 }
 
 .new-contract-page__hero h1 {
   margin-block: 0.6rem 0.9rem;
-  font-size: clamp(2.7rem, 10vw, 5rem);
+  font-size: clamp(2.2rem, 11vw, 5rem);
 }
 
 .new-contract-page__back {
-  display: block;
+  display: inline-flex;
   width: fit-content;
-  margin-bottom: 2.5rem;
+  min-height: 2.75rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
   color: var(--ink-soft);
   font-size: 0.88rem;
   font-weight: 750;
@@ -1091,7 +1093,7 @@ form > button,
 .contract-fields {
   min-width: 0;
   max-width: 100%;
-  padding: 1.25rem;
+  padding: 1rem;
 }
 
 .template-picker {
@@ -1105,6 +1107,7 @@ form > button,
 .contract-fields__heading {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.75rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--line);
@@ -1167,12 +1170,6 @@ form > button,
   box-shadow: var(--shadow-md);
 }
 
-.contract-fields__heading {
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-
 .template-picker__counter {
   flex: 0 0 auto;
   color: var(--ink-soft);
@@ -1181,7 +1178,7 @@ form > button,
 }
 
 .contract-fields textarea {
-  min-height: 18rem;
+  min-height: 14rem;
   font-family: Georgia, "Times New Roman", serif;
   line-height: 1.7;
 }
@@ -1239,6 +1236,16 @@ form > button,
   .template-picker,
   .contract-fields {
     padding: 1.75rem;
+  }
+
+  .contract-fields__heading {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .contract-fields textarea {
+    min-height: 18rem;
   }
 
   .template-picker__heading {
@@ -1362,12 +1369,12 @@ form > button,
 
 /* ---- Sélecteur de mode ---- */
 .mode-picker {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   min-width: 0;
   max-width: 100%;
   gap: 0.75rem;
   margin-bottom: 1rem;
-  flex-wrap: wrap;
 }
 
 .mode-tab {
@@ -1466,10 +1473,14 @@ form > button,
 }
 
 .canvas-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem;
   margin-top: 0.5rem;
-  flex-wrap: wrap;
+}
+
+.canvas-actions .ui-button {
+  width: 100%;
 }
 
 button.ghost {
@@ -1498,6 +1509,7 @@ button.ghost {
   border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .consent-field input {
@@ -1505,6 +1517,28 @@ button.ghost {
   min-width: 1.25rem;
   height: 1.25rem;
   margin-top: 0.2rem;
+  accent-color: var(--brand);
+}
+
+.sign-form button[type="submit"] {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+@media (min-width: 700px) {
+  .mode-picker {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .canvas-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .canvas-actions .ui-button {
+    width: auto;
+  }
 }
 
 .back-link {

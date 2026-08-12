@@ -43,6 +43,23 @@ describe("mobile layout guardrails", () => {
     );
   });
 
+  it("stacks signing controls and keeps the completion action obvious", () => {
+    expect(rule(".mode-picker")).toContain(
+      "grid-template-columns: minmax(0, 1fr)",
+    );
+    expect(rule(".canvas-actions")).toContain(
+      "grid-template-columns: minmax(0, 1fr)",
+    );
+    expect(rule('.sign-form button[type="submit"]')).toContain("width: 100%");
+    expect(rule(".consent-field")).toContain("cursor: pointer");
+  });
+
+  it("uses a compact mobile hierarchy for contract creation", () => {
+    expect(rule(".new-contract-page__back")).toContain("min-height: 2.75rem");
+    expect(rule(".contract-fields__heading")).toContain("align-items: flex-start");
+    expect(rule(".contract-fields textarea")).toContain("min-height: 14rem");
+  });
+
   it("uses the current design tokens on legacy surfaces", () => {
     expect(css).not.toMatch(/var\(--(?:border|muted|fg)\)/);
   });
