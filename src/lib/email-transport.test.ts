@@ -26,6 +26,12 @@ describe("email transports", () => {
     expect(createEmailTransport({})).toBeInstanceOf(LogEmailTransport);
   });
 
+  it("fails closed without a Resend key in production", () => {
+    expect(() =>
+      createEmailTransport({ NODE_ENV: "production", RESEND_API_KEY: "   " }),
+    ).toThrow(EmailTransportError);
+  });
+
   it("uses Resend when a key is configured and maps the attachment", async () => {
     const fetchMock = vi
       .fn<typeof fetch>()

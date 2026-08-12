@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { afterAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/db";
 import { createContract, getContract } from "@/lib/contracts";
 import { addParticipants, listParticipants } from "@/lib/participants";
@@ -55,6 +55,11 @@ describe("addParticipantsAction", () => {
     await prisma.$disconnect();
   });
 
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
   it("persists participants and redirects without a notice when every email is sent", async () => {
     const contract = await createContract({
       title: "T",
@@ -103,6 +108,36 @@ describe("addParticipantsAction", () => {
     expect(digest).toContain(`/contracts/${contract.id}?notice=invite-email-failed`);
     expect(await listParticipants(contract.id)).toHaveLength(1);
     // …et aucun `INVITATION_SENT` n'est journalisé pour un envoi qui n'a pas eu lieu.
+    expect(
+      await prisma.auditEvent.count({
+        where: { contractId: contract.id, type: "INVITATION_SENT" },
+      }),
+    ).toBe(0);
+  });
+
+  it("fails closed and logs the cause when production has no Resend key", async () => {
+    const contract = await createContract({
+      title: "T",
+      body: "Corps valide.",
+      tone: "fun",
+    });
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("RESEND_API_KEY", "");
+    const errorLog = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    const digest = await redirectDigest(
+      addParticipantsAction(
+        contract.id,
+        {},
+        formDataOf([{ name: "Kevin", email: "kevin@example.fr" }]),
+      ),
+    );
+
+    expect(digest).toContain(`/contracts/${contract.id}?notice=invite-email-failed`);
+    expect(errorLog).toHaveBeenCalledWith(
+      expect.stringContaining(`contrat ${contract.id}`),
+      expect.any(EmailTransportError),
+    );
     expect(
       await prisma.auditEvent.count({
         where: { contractId: contract.id, type: "INVITATION_SENT" },

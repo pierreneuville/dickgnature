@@ -24,7 +24,7 @@ export async function addParticipantsAction(
   _prevState: ParticipantsState,
   formData: FormData,
   // Injection de transport réservée aux tests (comme SignAsParticipantOptions.emailTransport) :
-  // en production, sendInvitationEmails choisit le transport Resend/Log par défaut.
+  // en production, sendInvitationEmails exige Resend ; le log hors-ligne reste réservé au local.
   transport?: EmailTransport,
 ): Promise<ParticipantsState> {
   const names = formData.getAll("name").map(String);
@@ -55,7 +55,11 @@ export async function addParticipantsAction(
   try {
     const result = await sendInvitationEmails(contractId, created, transport);
     anyEmailFailed = result.failed.length > 0;
-  } catch {
+  } catch (error) {
+    console.error(
+      `[participants-action] campagne d'invitations échouée (contrat ${contractId}) :`,
+      error,
+    );
     anyEmailFailed = true;
   }
 
