@@ -1,13 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  createSignature,
-  isSignatureMode,
-  SignatureError,
-} from "@/lib/signatures";
+import { actionErrorCode } from "@/lib/action-error";
+import type { ErrorMessageKey } from "@/lib/error-codes";
+import { createSignature, isSignatureMode } from "@/lib/signatures";
 
-export type SignState = { error?: string };
+export type SignState = { error?: ErrorMessageKey };
 
 // contractId est lié côté client via .bind(null, id). En cas de succès on redirige vers la page
 // du contrat (la signature y est ré-affichée). La règle "pattern → fun uniquement" est appliquée
@@ -21,16 +19,13 @@ export async function submitSignatureAction(
   const mode = isSignatureMode(rawMode) ? rawMode : "handwritten";
   const image = String(formData.get("image") ?? "");
   if (formData.get("consent") !== "on") {
-    return { error: "Please explicitly agree before signing this document." };
+    return { error: "consentRequired" };
   }
 
   try {
     await createSignature({ contractId, mode, image });
   } catch (error) {
-    if (error instanceof SignatureError) {
-      return { error: error.message };
-    }
-    return { error: "That signature didn't stick. Give it another go." };
+    return { error: actionErrorCode(error, { fallback: "signFailed" }) };
   }
 
   redirect(`/contracts/${contractId}`);

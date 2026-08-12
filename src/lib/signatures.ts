@@ -1,5 +1,10 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import {
+  type DomainErrorCode,
+  domainErrorMessage,
+  type ErrorMessageKey,
+} from "@/lib/error-codes";
 import { DEFAULT_TONE, isTone, type Tone } from "@/lib/tone";
 
 // Modes de signature (S2).
@@ -46,7 +51,7 @@ export type Signature = {
 
 // État partagé des server actions de signature (auto-signature S2 et flux tokenisé S3).
 // Structurellement compatible avec les SignState concrets de chaque action.
-export type SignActionState = { error?: string };
+export type SignActionState = { error?: ErrorMessageKey };
 
 function normalizeMode(raw: string): SignatureMode {
   return isSignatureMode(raw) ? raw : "handwritten";
@@ -72,7 +77,19 @@ export type CreateSignatureInput = {
   image: string;
 };
 
-export class SignatureError extends Error {}
+// Porte un code d'erreur de domaine stable (= clé i18n `errors`). `params` sert au diagnostic
+// (ex. le mode refusé) ; il n'est pas requis par les messages traduits.
+export class SignatureError extends Error {
+  readonly code: DomainErrorCode;
+  readonly params?: Readonly<Record<string, string>>;
+
+  constructor(code: DomainErrorCode, params?: Readonly<Record<string, string>>) {
+    super(domainErrorMessage(code));
+    this.name = "SignatureError";
+    this.code = code;
+    this.params = params;
+  }
+}
 
 // Persiste une signature après avoir vérifié (a) l'existence du contrat, (b) que le mode est
 // autorisé pour le ton du contrat, (c) la validité de l'image. Toute violation lève SignatureError.
@@ -83,14 +100,12 @@ export async function createSignature(
     where: { id: input.contractId },
   });
   if (!contract) {
-    throw new SignatureError("Agreement not found.");
+    throw new SignatureError("contractNotFound");
   }
 
   const tone = toneOf(contract.tone);
   if (!isModeAllowedForTone(tone, input.mode)) {
-    throw new SignatureError(
-      `The “${input.mode}” style isn't available for this agreement.`,
-    );
+    throw new SignatureError("modeNotAllowed", { mode: input.mode });
   }
 
   const image = signatureImageSchema.parse(input.image);

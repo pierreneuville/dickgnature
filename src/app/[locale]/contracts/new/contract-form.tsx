@@ -21,6 +21,7 @@ function emptyValues(template: ContractTemplate) {
 
 export function ContractForm() {
   const t = useTranslations("contractForm");
+  const tErrors = useTranslations("errors");
   const messages = useMessages();
   const [state, formAction, pending] = useActionState(
     createContractAction,
@@ -179,7 +180,7 @@ export function ContractForm() {
           <option value="serious">{t("toneSerious")}</option>
         </SelectField>
 
-        {state.error ? <p className="ui-field__error" role="alert">{state.error}</p> : null}
+        {state.error ? <p className="ui-field__error" role="alert">{tErrors(state.error)}</p> : null}
 
         <div className="contract-editor__submit">
           <Button type="submit" size="lg" disabled={pending}>
