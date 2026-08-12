@@ -75,6 +75,33 @@ fi
 bold "═══ verify — base=$BASE_REF  fichiers modifiés=${#CHANGED[@]} ═══"
 echo
 
+# --------------------------------------------------- base Postgres de test
+# Prisma lit DATABASE_URL au runtime : la suite d'intégration a besoin d'une base
+# Postgres réelle mais jetable. On la résout de façon déterministe, jamais la prod :
+#   1. TEST_DATABASE_URL explicite (CI, ou base Neon dédiée)   → prioritaire
+#   2. DATABASE_URL présent ET contenant « test »              → réutilisé tel quel
+#   3. sinon, la base docker-compose locale (port 5433)        → défaut portable
+# Garde-fou : on refuse toute URL dont le nom ne contient pas « test » (anti-prod).
+DEFAULT_TEST_DB="postgresql://dickgnature:dickgnature@localhost:5433/dickgnature_test?sslmode=disable"
+if [ -n "${TEST_DATABASE_URL:-}" ]; then
+  RESOLVED_DB="$TEST_DATABASE_URL"
+elif printf '%s' "${DATABASE_URL:-}" | grep -qi 'test'; then
+  RESOLVED_DB="$DATABASE_URL"
+else
+  RESOLVED_DB="$DEFAULT_TEST_DB"
+fi
+case "$(printf '%s' "$RESOLVED_DB" | tr '[:upper:]' '[:lower:]')" in
+  *test*) : ;;
+  *)
+    echo "✗ base de test invalide : « $RESOLVED_DB » ne contient pas « test »."
+    echo "  verify ne tourne jamais contre une base non-test. Exporte TEST_DATABASE_URL."
+    exit 1 ;;
+esac
+export DATABASE_URL="$RESOLVED_DB"
+export DIRECT_URL="${TEST_DIRECT_URL:-$RESOLVED_DB}"
+say "base de test : $(printf '%s' "$RESOLVED_DB" | sed -E 's#(://[^:/@]+):[^@]*@#\1:****@#')"
+echo
+
 # ---------------------------------------------------------- gates bloquants
 if has_script lint;      then gate true  "lint"      npm run --silent lint
 elif [ -f eslint.config.js ] || [ -f .eslintrc.json ] || [ -f .eslintrc.cjs ]; then

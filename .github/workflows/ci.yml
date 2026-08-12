@@ -1,0 +1,49 @@
+# CI déterministe : rejoue `scripts/verify.sh` sur chaque PR contre une base Postgres jetable.
+# Le service `postgres` fournit une base nommée `dickgnature_test` (garde-fou anti-prod) ;
+# TEST_DATABASE_URL la cible explicitement. fetch-depth: 0 est requis car verify borne le
+# coverage et le scan de secrets sur le diff HEAD…origin/main.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: dickgnature
+          POSTGRES_PASSWORD: dickgnature
+          POSTGRES_DB: dickgnature_test
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U dickgnature -d dickgnature_test"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 20
+
+    env:
+      # verify résout cette variable en priorité ; jamais une base non-test.
+      TEST_DATABASE_URL: postgresql://dickgnature:dickgnature@localhost:5433/dickgnature_test?sslmode=disable
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # verify a besoin de origin/main pour le diff (coverage, secrets).
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: verify (gates bloquants)
+        run: ./scripts/verify.sh --blocking
