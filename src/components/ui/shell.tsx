@@ -21,14 +21,18 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <BrandMark />
-      <nav className="site-header__nav" aria-label={t("navAria")}>
-        <a href="#how-it-works">{t("howItWorks")}</a>
-        <a href="#proof">{t("theProof")}</a>
-        <ButtonLink href="/contracts/new" size="sm">
-          {t("makeAgreement")}
-        </ButtonLink>
+      <div className="site-header__actions">
+        <nav className="site-header__nav" aria-label={t("navAria")}>
+          <a href="#how-it-works">{t("howItWorks")}</a>
+          <a href="#proof">{t("theProof")}</a>
+          <ButtonLink href="/contracts/new" size="sm">
+            {t("makeAgreement")}
+          </ButtonLink>
+        </nav>
+        {/* Hors de la nav repliée en mobile : le sélecteur de langue reste toujours atteignable,
+            sinon un mobile détecté FR (ou toute autre langue) n'aurait aucun moyen d'en changer. */}
         <LanguageSwitcher />
-      </nav>
+      </div>
     </header>
   );
 }
