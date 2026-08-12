@@ -45,7 +45,7 @@ export function SignForm({
   return (
     <form action={formAction} className="sign-form">
       <ModePicker tone={tone} selected={mode} onSelect={selectMode} />
-      <SignatureCanvas key={mode} mode={mode} onChange={handleChange} />
+      <SignatureCanvas key={mode} mode={mode} tone={tone} onChange={handleChange} />
 
       <input type="hidden" name="mode" value={mode} />
       <input type="hidden" name="image" value={image ?? ""} />

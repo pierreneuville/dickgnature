@@ -178,10 +178,21 @@
     "pickerHandwrittenLabel": "Draw it yourself",
     "pickerHandwrittenHint": "Draw your real signature with a finger or mouse.",
     "pickerPatternLabel": "Use the cheeky stamp",
-    "pickerPatternHint": "Trace the guide or drop the stamp in one tap.",
+    "pickerPatternHint": "Pick a doodle from the gallery to drop it in one tap.",
     "handwritten": "Handwritten signature",
     "pattern": "Signature doodle",
     "addedAlt": "{mode} added"
+  },
+  "signatureStamps": {
+    "galleryAria": "Pick a signature doodle",
+    "labels": {
+      "classic": "The classic",
+      "lean": "The leaning one",
+      "southpaw": "The southpaw",
+      "grand": "The grand",
+      "petite": "The petite",
+      "curvy": "The curvy one"
+    }
   },
   "sign": {
     "heading": "Sign: {title}",
