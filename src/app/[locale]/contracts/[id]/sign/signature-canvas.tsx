@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import SignaturePad from "signature_pad";
+import { Button } from "@/components/ui";
 import type { SignatureMode } from "@/lib/signatures";
 import type { Tone } from "@/lib/tone";
 import {
@@ -110,12 +111,12 @@ export function SignatureCanvas({
       </div>
 
       <div className="canvas-actions">
-        <button type="button" className="ghost" onClick={undo}>
+        <Button type="button" variant="quiet" size="sm" onClick={undo}>
           Undo last stroke
-        </button>
-        <button type="button" className="ghost" onClick={clear}>
+        </Button>
+        <Button type="button" variant="quiet" size="sm" onClick={clear}>
           Clear the lot
-        </button>
+        </Button>
       </div>
 
       {mode === "pattern" ? (
