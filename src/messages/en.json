@@ -160,7 +160,12 @@
     "removeAria": "Remove this signer",
     "addAnother": "+ Add another person",
     "invitePending": "Sending the bat-signal…",
-    "invite": "Invite them to sign"
+    "invite": "Invite them to sign",
+    "resend": "Resend invitation",
+    "resendAria": "Resend the signing invitation to {name}",
+    "noticeInviteEmailFailed": "Some invitations were created, but their email couldn't be sent. Use \"Resend invitation\" below to try again.",
+    "noticeInviteResent": "Invitation email sent.",
+    "noticeResendFailed": "That invitation email couldn't be sent. Please try again."
   },
   "linkState": {
     "open": "Waiting",
@@ -486,6 +491,20 @@
       "subject": "Your signed agreement — {title}",
       "text": "Hello {name},\n\nAll parties have signed “{title}”. Your copy of the signed agreement and its audit trail is attached.\n\nKind regards,\nSigning service",
       "html": "<p>Hello {name},</p><p>All parties have signed <strong>“{title}”</strong>.</p><p>Your copy of the signed agreement and its audit trail is attached.</p><p>Kind regards,<br/>Signing service</p>"
+    }
+  },
+  "invitationEmails": {
+    "fun": {
+      "sender": "dickgnature",
+      "subject": "You're invited to sign 🖋️ — {title}",
+      "text": "Hey {name},\n\nYou've been invited to sign “{title}”. Open your private link and add your signature — no account needed:\n\n{link}\n\nHeads up: this link expires in {days} days.\n\nCatch you later,\ndickgnature",
+      "html": "<p>Hey {name},</p><p>You've been invited to sign <strong>“{title}”</strong>. Open your private link and add your signature — no account needed.</p><p><link>Review and sign</link></p><p>Heads up: this link expires in {days} days.</p><p>Catch you later,<br/><strong>dickgnature</strong></p>"
+    },
+    "serious": {
+      "sender": "Signing invitations",
+      "subject": "Invitation to sign — {title}",
+      "text": "Hello {name},\n\nYou have been invited to sign “{title}”. Open your private link to review and sign the agreement — no account is required:\n\n{link}\n\nPlease note: this link expires in {days} days.\n\nKind regards,\nSigning service",
+      "html": "<p>Hello {name},</p><p>You have been invited to sign <strong>“{title}”</strong>. Open your private link to review and sign the agreement — no account is required.</p><p><link>Review and sign</link></p><p>Please note: this link expires in {days} days.</p><p>Kind regards,<br/>Signing service</p>"
     }
   },
   "pdf": {

@@ -1536,6 +1536,35 @@ button.ghost {
   color: var(--accent, #e11d8f);
 }
 
+.participant-resend {
+  display: inline-flex;
+}
+
+.participant-resend button {
+  font-size: 0.8rem;
+}
+
+/* Notice d'invitation (échec d'envoi / renvoi) affichée au-dessus de la liste. */
+.participants-notice {
+  margin: 0 0 0.75rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.participants-notice.is-alert {
+  color: #b91c1c;
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.participants-notice.is-status {
+  color: #15803d;
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
 /* ---- Formulaire d'invitation ---- */
 .participants-form {
   display: flex;

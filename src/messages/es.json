@@ -160,7 +160,12 @@
     "removeAria": "Quitar a este firmante",
     "addAnother": "+ Añadir otra persona",
     "invitePending": "Enviando la batiseñal…",
-    "invite": "Invitarles a firmar"
+    "invite": "Invitarles a firmar",
+    "resend": "Reenviar invitación",
+    "resendAria": "Reenviar la invitación para firmar a {name}",
+    "noticeInviteEmailFailed": "Se crearon algunas invitaciones, pero no se pudo enviar su correo. Usa «Reenviar invitación» abajo para intentarlo de nuevo.",
+    "noticeInviteResent": "Correo de invitación enviado.",
+    "noticeResendFailed": "No se pudo enviar ese correo de invitación. Inténtalo de nuevo."
   },
   "linkState": {
     "open": "En espera",
@@ -486,6 +491,20 @@
       "subject": "Tu acuerdo firmado — {title}",
       "text": "Hola {name},\n\nTodas las partes han firmado «{title}». Se adjunta tu copia del acuerdo firmado y su registro de auditoría.\n\nUn saludo,\nServicio de firma",
       "html": "<p>Hola {name},</p><p>Todas las partes han firmado <strong>«{title}»</strong>.</p><p>Se adjunta tu copia del acuerdo firmado y su registro de auditoría.</p><p>Un saludo,<br/>Servicio de firma</p>"
+    }
+  },
+  "invitationEmails": {
+    "fun": {
+      "sender": "dickgnature",
+      "subject": "Te invitan a firmar 🖋️ — {title}",
+      "text": "Hola {name},\n\nTe han invitado a firmar «{title}». Abre tu enlace privado y añade tu firma — sin cuenta:\n\n{link}\n\nAviso: este enlace caduca en {days} días.\n\nHasta pronto,\ndickgnature",
+      "html": "<p>Hola {name},</p><p>Te han invitado a firmar <strong>«{title}»</strong>. Abre tu enlace privado y añade tu firma — sin cuenta.</p><p><link>Revisar y firmar</link></p><p>Aviso: este enlace caduca en {days} días.</p><p>Hasta pronto,<br/><strong>dickgnature</strong></p>"
+    },
+    "serious": {
+      "sender": "Invitaciones para firmar",
+      "subject": "Invitación para firmar — {title}",
+      "text": "Hola {name},\n\nSe le ha invitado a firmar «{title}». Abra su enlace privado para revisar y firmar el acuerdo — no se requiere cuenta:\n\n{link}\n\nNota: este enlace caduca en {days} días.\n\nUn saludo,\nServicio de firma",
+      "html": "<p>Hola {name},</p><p>Se le ha invitado a firmar <strong>«{title}»</strong>. Abra su enlace privado para revisar y firmar el acuerdo — no se requiere cuenta.</p><p><link>Revisar y firmar</link></p><p>Nota: este enlace caduca en {days} días.</p><p>Un saludo,<br/>Servicio de firma</p>"
     }
   },
   "pdf": {

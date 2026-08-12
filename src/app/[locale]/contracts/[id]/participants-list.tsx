@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { ContractStatus } from "@/lib/contract-status";
@@ -17,9 +18,13 @@ export type ParticipantRow = {
 export function ParticipantsList({
   participants,
   status,
+  rowAction,
 }: {
   participants: ParticipantRow[];
   status: ContractStatus;
+  // Action optionnelle rendue par ligne (ex. bouton « renvoyer l'invitation »). Injectée par la
+  // page serveur pour garder ce composant présentiel sans dépendance serveur (aucun import Prisma).
+  rowAction?: (participant: ParticipantRow) => ReactNode;
 }) {
   const t = useTranslations();
 
@@ -51,6 +56,7 @@ export function ParticipantsList({
                   {t("participants.openLink")}
                 </Link>
               ) : null}
+              {rowAction ? rowAction(participant) : null}
             </li>
           ))}
         </ul>

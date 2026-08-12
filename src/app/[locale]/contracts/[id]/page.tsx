@@ -18,7 +18,24 @@ import {
   ParticipantsList,
   type ParticipantRow,
 } from "./participants-list";
+import { ResendInvitation } from "./resend-invitation";
 import { SignaturesList } from "./signatures-list";
+
+// Notices affichées après une action d'invitation (redirection avec `?notice=`). On mappe la valeur
+// vers une clé i18n `participants` + une tonalité ARIA (alert pour un échec, status pour un succès).
+type ParticipantNoticeKey =
+  | "noticeInviteEmailFailed"
+  | "noticeInviteResent"
+  | "noticeResendFailed";
+
+const NOTICES: Record<
+  string,
+  { key: ParticipantNoticeKey; tone: "alert" | "status" }
+> = {
+  "invite-email-failed": { key: "noticeInviteEmailFailed", tone: "alert" },
+  "invite-resent": { key: "noticeInviteResent", tone: "status" },
+  "invite-resend-failed": { key: "noticeResendFailed", tone: "alert" },
+};
 
 // Lecture en base : rendu dynamique, jamais pré-généré au build.
 export const dynamic = "force-dynamic";
@@ -34,10 +51,13 @@ export async function generateMetadata({
 
 export default async function ContractPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ notice?: string }>;
 }) {
   const { id } = await params;
+  const { notice } = await searchParams;
   const contract = await getContract(id);
 
   if (!contract) {
@@ -61,6 +81,8 @@ export default async function ContractPage({
 
   const easterEggName = findEasterEggName(participants.map((p) => p.name));
   const t = await getTranslations("contract");
+  const tParticipants = await getTranslations("participants");
+  const activeNotice = notice ? NOTICES[notice] : undefined;
 
   return (
     <ToneSurface tone={contract.tone}>
@@ -75,7 +97,27 @@ export default async function ContractPage({
         aria-label={t("peopleSigningAria")}
       >
         <h2>{t("whosIn")}</h2>
-        <ParticipantsList participants={rows} status={contract.status} />
+        {activeNotice ? (
+          <p
+            className={`participants-notice is-${activeNotice.tone}`}
+            role={activeNotice.tone === "alert" ? "alert" : "status"}
+          >
+            {tParticipants(activeNotice.key)}
+          </p>
+        ) : null}
+        <ParticipantsList
+          participants={rows}
+          status={contract.status}
+          rowAction={(participant) =>
+            participant.linkState === "open" ? (
+              <ResendInvitation
+                contractId={contract.id}
+                participantId={participant.id}
+                name={participant.name}
+              />
+            ) : null
+          }
+        />
         <ParticipantsForm contractId={contract.id} />
       </section>
 
